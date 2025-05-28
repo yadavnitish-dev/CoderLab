@@ -34,6 +34,7 @@ model User {
   password  String
   createdAt DateTime @default(now())
   updatedAT DateTime @updatedAt
+  
   problems Problem[]
 }
 
@@ -50,7 +51,7 @@ model Problem {
   editorial String?
   testcases Json
   codeSnippets Json
-  referenceSolution Json
+  referenceSolutions Json
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
