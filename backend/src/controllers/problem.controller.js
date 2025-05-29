@@ -94,6 +94,7 @@ export const getAllProblems = async (req, res) => {
       message: "Problems fetched successfully",
       problems
     });
+
   } catch (error) {
     console.error("Error in getAllProblems:", error);
     return res.status(500).json({ error: "Error fetching problems" });
@@ -101,15 +102,109 @@ export const getAllProblems = async (req, res) => {
 }
 
 export const getProblemById = async (req, res) => {
-
+  const { id } = req.params;
+  if (!id) {
+    return res.status(400).json({ error: "Problem ID is required" });
+  }
+  try {
+    const problem = await db.problem.findUnique({
+      where: { 
+        id
+      },
+    });
+    if (!problem) {
+      return res.status(404).json({ error: "Problem not found" });
+    }
+    return res.status(200).json({
+      success: true,
+      message: "Problem fetched successfully",
+      problem
+    });
+  } catch (error) {
+    console.error("Error in getProblemById:", error);
+    return res.status(500).json({ error: "Error fetching problem" });
+  }
 }
 
 export const updateProblem = async (req, res) => {
-    
+    const {id} = req.params;
+    const {
+        title,
+        description,
+        difficulty,
+        tags,
+        examples,
+        constraints,
+        testcases,
+        codeSnippets,
+        referenceSolutions,
+    } = req.body;
+    if(req.user.role !== "ADMIN"){
+        return res.status(403).json({error: "You are not allowed to update a problem"})
+    }
+    if (!id) {
+        return res.status(400).json({ error: "Problem ID is required" });
+    }
+    try {
+        const problem = await db.problem.findUnique({
+            where: { id },
+        });
+        if (!problem) {
+            return res.status(404).json({ error: "Problem not found" });
+        }
+
+        const updatedProblem = await db.problem.update({
+          where: { id },
+          data: {
+            title,
+            description,
+            difficulty,
+            tags,
+            examples,
+            constraints,
+            testcases,
+            codeSnippets,
+            referenceSolutions,
+            userId: req.user.id
+          }
+        });
+
+        return res.status(200).json({
+            success: true,
+            message: "Problem updated successfully",
+            problem: updatedProblem
+        });
+
+    } catch (error) {
+        console.error("Error in updateProblem:", error);
+        return res.status(500).json({ error: "Error updating problem" });
+    }
 }
 
 export const deleteProblem = async (req, res) => {
+  const {id} = req.params;
 
+  try {
+    const problem = await db.problem.findUnique({where: {id}})
+  
+    if(!problem) {
+      return res.status(404).json({
+        error: "Problem not found"
+      })
+    }
+  
+    await db.problem.delete({where:{id}});
+  
+    return res.status(200).json({
+      success: true,
+      message: "problem deleted successfully",
+    })
+
+  } catch (error) {
+      console.log(error);
+      return res.status(500).json({
+        error: "error while deleting the problem"})
+    }
 }
 
 export const getSolvedProblems = async (req, res) => {
