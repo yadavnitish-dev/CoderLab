@@ -1,10 +1,21 @@
 import {db} from "../libs/db.js";
-import submitBatch from "../libs/judge0.lib.js"
+import {submitBatch} from "../libs/judge0.lib.js"
 import { pollBatchResults } from "../libs/judge0.lib.js";
+import { getJudge0LanguageId } from "../libs/judge0.lib.js";
 
 
 export const createProblem = async (req, res) => {
-  const {title, description, difficulty, tags, examples, constraints, testcases, codeSnippets, referenceSolutions} = req.body;
+  const {
+    title,
+    description,
+    difficulty,
+    tags,
+    examples,
+    constraints,
+    testcases,
+    codeSnippets,
+    referenceSolutions,
+  } = req.body;
 
   if(req.user.role !== "ADMIN"){
     return res.status(403).json({error: "You are not allowed to create a problem"})
@@ -27,6 +38,9 @@ export const createProblem = async (req, res) => {
         expected_output : output
       }))
 
+
+      console.log("submissions:", submissions);
+
       const submissionResults = await submitBatch(submissions);
 
       const tokens = submissionResults.map((res) => res.token);
@@ -35,6 +49,7 @@ export const createProblem = async (req, res) => {
 
       for(let i=0; i<results.length; i++){
         const result =results[i];
+        console.log("result--------", result);
 
         if(result.status.id !==3){
           return res.status(400).json({
@@ -61,7 +76,8 @@ export const createProblem = async (req, res) => {
       return res.status(201).json(newProblem);
     }
   } catch (error) {
-    
+    console.error("Error in createProblem:", error);
+    res.status(500).json({ error: "Internal server error" });
   }
 }
 
