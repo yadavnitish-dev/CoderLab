@@ -38,9 +38,6 @@ export const createProblem = async (req, res) => {
         expected_output : output
       }))
 
-
-      console.log("submissions:", submissions);
-
       const submissionResults = await submitBatch(submissions);
 
       const tokens = submissionResults.map((res) => res.token);
