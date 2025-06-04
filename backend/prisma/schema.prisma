@@ -40,14 +40,14 @@ model Problem {
   title       String
   description String
   difficulty  Difficulty
-  tags        String[] // ["tag1", "tag2", "tag3"]
+  tags        String[] 
   userId      String
   examples    Json
   constraints String
   hints       String?
   editorial   String?
 
-  testcases          Json // 
+  testcases          Json 
   codeSnippets       Json
   referenceSolutions Json
 
@@ -61,10 +61,6 @@ model Problem {
   problemsPlaylists ProblemInPlaylist[]
 }
 
-// enum Status{
-//   ACCEPTED
-//   WORNG_ANSWER
-// }
 
 model Submission {
   id            String  @id @default(uuid())
@@ -76,7 +72,7 @@ model Submission {
   stdout        String?
   stderr        String?
   compileOutput String?
-  status        String // Accepted , wrong answer
+  status        String 
   memory        String?
   time          String?
 
@@ -136,7 +132,7 @@ model Playlist {
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@unique([name, userId]) // unique playlist names per user
+  @@unique([name, userId]) 
 }
 
 model ProblemInPlaylist {
