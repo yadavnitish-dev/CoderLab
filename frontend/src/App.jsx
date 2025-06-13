@@ -2,25 +2,26 @@ import React from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
 
 const App = () => {
+
+  let authUser = null;
+
   return (
     <div className="flex flex-col items-center justify-start">
       <Routes>
         <Route 
         path="/"
-        element= {<HomePage />}
+        element= {authUser ? <HomePage /> : <Navigate to ={"/login"} />}
         />
 
         <Route 
         path="/login"
-        element={<Login />}
+        element={!authUser ? <LoginPage /> : <Navigate to = {"/"}/>}
         />
 
         <Route 
         path="/signup"
-        element = {<SignUp />}
+        element = {!authUser ? <SignUpPage /> :<Navigate to = {"/"} />}
         />
-
-
       </Routes>
     </div>
     
