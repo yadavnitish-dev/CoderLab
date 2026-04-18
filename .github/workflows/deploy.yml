@@ -93,7 +93,7 @@ jobs:
             APP_DIR="/home/${{ secrets.EC2_USERNAME }}/leetlab"
             BACKEND_IMAGE="${{ needs.build-and-push.outputs.backend_image }}"
             FRONTEND_IMAGE="${{ needs.build-and-push.outputs.frontend_image }}"
-            REPO_URL="https://github.com/${{ github.repository }}.git"
+            REPO_URL="https://${{ secrets.GHCR_USERNAME }}:${{ secrets.GHCR_TOKEN }}@github.com/${{ github.repository }}.git"
 
             # Create directory if it doesn't exist
             if [ ! -d "$APP_DIR" ]; then
@@ -103,6 +103,9 @@ jobs:
             fi
 
             cd "$APP_DIR"
+
+            # Update the remote URL in case the token changed
+            git remote set-url origin "$REPO_URL"
 
             # Ensure we are on the main branch
             git fetch origin main
