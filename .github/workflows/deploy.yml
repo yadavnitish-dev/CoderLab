@@ -89,15 +89,25 @@ jobs:
           script: |
             set -euo pipefail
 
-            APP_DIR="${{ vars.EC2_APP_DIR || '~/AlgoPrep' }}"
+            # Use absolute path to avoid ~ expansion issues
+            APP_DIR="/home/${{ secrets.EC2_USERNAME }}/leetlab"
             BACKEND_IMAGE="${{ needs.build-and-push.outputs.backend_image }}"
             FRONTEND_IMAGE="${{ needs.build-and-push.outputs.frontend_image }}"
+            REPO_URL="https://github.com/${{ github.repository }}.git"
+
+            # Create directory if it doesn't exist
+            if [ ! -d "$APP_DIR" ]; then
+              echo "Directory $APP_DIR not found. Creating and cloning..."
+              mkdir -p "$APP_DIR"
+              git clone "$REPO_URL" "$APP_DIR"
+            fi
 
             cd "$APP_DIR"
 
+            # Ensure we are on the main branch
             git fetch origin main
-            git checkout main
-            git pull --ff-only origin main
+            git checkout -f main
+            git pull origin main
 
             echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u "${{ secrets.GHCR_USERNAME }}" --password-stdin
 
