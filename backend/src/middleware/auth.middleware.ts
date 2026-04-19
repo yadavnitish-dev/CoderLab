@@ -15,7 +15,7 @@ export interface AuthenticatedRequest extends Request {
 export const authMiddleware = async (
   req: AuthenticatedRequest,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ): Promise<any> => {
   try {
     const token = req.cookies.jwt;
@@ -33,7 +33,7 @@ export const authMiddleware = async (
         throw new Error("JWT_SECRET is not defined");
       }
       decoded = jwt.verify(token, process.env.JWT_SECRET);
-    } catch (error) {
+    } catch {
       return res.status(401).json({
         message: "Unauthorized- Invalid token",
       });
@@ -66,8 +66,8 @@ export const authMiddleware = async (
 
     req.user = user;
     next();
-  } catch (error) {
-    console.log("Error authenticating user:", error);
+  } catch (_error) {
+    console.log("Error authenticating user:", _error);
     return res.status(500).json({
       message: "Error authenticating user",
     });
@@ -77,11 +77,11 @@ export const authMiddleware = async (
 export const checkAdmin = async (
   req: AuthenticatedRequest,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ): Promise<any> => {
   try {
     if (!req.user || !req.user.id) {
-        return res.status(401).json({ message: "Unauthorized" });
+      return res.status(401).json({ message: "Unauthorized" });
     }
     const userId = req.user.id;
     const user = await db.user.findUnique({
@@ -100,8 +100,8 @@ export const checkAdmin = async (
     }
 
     next();
-  } catch (error) {
-    console.log("Error checking admin role:", error);
+  } catch (_error) {
+    console.log("Error checking admin role:", _error);
     res.status(500).json({
       message: "Error checking admin role",
     });

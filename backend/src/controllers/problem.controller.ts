@@ -33,7 +33,7 @@ const splitExecutionOutput = (output: string | null | undefined) => {
 
 export const createProblem = async (
   req: AuthenticatedRequest,
-  res: Response
+  res: Response,
 ): Promise<any> => {
   const {
     title,
@@ -65,7 +65,6 @@ export const createProblem = async (
         });
       }
 
-      // @ts-ignore
       const result = await executeSubmission({
         source_code: solutionCode as string,
         language_id: languageId,
@@ -114,7 +113,7 @@ export const createProblem = async (
 
 export const getAllProblems = async (
   req: Request,
-  res: Response
+  res: Response,
 ): Promise<any> => {
   try {
     const problems = await db.problem.findMany({
@@ -140,7 +139,7 @@ export const getAllProblems = async (
 
 export const getProblemById = async (
   req: Request,
-  res: Response
+  res: Response,
 ): Promise<any> => {
   const { id } = req.params;
   if (!id) {
@@ -168,7 +167,7 @@ export const getProblemById = async (
 
 export const updateProblem = async (
   req: AuthenticatedRequest,
-  res: Response
+  res: Response,
 ): Promise<any> => {
   const { id } = req.params;
   const {
@@ -228,7 +227,7 @@ export const updateProblem = async (
 
 export const deleteProblem = async (
   req: Request,
-  res: Response
+  res: Response,
 ): Promise<any> => {
   const { id } = req.params;
 
@@ -257,11 +256,11 @@ export const deleteProblem = async (
 
 export const getAllProblemsSolvedByUser = async (
   req: AuthenticatedRequest,
-  res: Response
+  res: Response,
 ): Promise<any> => {
   try {
     if (!req.user) {
-         return res.status(401).json({ error: "Unauthorized" });
+      return res.status(401).json({ error: "Unauthorized" });
     }
     const problems = await db.problem.findMany({
       where: {

@@ -1,23 +1,14 @@
 import { useState } from "react";
-import leetLabLogo from "../assets/leetlab.svg";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link } from "react-router-dom";
-import {
-  Eye,
-  EyeOff,
-  Loader2,
-  Lock,
-  Mail,
-  User,
-  ArrowRight
-} from "lucide-react";
+import { Eye, EyeOff, Loader2, Lock, Mail, User, Code2 } from "lucide-react";
 import { z } from "zod";
-import AuthImagePattern from "../components/AuthImagePattern";
 import { useAuthStore } from "../store/useAuthStore";
+import BrutalistButton from "../components/BrutalistButton";
 
 const SignUpSchema = z.object({
-  email: z.email("Enter a valid email"),
+  email: z.string().email("Enter a valid email"),
   password: z.string().min(6, "Password must be at least 6 characters"),
   name: z.string().min(3, "Name must be at least 3 characters"),
 });
@@ -45,149 +36,132 @@ const SignUpPage = () => {
   };
 
   return (
-    <div className="min-h-screen grid lg:grid-cols-2 relative overflow-hidden">
-        {/* Background Decor */}
-        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/20 blur-[120px] rounded-full -z-10 opacity-40 pointer-events-none"></div>
-        <div className="absolute bottom-[-10%] right-[40%] w-[30%] h-[30%] bg-secondary/20 blur-[100px] rounded-full -z-10 opacity-30 pointer-events-none"></div>
-
-      {/* Left Side - Form */}
-      <div className="flex flex-col justify-center items-center p-6 sm:p-12 relative z-10">
-        <div className="w-full max-w-md space-y-8 glass-panel p-8 rounded-2xl border border-white/5 shadow-2xl shadow-black/20">
-          {/* Logo */}
-          <div className="text-center mb-8">
-            <div className="flex flex-col items-center gap-2 group">
-              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center group-hover:scale-105 transition-transform duration-300 border border-primary/20 shadow-lg shadow-primary/5">
-                <img src={leetLabLogo} className="size-8" alt="Logo" />
-              </div>
-              <h1 className="text-3xl font-bold mt-4 font-display tracking-tight text-white flex items-center gap-2">
-                AlgoPrep
-              </h1>
-              <p className="text-base-content/60 text-sm font-medium">Create your account</p>
+    <div className="min-h-screen bg-[#0a0a0a] flex flex-col items-center justify-center p-6">
+      <div className="w-full max-w-md">
+        {/* Brand/Header */}
+        <div className="text-center mb-10">
+          <Link to="/" className="inline-flex items-center gap-2 mb-8 group">
+            <div className="bg-white p-2 rounded-sm group-hover:bg-accent transition-colors duration-300">
+              <Code2 className="size-6 text-black" />
             </div>
-          </div>
+            <span className="text-xl font-bold tracking-tighter text-white uppercase font-display">
+              AlgoPrep
+            </span>
+          </Link>
+          <h1 className="text-3xl font-bold text-white tracking-tight mb-2">
+            Create your account
+          </h1>
+          <p className="text-zinc-500 text-sm">
+            Join the next generation of algorithm masters
+          </p>
+        </div>
 
-          {/* Form */}
+        {/* Form */}
+        <div className="bg-[#0d0d0d] border border-zinc-800 p-8 rounded-sm shadow-2xl">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-            {/* Name */}
-            <div className="form-control">
-              <label className="label pl-1">
-                <span className="label-text font-medium text-base-content/70">Full Name</span>
+            <div className="space-y-2">
+              <label className="text-xs font-bold uppercase tracking-widest text-zinc-500 ml-1">
+                Full Name
               </label>
-              <div className="relative group">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <User className="h-5 w-5 text-base-content/40 group-focus-within:text-primary transition-colors" />
-                </div>
+              <div className="relative">
+                <User className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-zinc-600" />
                 <input
                   type="text"
                   {...register("name")}
-                  className={`input input-bordered w-full pl-10 bg-base-300/30 border-white/10 focus:border-primary/50 focus:bg-base-300/50 transition-all ${
-                    errors.name ? "input-error" : ""
-                  }`}
+                  className={`w-full bg-[#050505] border ${errors.name ? "border-rose-500/50" : "border-zinc-800"} rounded-sm py-2.5 pl-10 pr-4 text-sm text-zinc-200 focus:outline-none focus:border-emerald-500/50 transition-colors placeholder:text-zinc-700`}
                   placeholder="John Doe"
                 />
               </div>
               {errors.name && (
-                <p className="text-error text-xs mt-1.5 ml-1 font-medium">{errors.name.message}</p>
+                <p className="text-rose-500 text-[10px] font-bold uppercase tracking-wider ml-1">
+                  {errors.name.message}
+                </p>
               )}
             </div>
 
-            {/* Email */}
-            <div className="form-control">
-              <label className="label pl-1">
-                <span className="label-text font-medium text-base-content/70">Email Address</span>
+            <div className="space-y-2">
+              <label className="text-xs font-bold uppercase tracking-widest text-zinc-500 ml-1">
+                Email Address
               </label>
-              <div className="relative group">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Mail className="h-5 w-5 text-base-content/40 group-focus-within:text-primary transition-colors" />
-                </div>
+              <div className="relative">
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-zinc-600" />
                 <input
                   type="email"
                   {...register("email")}
-                  className={`input input-bordered w-full pl-10 bg-base-300/30 border-white/10 focus:border-primary/50 focus:bg-base-300/50 transition-all ${
-                    errors.email ? "input-error" : ""
-                  }`}
-                  placeholder="you@example.com"
+                  className={`w-full bg-[#050505] border ${errors.email ? "border-rose-500/50" : "border-zinc-800"} rounded-sm py-2.5 pl-10 pr-4 text-sm text-zinc-200 focus:outline-none focus:border-emerald-500/50 transition-colors placeholder:text-zinc-700`}
+                  placeholder="name@company.com"
                 />
               </div>
               {errors.email && (
-                <p className="text-error text-xs mt-1.5 ml-1 font-medium">{errors.email.message}</p>
+                <p className="text-rose-500 text-[10px] font-bold uppercase tracking-wider ml-1">
+                  {errors.email.message}
+                </p>
               )}
             </div>
 
-            {/* Password */}
-            <div className="form-control">
-              <label className="label pl-1">
-                <span className="label-text font-medium text-base-content/70">Password</span>
+            <div className="space-y-2">
+              <label className="text-xs font-bold uppercase tracking-widest text-zinc-500 ml-1">
+                Password
               </label>
-              <div className="relative group">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Lock className="h-5 w-5 text-base-content/40 group-focus-within:text-primary transition-colors" />
-                </div>
+              <div className="relative">
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-zinc-600" />
                 <input
                   type={showPassword ? "text" : "password"}
                   {...register("password")}
-                  className={`input input-bordered w-full pl-10 bg-base-300/30 border-white/10 focus:border-primary/50 focus:bg-base-300/50 transition-all ${
-                    errors.password ? "input-error" : ""
-                  }`}
+                  className={`w-full bg-[#050505] border ${errors.password ? "border-rose-500/50" : "border-zinc-800"} rounded-sm py-2.5 pl-10 pr-10 text-sm text-zinc-200 focus:outline-none focus:border-emerald-500/50 transition-colors placeholder:text-zinc-700`}
                   placeholder="••••••••"
                 />
                 <button
                   type="button"
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center hover:text-base-content"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-600 hover:text-zinc-400 transition-colors"
                   onClick={() => setShowPassword(!showPassword)}
                 >
                   {showPassword ? (
-                    <EyeOff className="h-5 w-5 text-base-content/40" />
+                    <EyeOff className="size-4" />
                   ) : (
-                    <Eye className="h-5 w-5 text-base-content/40" />
+                    <Eye className="size-4" />
                   )}
                 </button>
               </div>
               {errors.password && (
-                <p className="text-error text-xs mt-1.5 ml-1 font-medium">{errors.password.message}</p>
+                <p className="text-rose-500 text-[10px] font-bold uppercase tracking-wider ml-1">
+                  {errors.password.message}
+                </p>
               )}
             </div>
 
-            {/* Submit Button */}
-            <button
+            <BrutalistButton
               type="submit"
-              className="btn btn-primary w-full shadow-lg shadow-primary/20 hover:scale-[1.02] transition-all duration-200 mt-2"
-              disabled={isSigninUp}
+              variant="primary"
+              size="lg"
+              className="w-full mt-4"
+              isLoading={isSigninUp}
             >
-              {isSigninUp ? (
-                <>
-                  <Loader2 className="h-5 w-5 animate-spin" />
-                  Creating Account...
-                </>
-              ) : (
-                <>
-                  Sign Up
-                  <ArrowRight className="h-5 w-5 ml-2" />
-                </>
-              )}
-            </button>
+              Create Account
+            </BrutalistButton>
           </form>
 
-          {/* Footer */}
-          <div className="text-center pt-2">
-            <p className="text-base-content/60 text-sm">
+          <div className="mt-8 text-center">
+            <p className="text-zinc-500 text-sm">
               Already have an account?{" "}
-              <Link to="/login" className="link link-primary font-semibold hover:no-underline">
+              <Link
+                to="/login"
+                className="text-white font-bold hover:underline"
+              >
                 Sign in
               </Link>
             </p>
           </div>
         </div>
-      </div>
 
-      {/* Right Side - Image/Pattern */}
-      <div className="hidden lg:block relative overflow-hidden bg-base-300/30">
-          <AuthImagePattern
-            title={"Master The Algorithms"}
-            subtitle={
-              "Join our platform to access premium coding problems and track your progress."
-            }
-          />
+        <div className="mt-12 text-center">
+          <Link
+            to="/"
+            className="text-xs font-bold uppercase tracking-widest text-zinc-700 hover:text-zinc-500 transition-colors"
+          >
+            &larr; Back to home
+          </Link>
+        </div>
       </div>
     </div>
   );

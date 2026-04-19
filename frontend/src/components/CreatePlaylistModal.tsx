@@ -20,10 +20,10 @@ const CreatePlaylistModal: React.FC<CreatePlaylistModalProps> = ({isOpen , onClo
     if(!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4 transition-all duration-300">
-      <div className="glass-panel w-full max-w-md rounded-2xl shadow-2xl overflow-hidden border border-white/10 animate-scale-in">
+    <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4 transition-all duration-300">
+      <div className="bg-[#0d0d0d] border border-zinc-800 w-full max-w-md rounded-sm shadow-2xl overflow-hidden animate-scale-in">
         {/* Header */}
-        <div className="flex justify-between items-center p-5 border-b border-white/5 bg-white/5">
+        <div className="flex justify-between items-center p-5 border-b border-zinc-800 bg-zinc-900/50">
           <h3 className="text-xl font-bold flex items-center gap-2 text-white">
             <ListMusic className="w-5 h-5 text-primary" />
             Create Playlist
@@ -44,7 +44,7 @@ const CreatePlaylistModal: React.FC<CreatePlaylistModalProps> = ({isOpen , onClo
             </label>
             <input
               type="text"
-              className="input input-bordered w-full bg-base-300/30 border-white/10 focus:border-primary/50 focus:bg-base-300/50 transition-all"
+              className="w-full bg-black border border-zinc-800 rounded-sm px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500/50 transition-all placeholder:text-zinc-700"
               placeholder="e.g. Dynamic Programming Patterns"
               {...register('name', { required: 'Playlist name is required' })}
             />
@@ -58,7 +58,7 @@ const CreatePlaylistModal: React.FC<CreatePlaylistModalProps> = ({isOpen , onClo
               Description
             </label>
             <textarea
-              className="textarea textarea-bordered h-28 bg-base-300/30 border-white/10 focus:border-primary/50 focus:bg-base-300/50 transition-all resize-none"
+              className="w-full bg-black border border-zinc-800 rounded-sm px-4 py-2.5 text-sm text-white h-28 focus:outline-none focus:border-emerald-500/50 transition-all resize-none placeholder:text-zinc-700"
               placeholder="What kind of problems will this playlist contain?"
               {...register('description')}
             />
@@ -68,13 +68,13 @@ const CreatePlaylistModal: React.FC<CreatePlaylistModalProps> = ({isOpen , onClo
             <button 
                 type="button" 
                 onClick={onClose} 
-                className="btn btn-ghost flex-1 hover:bg-white/5 font-medium"
+                className="px-6 py-2.5 bg-zinc-900 border border-zinc-800 text-zinc-400 hover:text-white rounded-sm font-medium text-sm flex-1 transition-colors"
             >
               Cancel
             </button>
             <button 
                 type="submit" 
-                className="btn btn-primary flex-1 shadow-lg shadow-primary/20"
+                className="bg-white text-black px-6 py-2.5 rounded-sm font-bold text-sm hover:bg-zinc-200 transition-all flex items-center justify-center gap-2 flex-1 shadow-lg shadow-white/5"
             >
               <Plus className="w-4 h-4" />
               Create Playlist

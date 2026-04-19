@@ -1,11 +1,12 @@
 {
-  "name": "backend",
+  "name": "algoprep-backend",
   "version": "1.0.0",
   "description": "",
   "main": "src/index.js",
   "scripts": {
     "dev": "nodemon --exec tsx src/index.ts",
-    "build": "tsc"
+    "build": "tsc",
+    "lint": "eslint ."
   },
   "keywords": [],
   "author": "",
@@ -23,14 +24,18 @@
     "prisma": "^6.8.2"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@types/bcryptjs": "^2.4.6",
     "@types/cookie-parser": "^1.4.10",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^25.0.3",
+    "eslint": "^10.2.1",
+    "globals": "^17.5.0",
     "nodemon": "^3.1.10",
     "tsx": "^4.21.0",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.58.2"
   }
 }

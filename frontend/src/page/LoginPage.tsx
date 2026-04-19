@@ -1,167 +1,150 @@
 import { useState } from "react";
-import leetLabLogo from "../assets/leetlab.svg";
-import {useForm} from "react-hook-form"
-import {zodResolver} from "@hookform/resolvers/zod"
-import { Link } from 'react-router-dom'
-import {
-  Eye,
-  EyeOff,
-  Loader2,
-  Lock,
-  Mail,
-} from "lucide-react";
-
-import {z} from "zod";
-import AuthImagePattern from '../components/AuthImagePattern';
-import { useAuthStore } from '../store/useAuthStore';
-
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Link } from "react-router-dom";
+import { Eye, EyeOff, Loader2, Lock, Mail, Code2 } from "lucide-react";
+import { z } from "zod";
+import { useAuthStore } from "../store/useAuthStore";
+import BrutalistButton from "../components/BrutalistButton";
 
 const LoginSchema = z.object({
-  email:z.email("Enter a valid email"),
-  password:z.string().min(6 , "Password must be atleast of 6 characters"),
-
-})
-
+  email: z.string().email("Enter a valid email"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
+});
 
 type LoginFormData = z.infer<typeof LoginSchema>;
 
 const LoginPage = () => {
-
-  const {isLoggingIn , login} = useAuthStore()
-  const [showPassword , setShowPassword] = useState(false);
+  const { isLoggingIn, login } = useAuthStore();
+  const [showPassword, setShowPassword] = useState(false);
 
   const {
-    register ,
+    register,
     handleSubmit,
-    formState:{errors},
+    formState: { errors },
   } = useForm<LoginFormData>({
-    resolver:zodResolver(LoginSchema)
-  })
+    resolver: zodResolver(LoginSchema),
+  });
 
-  const onSubmit = async (data: LoginFormData)=>{
+  const onSubmit = async (data: LoginFormData) => {
     try {
-      await login(data)
-      
+      await login(data);
     } catch (error) {
-      console.error("Signup failed" , error)
+      console.error("Login failed", error);
     }
-  }
-
+  };
 
   return (
-    <div className='h-screen grid lg:grid-cols-2'>
-        <div className="flex flex-col justify-center items-center p-6 sm:p-12">
-        <div className="w-full max-w-md space-y-8">
-          {/* Logo */}
-          <div className="text-center mb-8">
-            <div className="flex flex-col items-center gap-2 group">
-              <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-                <img src={leetLabLogo} className="size-8" alt="Logo" />
-              </div>
-              <h1 className="text-2xl font-bold mt-2">Welcome Back to AlgoPrep</h1>
-              <p className="text-base-content/60">Login to your account</p>
+    <div className="min-h-screen bg-[#0a0a0a] flex flex-col items-center justify-center p-6">
+      <div className="w-full max-w-md">
+        {/* Brand/Header */}
+        <div className="text-center mb-10">
+          <Link to="/" className="inline-flex items-center gap-2 mb-8 group">
+            <div className="bg-white p-2 rounded-sm group-hover:bg-accent transition-colors duration-300">
+              <Code2 className="size-6 text-black" />
             </div>
-          </div>
+            <span className="text-xl font-bold tracking-tighter text-white uppercase font-display">
+              AlgoPrep
+            </span>
+          </Link>
+          <h1 className="text-3xl font-bold text-white tracking-tight mb-2">
+            Welcome back
+          </h1>
+          <p className="text-zinc-500 text-sm">
+            Enter your credentials to access your workspace
+          </p>
+        </div>
 
-          {/* Form */}
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          
-            {/* Email */}
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text font-medium">Email</span>
+        {/* Form */}
+        <div className="bg-[#0d0d0d] border border-zinc-800 p-8 rounded-sm shadow-2xl">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+            <div className="space-y-2">
+              <label className="text-xs font-bold uppercase tracking-widest text-zinc-500 ml-1">
+                Email Address
               </label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Mail className="h-5 w-5 text-base-content/40" />
-                </div>
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-zinc-600" />
                 <input
                   type="email"
                   {...register("email")}
-                  className={`input input-bordered w-full pl-10 ${
-                    errors.email ? "input-error" : ""
-                  }`}
-                  placeholder="you@example.com"
+                  className={`w-full bg-[#050505] border ${errors.email ? "border-rose-500/50" : "border-zinc-800"} rounded-sm py-2.5 pl-10 pr-4 text-sm text-zinc-200 focus:outline-none focus:border-emerald-500/50 transition-colors placeholder:text-zinc-700`}
+                  placeholder="name@company.com"
                 />
               </div>
               {errors.email && (
-                <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+                <p className="text-rose-500 text-[10px] font-bold uppercase tracking-wider ml-1">
+                  {errors.email.message}
+                </p>
               )}
             </div>
 
-            {/* Password */}
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text font-medium">Password</span>
+            <div className="space-y-2">
+              <label className="text-xs font-bold uppercase tracking-widest text-zinc-500 ml-1">
+                Password
               </label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Lock className="h-5 w-5 text-base-content/40" />
-                </div>
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-zinc-600" />
                 <input
                   type={showPassword ? "text" : "password"}
                   {...register("password")}
-                  className={`input input-bordered w-full pl-10 ${
-                    errors.password ? "input-error" : ""
-                  }`}
+                  className={`w-full bg-[#050505] border ${errors.password ? "border-rose-500/50" : "border-zinc-800"} rounded-sm py-2.5 pl-10 pr-10 text-sm text-zinc-200 focus:outline-none focus:border-emerald-500/50 transition-colors placeholder:text-zinc-700`}
                   placeholder="••••••••"
                 />
                 <button
                   type="button"
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-600 hover:text-zinc-400 transition-colors"
                   onClick={() => setShowPassword(!showPassword)}
                 >
                   {showPassword ? (
-                    <EyeOff className="h-5 w-5 text-base-content/40" />
+                    <EyeOff className="size-4" />
                   ) : (
-                    <Eye className="h-5 w-5 text-base-content/40" />
+                    <Eye className="size-4" />
                   )}
                 </button>
               </div>
               {errors.password && (
-                <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
+                <p className="text-rose-500 text-[10px] font-bold uppercase tracking-wider ml-1">
+                  {errors.password.message}
+                </p>
               )}
             </div>
 
-            {/* Submit Button */}
-            <button
+            <BrutalistButton
               type="submit"
-              className="btn btn-primary w-full"
-              disabled={isLoggingIn}
+              variant="primary"
+              size="lg"
+              className="w-full mt-4"
+              isLoading={isLoggingIn}
             >
-               {isLoggingIn ? (
-                <>
-                  <Loader2 className="h-5 w-5 animate-spin" />
-                  Loading...
-                </>
-              ) : (
-                "Sign in"
-              )}
-            </button>
+              Sign In
+            </BrutalistButton>
           </form>
 
-          {/* Footer */}
-          <div className="text-center">
-            <p className="text-base-content/60">
-              Don't have an account?{" "}
-              <Link to="/signup" className="link link-primary">
-                Sign up
+          <div className="mt-8 text-center">
+            <p className="text-zinc-500 text-sm">
+              New here?{" "}
+              <Link
+                to="/signup"
+                className="text-white font-bold hover:underline"
+              >
+                Create an account
               </Link>
             </p>
           </div>
         </div>
+
+        {/* Subtle Footer Link */}
+        <div className="mt-12 text-center">
+          <Link
+            to="/"
+            className="text-xs font-bold uppercase tracking-widest text-zinc-700 hover:text-zinc-500 transition-colors"
+          >
+            &larr; Back to home
+          </Link>
+        </div>
       </div>
-
-       {/* Right Side - Image/Pattern */}
-     {/* Right Side - Image/Pattern */}
-      <AuthImagePattern
-        title={"Welcome back!"}
-        subtitle={
-          "Sign in to continue your journey with us. Don't have an account? Create one now."
-        }
-      />
     </div>
-  )
-}
+  );
+};
 
-export default LoginPage
+export default LoginPage;

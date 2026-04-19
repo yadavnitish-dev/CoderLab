@@ -39,8 +39,8 @@ jobs:
       - name: Set image names
         id: images
         run: |
-          echo "backend_image=${REGISTRY}/${IMAGE_NAMESPACE}/leetlab-backend:${GITHUB_SHA}" >> "$GITHUB_OUTPUT"
-          echo "frontend_image=${REGISTRY}/${IMAGE_NAMESPACE}/leetlab-frontend:${GITHUB_SHA}" >> "$GITHUB_OUTPUT"
+          echo "backend_image=${REGISTRY}/${IMAGE_NAMESPACE}/algoprep-backend:${GITHUB_SHA}" >> "$GITHUB_OUTPUT"
+          echo "frontend_image=${REGISTRY}/${IMAGE_NAMESPACE}/algoprep-frontend:${GITHUB_SHA}" >> "$GITHUB_OUTPUT"
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -59,7 +59,7 @@ jobs:
           push: true
           tags: |
             ${{ steps.images.outputs.backend_image }}
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAMESPACE }}/leetlab-backend:latest
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAMESPACE }}/algoprep-backend:latest
 
       - name: Build and push frontend
         uses: docker/build-push-action@v6
@@ -68,7 +68,7 @@ jobs:
           push: true
           tags: |
             ${{ steps.images.outputs.frontend_image }}
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAMESPACE }}/leetlab-frontend:latest
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAMESPACE }}/algoprep-frontend:latest
 
   deploy:
     runs-on: ubuntu-latest
@@ -90,7 +90,7 @@ jobs:
             set -euo pipefail
 
             # Use absolute path to avoid ~ expansion issues
-            APP_DIR="/home/${{ secrets.EC2_USERNAME }}/leetlab"
+            APP_DIR="/home/${{ secrets.EC2_USERNAME }}/algoprep"
             BACKEND_IMAGE="${{ needs.build-and-push.outputs.backend_image }}"
             FRONTEND_IMAGE="${{ needs.build-and-push.outputs.frontend_image }}"
             REPO_URL="https://${{ secrets.GHCR_USERNAME }}:${{ secrets.GHCR_TOKEN }}@github.com/${{ github.repository }}.git"

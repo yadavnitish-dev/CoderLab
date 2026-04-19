@@ -1,13 +1,22 @@
 import React, { useState, useMemo } from "react";
 import { useAuthStore } from "../store/useAuthStore";
 import { Link } from "react-router-dom";
-import { Bookmark, PencilIcon, Trash, TrashIcon, Plus, ListMusic, Search, CheckCircle, Circle } from "lucide-react";
+import {
+  Bookmark,
+  PencilIcon,
+  Trash2,
+  Plus,
+  Search,
+  CheckCircle2,
+  Circle,
+  ChevronLeft,
+  ChevronRight,
+  SlidersHorizontal,
+} from "lucide-react";
 import { useActions } from "../store/useAction";
 import AddToPlaylistModal from "./AddToPlaylist";
 import CreatePlaylistModal from "./CreatePlaylistModal";
 import { usePlaylistStore } from "../store/usePlaylistStore";
-
-
 import { Problem } from "../types";
 
 interface ProblemsTableProps {
@@ -16,7 +25,11 @@ interface ProblemsTableProps {
   onRemove?: (id: string) => void;
 }
 
-const ProblemsTable: React.FC<ProblemsTableProps> = ({ problems, isPlaylist = false, onRemove }) => {
+const ProblemsTable: React.FC<ProblemsTableProps> = ({
+  problems,
+  isPlaylist: _isPlaylist = false,
+  onRemove: _onRemove,
+}) => {
   const { authUser } = useAuthStore();
   const { onDeleteProblem } = useActions();
   const { createPlaylist } = usePlaylistStore();
@@ -25,230 +38,209 @@ const ProblemsTable: React.FC<ProblemsTableProps> = ({ problems, isPlaylist = fa
   const [selectedTag, setSelectedTag] = useState("ALL");
   const [currentPage, setCurrentPage] = useState(1);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-  const [isAddToPlaylistModalOpen, setIsAddToPlaylistModalOpen] = useState(false);
-  const [selectedProblemId, setSelectedProblemId] = useState<string | null>(null);
+  const [isAddToPlaylistModalOpen, setIsAddToPlaylistModalOpen] =
+    useState(false);
+  const [selectedProblemId, setSelectedProblemId] = useState<string | null>(
+    null,
+  );
 
-  // Extract all unique tags from problems
   const uniqueTags = useMemo(() => {
     if (!Array.isArray(problems)) return [];
     const tagsSet = new Set<string>();
     problems.forEach((p) => p.tags?.forEach((t) => tagsSet.add(t)));
-    return Array.from(tagsSet);
+    return Array.from(tagsSet).sort();
   }, [problems]);
 
-
-
-  // Filter problems based on search, difficulty, and tags
   const filteredProblems = useMemo(() => {
     return (problems || [])
       .filter((problem) =>
-        problem.title.toLowerCase().includes(search.toLowerCase())
+        problem.title.toLowerCase().includes(search.toLowerCase()),
       )
       .filter((problem) =>
-        difficulty === "ALL" ? true : problem.difficulty === difficulty
+        difficulty === "ALL" ? true : problem.difficulty === difficulty,
       )
       .filter((problem) =>
-        selectedTag === "ALL" ? true : problem.tags?.includes(selectedTag)
+        selectedTag === "ALL" ? true : problem.tags?.includes(selectedTag),
       );
   }, [problems, search, difficulty, selectedTag]);
 
-  // Pagination logic
-  const itemsPerPage = 5;
+  const itemsPerPage = 10;
   const totalPages = Math.ceil(filteredProblems.length / itemsPerPage);
   const paginatedProblems = useMemo(() => {
     return filteredProblems.slice(
       (currentPage - 1) * itemsPerPage,
-      currentPage * itemsPerPage
+      currentPage * itemsPerPage,
     );
   }, [filteredProblems, currentPage]);
 
-  const handleDelete = (id: string) => {
-    onDeleteProblem(id);
-  };
-
-  const handleCreatePlaylist = async (data: any) => {
-    await createPlaylist(data);
-  };
-
-  const handleAddToPlaylist = (problemId: string) => {
-    setSelectedProblemId(problemId);
-    setIsAddToPlaylistModalOpen(true);
-  };
-
   return (
-    <div className="w-full max-w-6xl mx-auto mt-10">
-      {/* Header with Create Playlist Button */}
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold">Problems</h2>
-        <div className="flex gap-3">
-          <Link to="/profile" className="btn btn-neutral gap-2">
-            <ListMusic className="w-4 h-4" />
-            My Playlists
-          </Link>
+    <div className="w-full">
+      {/* Filters Bar */}
+      <div className="flex flex-col md:flex-row gap-4 mb-8 items-end justify-between">
+        <div className="flex flex-wrap gap-4 flex-1 w-full md:w-auto">
+          <div className="relative flex-1 min-w-60">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-zinc-500" />
+            <input
+              type="text"
+              placeholder="Search problems..."
+              className="w-full bg-black border border-zinc-800 rounded-sm pl-10 pr-4 py-2.5 text-sm text-zinc-200 focus:outline-none focus:border-emerald-500/50 transition-colors placeholder:text-zinc-700"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </div>
+
+          <div className="flex items-center gap-2 bg-black border border-zinc-800 rounded-sm px-3 py-1">
+            <SlidersHorizontal className="size-4 text-zinc-500" />
+            <select
+              className="bg-transparent text-sm text-zinc-300 py-1.5 focus:outline-none cursor-pointer"
+              value={selectedTag}
+              onChange={(e) => setSelectedTag(e.target.value)}
+            >
+              <option value="ALL">All Categories</option>
+              {uniqueTags.map((tag) => (
+                <option key={tag} value={tag}>
+                  {tag}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="flex items-center gap-2 bg-black border border-zinc-800 rounded-sm px-3 py-1">
+            <select
+              className="bg-transparent text-sm text-zinc-300 py-1.5 focus:outline-none cursor-pointer"
+              value={difficulty}
+              onChange={(e) => setDifficulty(e.target.value)}
+            >
+              <option value="ALL">All Difficulties</option>
+              <option value="Easy">Easy</option>
+              <option value="Medium">Medium</option>
+              <option value="Hard">Hard</option>
+            </select>
+          </div>
+        </div>
+
+        <div className="flex gap-2">
           <button
-            className="btn btn-primary gap-2"
             onClick={() => setIsCreateModalOpen(true)}
+            className="flex items-center gap-2 bg-white text-black px-4 py-2.5 rounded-sm text-sm font-semibold hover:bg-zinc-200 transition-colors"
           >
-            <Plus className="w-4 h-4" />
-            Create Playlist
+            <Plus className="size-4" />
+            New Playlist
           </button>
         </div>
       </div>
 
-      {/* Filters */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-        <div className="relative">
-             <input
-                type="text"
-                placeholder="Search problems..."
-                className="input input-bordered w-full bg-base-100/50 focus:bg-base-100 transition-colors pl-10"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-            />
-            <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-base-content/50" />
-        </div>
-        
-        <select
-          className="select select-bordered w-full bg-base-100/50 focus:bg-base-100 transition-colors"
-          value={selectedTag}
-          onChange={(e) => setSelectedTag(e.target.value)}
-        >
-          <option value="ALL">All Categories</option>
-          {uniqueTags.map(tag => (
-              <option key={tag} value={tag}>{tag}</option>
-          ))}
-        </select>
-
-        <select
-          className="select select-bordered w-full bg-base-100/50 focus:bg-base-100 transition-colors"
-          value={difficulty}
-          onChange={(e) => setDifficulty(e.target.value)}
-        >
-          <option value="ALL">All Difficulties</option>
-          <option value="Easy">Easy</option>
-          <option value="Medium">Medium</option>
-          <option value="Hard">Hard</option>
-        </select>
-        
-        {/* Placeholder for future filter or clear button */}
-         <button 
-            className="btn btn-ghost text-base-content/60 hover:text-primary"
-            onClick={() => {
-                setSearch("");
-                setSelectedTag("ALL");
-                setDifficulty("ALL");
-            }}
-         >
-             Clear Filters
-         </button>
-      </div>
-
-      {/* Problems Table */}
-      <div className="overflow-x-auto rounded-xl border border-base-content/5 bg-base-100/30">
-        <table className="table table-lg w-full">
-          {/* head */}
-          <thead className="bg-base-200/50 backdrop-blur-sm text-base-content/60 uppercase text-xs font-bold tracking-wider">
-            <tr>
-              <th className="py-4">Status</th>
-              <th className="py-4">Title</th>
-              <th className="py-4">Difficulty</th>
-              <th className="py-4">Category</th>
-              {authUser?.role === "ADMIN" && <th className="py-4 text-right">Actions</th>}
-              <th className="py-4 text-right pl-4"></th>
+      {/* Table Shell */}
+      <div className="bg-black border border-zinc-800 rounded-sm overflow-hidden shadow-2xl">
+        <table className="w-full text-left border-collapse">
+          <thead>
+            <tr className="border-b border-zinc-800 bg-[#0d0d0d]">
+              <th className="px-6 py-4 text-xs font-bold uppercase tracking-widest text-zinc-500 w-16">
+                Status
+              </th>
+              <th className="px-6 py-4 text-xs font-bold uppercase tracking-widest text-zinc-500">
+                Title
+              </th>
+              <th className="px-6 py-4 text-xs font-bold uppercase tracking-widest text-zinc-500 w-32">
+                Difficulty
+              </th>
+              <th className="px-6 py-4 text-xs font-bold uppercase tracking-widest text-zinc-500">
+                Categories
+              </th>
+              <th className="px-6 py-4 text-xs font-bold uppercase tracking-widest text-zinc-500 text-right">
+                Actions
+              </th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-base-content/5">
+          <tbody className="divide-y divide-zinc-900/50">
             {paginatedProblems.length > 0 ? (
               paginatedProblems.map((problem) => {
-                const difficultyColor =
+                const difficultyClass =
                   problem.difficulty === "Easy"
-                    ? "badge-success text-success-content"
+                    ? "badge-easy"
                     : problem.difficulty === "Medium"
-                    ? "badge-warning text-warning-content"
-                    : "badge-error text-error-content";
-                
-                const isSolved = problem.solvedBy && problem.solvedBy.some(
-                    (user) => user.userId === authUser?.id
-                  );
+                      ? "badge-medium"
+                      : "badge-hard";
+                const isSolved = problem.solvedBy?.some(
+                  (u) => u.userId === authUser?.id,
+                );
 
                 return (
-                  <tr key={problem.id} className="group hover:bg-base-content/[0.02] transition-colors duration-200">
-                    <td className="w-16">
+                  <tr
+                    key={problem.id}
+                    className="group hover:bg-[#050505] transition-colors"
+                  >
+                    <td className="px-6 py-5">
                       {isSolved ? (
-                        <div className="tooltip" data-tip="Solved">
-                           <CheckCircle className="text-success w-5 h-5 mx-auto" />
-                        </div>
+                        <CheckCircle2 className="size-5 text-emerald-500/80" />
                       ) : (
-                        <div className="tooltip" data-tip="Unsolved">
-                          <Circle className="text-base-content/20 w-5 h-5 mx-auto" />
-                        </div>
+                        <Circle className="size-5 text-zinc-800" />
                       )}
                     </td>
-                    <td>
+                    <td className="px-6 py-5">
                       <Link
                         to={`/problem/${problem.id}`}
-                        className="font-semibold text-lg hover:text-primary transition-colors flex items-center gap-2"
+                        className="text-zinc-200 font-medium hover:text-white transition-colors block"
                       >
                         {problem.title}
                       </Link>
                     </td>
-                    <td>
-                      <span className={`badge ${difficultyColor} badge-sm font-medium border-none bg-opacity-20`}>
+                    <td className="px-6 py-5">
+                      <span className={`badge ${difficultyClass} rounded-sm italic lg:not-italic`}>
                         {problem.difficulty}
                       </span>
                     </td>
-                    <td>
-                      <div className="flex flex-wrap gap-1">
+                    <td className="px-6 py-5">
+                      <div className="flex flex-wrap gap-1.5">
                         {problem.tags?.slice(0, 3).map((tag, i) => (
-                           <span key={i} className="badge badge-ghost badge-sm text-base-content/60">
-                             {tag}
-                           </span>
+                          <span
+                            key={i}
+                            className="px-2 py-0.5 rounded-sm bg-zinc-900 text-[11px] font-medium text-zinc-500 uppercase border border-zinc-800"
+                          >
+                            {tag}
+                          </span>
                         ))}
                       </div>
                     </td>
-                    {authUser?.role === "ADMIN" && (
-                      <td className="text-right space-x-2">
-                       <Link
-                          to={`/problem/${problem.id}/edit`}
-                          className="btn btn-ghost btn-sm btn-square text-info hover:bg-info/10"
-                        >
-                          <PencilIcon className="size-4" />
-                        </Link>
+                    <td className="px-6 py-5 text-right">
+                      <div className="flex items-center justify-end gap-1">
+                        {authUser?.role === "ADMIN" && (
+                          <>
+                            <Link
+                              to={`/problem/${problem.id}/edit`}
+                              className="p-2 text-zinc-500 hover:text-white hover:bg-zinc-900 rounded-sm transition-all"
+                            >
+                              <PencilIcon className="size-4" />
+                            </Link>
+                            <button
+                              onClick={() => onDeleteProblem(problem.id)}
+                              className="p-2 text-zinc-500 hover:text-rose-400 hover:bg-rose-500/10 rounded-sm transition-all"
+                            >
+                              <Trash2 className="size-4" />
+                            </button>
+                          </>
+                        )}
                         <button
-                          className="btn btn-ghost btn-sm btn-square text-error hover:bg-error/10"
-                          onClick={() => handleDelete(problem.id)}
+                          onClick={() => {
+                            setSelectedProblemId(problem.id);
+                            setIsAddToPlaylistModalOpen(true);
+                          }}
+                          className="p-2 text-zinc-500 hover:text-zinc-200 hover:bg-zinc-900 rounded-sm transition-all"
                         >
-                          <TrashIcon className="size-4" />
+                          <Bookmark className="size-4" />
                         </button>
-                      </td>
-                    )}
-                     <td className="text-right pl-4">
-                       {
-                          isPlaylist ? (
-                               <button 
-                                  className="btn btn-ghost btn-sm text-error gap-2 hover:bg-error/10"
-                                  onClick={() => onRemove?.(problem.id)}
-                              >
-                                  <Trash className="w-4 h-4"/>
-                                  <span className="hidden md:inline">Remove</span>
-                               </button>
-                          ) : (
-                               <button
-                                  className="btn btn-ghost btn-sm text-base-content/60 hover:text-primary hover:bg-primary/10 transition-all"
-                                  onClick={() => handleAddToPlaylist(problem.id)}
-                              >
-                                  <Bookmark className="w-4 h-4" />
-                              </button>
-                          )
-                       }
-                     </td>
+                      </div>
+                    </td>
                   </tr>
                 );
               })
             ) : (
               <tr>
-                <td colSpan={6} className="text-center py-6 text-gray-500">
-                  No problems found.
+                <td
+                  colSpan={5}
+                  className="px-6 py-20 text-center text-zinc-600 italic"
+                >
+                  No matching challenges found.
                 </td>
               </tr>
             )}
@@ -256,34 +248,51 @@ const ProblemsTable: React.FC<ProblemsTableProps> = ({ problems, isPlaylist = fa
         </table>
       </div>
 
-      {/* Pagination */}
-      <div className="flex justify-center mt-6 gap-2">
-        <button
-          className="btn btn-sm"
-          disabled={currentPage === 1}
-          onClick={() => setCurrentPage((prev) => prev - 1)}
-        >
-          Prev
-        </button>
-        <span className="btn btn-ghost btn-sm">
-          {currentPage} / {totalPages}
-        </span>
-        <button
-          className="btn btn-sm"
-          disabled={currentPage === totalPages}
-          onClick={() => setCurrentPage((prev) => prev + 1)}
-        >
-          Next
-        </button>
-      </div>
+      {/* Pagination Bar */}
+      {totalPages > 1 && (
+        <div className="flex items-center justify-between mt-8 px-2">
+          <p className="text-xs text-zinc-600 font-medium">
+            Showing{" "}
+            <span className="text-zinc-400">
+              {(currentPage - 1) * itemsPerPage + 1}
+            </span>{" "}
+            to{" "}
+            <span className="text-zinc-400">
+              {Math.min(currentPage * itemsPerPage, filteredProblems.length)}
+            </span>{" "}
+            of <span className="text-zinc-400">{filteredProblems.length}</span>{" "}
+            results
+          </p>
+          <div className="flex items-center gap-1">
+            <button
+              disabled={currentPage === 1}
+              onClick={() => setCurrentPage((p) => p - 1)}
+              className="p-2 border border-zinc-800 rounded-sm text-zinc-500 hover:text-white hover:bg-zinc-900 disabled:opacity-30 disabled:hover:bg-transparent transition-all"
+            >
+              <ChevronLeft className="size-4" />
+            </button>
+            <div className="flex items-center px-4 h-9 border border-zinc-800 rounded-sm bg-black text-xs font-bold text-zinc-300">
+              {currentPage} / {totalPages}
+            </div>
+            <button
+              disabled={currentPage === totalPages}
+              onClick={() => setCurrentPage((p) => p + 1)}
+              className="p-2 border border-zinc-800 rounded-sm text-zinc-500 hover:text-white hover:bg-zinc-900 disabled:opacity-30 disabled:hover:bg-transparent transition-all"
+            >
+              <ChevronRight className="size-4" />
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Modals */}
       <CreatePlaylistModal
         isOpen={isCreateModalOpen}
         onClose={() => setIsCreateModalOpen(false)}
-        onSubmit={handleCreatePlaylist}
+        onSubmit={async (data: { name: string; description: string }) => {
+          await createPlaylist(data);
+        }}
       />
-      
       <AddToPlaylistModal
         isOpen={isAddToPlaylistModalOpen}
         onClose={() => setIsAddToPlaylistModalOpen(false)}

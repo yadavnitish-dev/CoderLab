@@ -33,9 +33,9 @@ export const useExecutionStore = create<ExecutionState>((set) => ({
   ) => {
     try {
       if (mode === "run") {
-        set({ isRunning: true });
+        set({ isRunning: true, submission: null });
       } else {
-        set({ isSubmitting: true });
+        set({ isSubmitting: true, submission: null });
       }
       console.log(
         "Submission:",

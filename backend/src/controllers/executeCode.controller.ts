@@ -79,10 +79,20 @@ export const executeCode = async (
 
     let allPassed = true;
     const detailedResults: TestResult[] = stdin.map((_: string, i: number) => {
-      const stdout = actualOutputs[i]?.trim();
-      const expectedOutput = expected_outputs[i]?.trim();
+      const rawStdout = actualOutputs[i];
+      const rawExpected = expected_outputs[i];
+
+      const stdout = typeof rawStdout === "string" ? rawStdout.trim() : undefined;
+      const expectedOutput =
+        typeof rawExpected === "string" ? rawExpected.trim() : undefined;
+
+      const hasStdout = stdout !== undefined;
+      const hasExpected = expectedOutput !== undefined;
+
       const judgeSucceeded = result.status.id === 3;
-      const passed = judgeSucceeded && stdout === expectedOutput;
+      // Strictly pass only if both exist and match
+      const passed =
+        judgeSucceeded && hasStdout && hasExpected && stdout === expectedOutput;
 
       if (!passed) {
         allPassed = false;
@@ -91,11 +101,15 @@ export const executeCode = async (
       return {
         testCase: i + 1,
         passed,
-        stdout,
-        expected: expectedOutput,
+        stdout: stdout || "", // Normalize to empty string for safe display
+        expected: expectedOutput || "", // Normalize to empty string for safe display
         stderr: result.stderr || null,
         compile_output: result.compile_output || null,
-        status: passed ? "Accepted" : result.status.description,
+        status: passed
+          ? "Accepted"
+          : judgeSucceeded
+            ? "Wrong Answer"
+            : result.status.description,
         memory: result.memory ? `${result.memory} KB` : undefined,
         time: result.time ? `${result.time} s` : undefined,
       };

@@ -6,8 +6,8 @@ import { Submission } from "../types";
 interface SubmissionState {
   isLoading: boolean;
   submissions: Submission[];
-  submission: Submission | null; 
-  
+  submission: Submission | null;
+
   submissionCount: number | null;
 
   getAllSubmissions: () => Promise<void>;
@@ -18,8 +18,8 @@ interface SubmissionState {
 export const useSubmissionStore = create<SubmissionState>((set) => ({
   isLoading: false,
   submissions: [],
-  submission: null as any, 
-  
+  submission: null as any,
+
   submissionCount: null,
 
   getAllSubmissions: async () => {
@@ -28,11 +28,8 @@ export const useSubmissionStore = create<SubmissionState>((set) => ({
       const res = await axiosInstance.get("/submission/get-all-submissions");
 
       set({ submissions: res.data.submissions });
-
-      toast.success(res.data.message);
     } catch (error) {
       console.log("Error getting all submissions", error);
-      toast.error("Error getting all submissions");
     } finally {
       set({ isLoading: false });
     }
@@ -41,10 +38,10 @@ export const useSubmissionStore = create<SubmissionState>((set) => ({
   getSubmissionForProblem: async (problemId: string) => {
     try {
       const res = await axiosInstance.get(
-        `/submission/get-submission/${problemId}`
+        `/submission/get-submission/${problemId}`,
       );
 
-      set({ submissions: res.data.submissions }); 
+      set({ submissions: res.data.submissions });
     } catch (error) {
       console.log("Error getting submissions for problem", error);
 
@@ -57,7 +54,7 @@ export const useSubmissionStore = create<SubmissionState>((set) => ({
   getSubmissionCountForProblem: async (problemId: string) => {
     try {
       const res = await axiosInstance.get(
-        `/submission/get-submissions-count/${problemId}`
+        `/submission/get-submissions-count/${problemId}`,
       );
 
       set({ submissionCount: res.data.count });
@@ -67,4 +64,3 @@ export const useSubmissionStore = create<SubmissionState>((set) => ({
     }
   },
 }));
-

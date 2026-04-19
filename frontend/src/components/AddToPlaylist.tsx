@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
-import { X, Plus, Loader, ListMusic, Check } from 'lucide-react';
-import { usePlaylistStore } from '../store/usePlaylistStore';
+import { useEffect, useState } from "react";
+import { X, Plus, Loader2, ListMusic, Check } from "lucide-react";
+import { usePlaylistStore } from "../store/usePlaylistStore";
 
 interface AddToPlaylistModalProps {
   isOpen: boolean;
@@ -8,14 +8,23 @@ interface AddToPlaylistModalProps {
   problemId: string | null;
 }
 
-const AddToPlaylistModal: React.FC<AddToPlaylistModalProps> = ({ isOpen, onClose, problemId }) => {
-  const { playlists, getAllPlaylists, addProblemToPlaylist, isLoading } = usePlaylistStore();
-  const [selectedPlaylist, setSelectedPlaylist] = useState('');
+const AddToPlaylistModal: React.FC<AddToPlaylistModalProps> = ({
+  isOpen,
+  onClose,
+  problemId,
+}) => {
+  const { playlists, getAllPlaylists, addProblemToPlaylist, isLoading } =
+    usePlaylistStore();
+  const [selectedPlaylist, setSelectedPlaylist] = useState("");
+
+  // Reset selection when modal is not open
+  if (!isOpen && selectedPlaylist !== "") {
+    setSelectedPlaylist("");
+  }
 
   useEffect(() => {
     if (isOpen) {
       getAllPlaylists();
-      setSelectedPlaylist(''); // Reset selection when opening
     }
   }, [isOpen, getAllPlaylists]);
 
@@ -30,16 +39,16 @@ const AddToPlaylistModal: React.FC<AddToPlaylistModalProps> = ({ isOpen, onClose
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4 transition-all duration-300">
-      <div className="glass-panel w-full max-w-md rounded-2xl shadow-2xl overflow-hidden border border-white/10 animate-scale-in">
+    <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4 transition-all duration-300">
+      <div className="bg-[#0d0d0d] border border-zinc-800 w-full max-w-md rounded-sm shadow-2xl overflow-hidden animate-scale-in">
         {/* Header */}
-        <div className="flex justify-between items-center p-5 border-b border-white/5 bg-white/5">
+        <div className="flex justify-between items-center p-5 border-b border-zinc-800 bg-zinc-900/50">
           <h3 className="text-xl font-bold flex items-center gap-2 text-white">
             <ListMusic className="w-5 h-5 text-primary" />
             Add to Playlist
           </h3>
-          <button 
-            onClick={onClose} 
+          <button
+            onClick={onClose}
             className="btn btn-ghost btn-sm btn-circle hover:bg-white/10 text-base-content/60 hover:text-white transition-colors"
           >
             <X className="w-5 h-5" />
@@ -52,51 +61,57 @@ const AddToPlaylistModal: React.FC<AddToPlaylistModalProps> = ({ isOpen, onClose
             <label className="text-sm font-semibold text-base-content/70 mb-3 block uppercase tracking-wide">
               Select Playlist
             </label>
-            
-            <div className="space-y-2 max-h-[300px] overflow-y-auto custom-scrollbar pr-1">
-                {playlists.length > 0 ? (
-                    playlists.map((playlist) => (
-                        <div 
-                            key={playlist.id}
-                            onClick={() => setSelectedPlaylist(playlist.id)}
-                            className={`p-3 rounded-xl border border-white/5 cursor-pointer transition-all duration-200 flex items-center justify-between group ${
-                                selectedPlaylist === playlist.id 
-                                    ? 'bg-primary/20 border-primary/50 shadow-lg shadow-primary/10' 
-                                    : 'bg-base-300/30 hover:bg-base-300/50 hover:border-white/20'
-                            }`}
-                        >
-                            <div className="flex items-center gap-3">
-                                <div className={`w-2 h-2 rounded-full ${selectedPlaylist === playlist.id ? 'bg-primary' : 'bg-base-content/30'}`}></div>
-                                <span className={`font-medium ${selectedPlaylist === playlist.id ? 'text-white' : 'text-base-content/80'}`}>
-                                    {playlist.name}
-                                </span>
-                            </div>
-                            {selectedPlaylist === playlist.id && <Check className="w-4 h-4 text-primary" />}
-                        </div>
-                    ))
-                ) : (
-                    <div className="text-center py-8 text-base-content/50 bg-base-300/20 rounded-xl border border-dashed border-white/5">
-                        <p>No playlists found</p>
+
+            <div className="space-y-2 max-h-75 overflow-y-auto custom-scrollbar pr-1">
+              {playlists.length > 0 ? (
+                playlists.map((playlist) => (
+                  <div
+                    key={playlist.id}
+                    onClick={() => setSelectedPlaylist(playlist.id)}
+                    className={`p-3 rounded-sm border cursor-pointer transition-all duration-200 flex items-center justify-between group ${
+                      selectedPlaylist === playlist.id
+                        ? "bg-emerald-500/10 border-emerald-500/30"
+                        : "bg-black border-zinc-800 hover:border-zinc-700"
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div
+                        className={`w-2 h-2 rounded-sm ${selectedPlaylist === playlist.id ? "bg-emerald-500" : "bg-zinc-800"}`}
+                      ></div>
+                      <span
+                        className={`font-medium text-sm ${selectedPlaylist === playlist.id ? "text-emerald-400" : "text-zinc-400"}`}
+                      >
+                        {playlist.name}
+                      </span>
                     </div>
-                )}
+                    {selectedPlaylist === playlist.id && (
+                      <Check className="w-4 h-4 text-emerald-500" />
+                    )}
+                  </div>
+                ))
+              ) : (
+                <div className="text-center py-8 text-zinc-600 bg-black rounded-sm border border-dashed border-zinc-800">
+                  <p className="text-sm">No playlists found</p>
+                </div>
+              )}
             </div>
           </div>
 
           <div className="flex gap-3 pt-2">
-            <button 
-                type="button" 
-                onClick={onClose} 
-                className="btn btn-ghost flex-1 hover:bg-white/5 font-medium"
-            >
+            <button
+               type="button"
+               onClick={onClose}
+               className="px-6 py-2.5 bg-zinc-900 border border-zinc-800 text-zinc-400 hover:text-white rounded-sm font-medium text-sm flex-1 transition-colors"
+             >
               Cancel
             </button>
-            <button 
-              type="submit" 
-              className="btn btn-primary flex-1 shadow-lg shadow-primary/20"
+            <button
+              type="submit"
+              className="bg-white text-black px-6 py-2.5 rounded-sm font-bold text-sm hover:bg-zinc-200 transition-all flex items-center justify-center gap-2 flex-1 shadow-lg shadow-white/5 italic lg:not-italic"
               disabled={!selectedPlaylist || isLoading}
             >
               {isLoading ? (
-                <Loader className="w-4 h-4 animate-spin" />
+                <Loader2 className="w-4 h-4 animate-spin" />
               ) : (
                 <Plus className="w-4 h-4" />
               )}
