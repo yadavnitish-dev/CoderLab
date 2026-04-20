@@ -149,7 +149,49 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Feature Grid */}
+      {/* Action Banner */}
+      <section className="py-32 relative overflow-hidden bg-[#0a0a0a] border-y border-zinc-900">
+        {/* Subtle Decorative Grid */}
+        <div className="absolute inset-0 opacity-[0.03] pointer-events-none">
+          <div className="absolute inset-0" style={{ backgroundImage: 'radial-gradient(#fff 1px, transparent 1px)', backgroundSize: '40px 40px' }}></div>
+        </div>
+        
+        <div className="workspace-container relative z-10">
+          <div className="max-w-4xl mx-auto text-center">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-sm bg-zinc-900/50 border border-zinc-800 mb-8">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-sm bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-sm h-2 w-2 bg-emerald-500"></span>
+              </span>
+              <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-zinc-400">
+                Awaiting Connection...
+              </span>
+            </div>
+            
+            <h2 className="text-5xl md:text-6xl font-bold text-white tracking-tighter mb-8 leading-tight">
+              Push your logic to the <span className="text-zinc-700">absolute limit.</span>
+            </h2>
+            
+            <p className="text-lg text-zinc-500 mb-12 max-w-2xl mx-auto leading-relaxed">
+              Step into a high-performance environment built for serious engineers. 
+              Join a network of algorithm masters today.
+            </p>
+
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
+              <BrutalistButton
+                to="/signup"
+                variant="primary"
+                size="xl"
+                icon={Code2}
+                className="shadow-2xl"
+              >
+                Start Solving
+              </BrutalistButton>
+            </div>
+          </div>
+        </div>
+      </section>
+       {/* Feature Grid */}
       <section className="py-24 bg-[#0a0a0a]">
         <div className="workspace-container">
           <div className="mb-16">
@@ -191,49 +233,6 @@ const HomePage = () => {
                 </p>
               </div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Action Banner */}
-      <section className="py-32 relative overflow-hidden bg-[#0a0a0a] border-y border-zinc-900">
-        {/* Subtle Decorative Grid */}
-        <div className="absolute inset-0 opacity-[0.03] pointer-events-none">
-          <div className="absolute inset-0" style={{ backgroundImage: 'radial-gradient(#fff 1px, transparent 1px)', backgroundSize: '40px 40px' }}></div>
-        </div>
-        
-        <div className="workspace-container relative z-10">
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-sm bg-zinc-900/50 border border-zinc-800 mb-8">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-sm bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-sm h-2 w-2 bg-emerald-500"></span>
-              </span>
-              <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-zinc-400">
-                Awaiting Connection...
-              </span>
-            </div>
-            
-            <h2 className="text-5xl md:text-6xl font-bold text-white tracking-tighter mb-8 leading-tight">
-              Push your logic to the <span className="text-zinc-700">absolute limit.</span>
-            </h2>
-            
-            <p className="text-lg text-zinc-500 mb-12 max-w-2xl mx-auto leading-relaxed">
-              Step into a high-performance environment built for serious engineers. 
-              Join a network of algorithm masters today.
-            </p>
-
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-              <BrutalistButton
-                to="/signup"
-                variant="primary"
-                size="xl"
-                icon={Code2}
-                className="shadow-2xl"
-              >
-                Start Solving
-              </BrutalistButton>
-            </div>
           </div>
         </div>
       </section>

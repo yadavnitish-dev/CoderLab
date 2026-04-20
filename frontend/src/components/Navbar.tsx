@@ -30,7 +30,7 @@ const Navbar = () => {
               to="/explore"
               className={`nav-link ${isActive("/explore") ? "text-white bg-zinc-900 rounded-sm" : ""}`}
             >
-              Problems
+              Roadmap
             </Link>
             <Link
               to="/playlists"

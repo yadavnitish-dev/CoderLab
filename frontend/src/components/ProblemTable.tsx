@@ -18,6 +18,7 @@ import AddToPlaylistModal from "./AddToPlaylist";
 import CreatePlaylistModal from "./CreatePlaylistModal";
 import { usePlaylistStore } from "../store/usePlaylistStore";
 import { Problem } from "../types";
+import BrutalistSelect from "./BrutalistSelect";
 
 interface ProblemsTableProps {
   problems: Problem[];
@@ -89,34 +90,28 @@ const ProblemsTable: React.FC<ProblemsTableProps> = ({
             />
           </div>
 
-          <div className="flex items-center gap-2 bg-black border border-zinc-800 rounded-sm px-3 py-1">
-            <SlidersHorizontal className="size-4 text-zinc-500" />
-            <select
-              className="bg-transparent text-sm text-zinc-300 py-1.5 focus:outline-none cursor-pointer"
-              value={selectedTag}
-              onChange={(e) => setSelectedTag(e.target.value)}
-            >
-              <option value="ALL">All Categories</option>
-              {uniqueTags.map((tag) => (
-                <option key={tag} value={tag}>
-                  {tag}
-                </option>
-              ))}
-            </select>
-          </div>
+          <BrutalistSelect
+            className="flex-1 md:flex-none md:min-w-[180px]"
+            icon={SlidersHorizontal}
+            options={[
+              { value: "ALL", label: "All Categories" },
+              ...uniqueTags.map((tag) => ({ value: tag, label: tag })),
+            ]}
+            value={selectedTag}
+            onChange={setSelectedTag}
+          />
 
-          <div className="flex items-center gap-2 bg-black border border-zinc-800 rounded-sm px-3 py-1">
-            <select
-              className="bg-transparent text-sm text-zinc-300 py-1.5 focus:outline-none cursor-pointer"
-              value={difficulty}
-              onChange={(e) => setDifficulty(e.target.value)}
-            >
-              <option value="ALL">All Difficulties</option>
-              <option value="Easy">Easy</option>
-              <option value="Medium">Medium</option>
-              <option value="Hard">Hard</option>
-            </select>
-          </div>
+          <BrutalistSelect
+            className="flex-1 md:flex-none md:min-w-[160px]"
+            options={[
+              { value: "ALL", label: "All Difficulties" },
+              { value: "Easy", label: "Easy" },
+              { value: "Medium", label: "Medium" },
+              { value: "Hard", label: "Hard" },
+            ]}
+            value={difficulty}
+            onChange={setDifficulty}
+          />
         </div>
 
         <div className="flex gap-2">

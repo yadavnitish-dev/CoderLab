@@ -27,6 +27,16 @@ import { useExecutionStore } from "../store/useExecutionStore";
 import { useSubmissionStore } from "../store/useSubmissionStore";
 import SubmissionsList from "../components/SubmissionList";
 import SubmissionResults from "../components/Submission";
+import BrutalistSelect from "../components/BrutalistSelect";
+
+const displayLanguageMap: Record<string, string> = {
+  JAVASCRIPT: "JavaScript",
+  PYTHON: "Python",
+  JAVA: "Java",
+  CPP: "C++",
+};
+
+const getDisplayLanguage = (lang: string) => displayLanguageMap[lang] || lang;
 
 const ProblemPage = () => {
   const { id } = useParams();
@@ -50,7 +60,7 @@ const ProblemPage = () => {
 
   // Layout & Micro-interactions
   const [isLeftPaneVisible, setIsLeftPaneVisible] = useState(true);
-  const [leftPaneWidth, setLeftPaneWidth] = useState(40); // percentage
+  const [leftPaneWidth, setLeftPaneWidth] = useState(50); // percentage
   const [isResizing, setIsResizing] = useState(false);
   const [fontSize, setFontSize] = useState(14);
   const [userTestCases, setUserTestCases] = useState<
@@ -136,13 +146,7 @@ const ProblemPage = () => {
     };
   }, [isResizing, resize, stopResizing]);
 
-  const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const lang = e.target.value;
-    setSelectedLanguage(lang);
-    if (problem?.codeSnippets) {
-      setCode(problem.codeSnippets[lang] || "");
-    }
-  };
+
 
   const handleRunCode = useCallback(() => {
     if (!problem || !id || isRunning || isSubmitting) return;
@@ -352,17 +356,21 @@ const ProblemPage = () => {
 
           <div className="h-4 w-px bg-zinc-800" />
 
-          <select
-            className="bg-black border border-zinc-800 rounded-sm px-3 py-1.5 text-xs font-semibold text-zinc-300 focus:outline-none focus:border-zinc-600 cursor-pointer min-w-30"
+          <BrutalistSelect
+            className="min-w-[140px]"
+            icon={Code2}
             value={selectedLanguage}
-            onChange={handleLanguageChange}
-          >
-            {Object.keys(problem.codeSnippets || {}).map((lang) => (
-              <option key={lang} value={lang}>
-                {lang}
-              </option>
-            ))}
-          </select>
+            onChange={(val) => {
+              setSelectedLanguage(val);
+              if (problem?.codeSnippets) {
+                setCode(problem.codeSnippets[val] || "");
+              }
+            }}
+            options={Object.keys(problem.codeSnippets || {}).map((lang) => ({
+              value: lang,
+              label: getDisplayLanguage(lang),
+            }))}
+          />
 
           <button
             onClick={() => setIsLeftPaneVisible(!isLeftPaneVisible)}
@@ -458,7 +466,7 @@ const ProblemPage = () => {
               <Editor
                 height="100%"
                 language={selectedLanguage.toLowerCase()}
-                theme="vs-dark"
+                theme="tokyo-drift"
                 value={code}
                 onChange={(v) => setCode(v || "")}
                 options={{

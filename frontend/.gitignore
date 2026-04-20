@@ -22,3 +22,5 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+monaco-theme.ts
+nc150-samples.ts
