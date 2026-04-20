@@ -27,6 +27,9 @@
     "zod": "^4.2.1",
     "zustand": "^5.0.9"
   },
+  "overrides": {
+    "dompurify": "3.4.0"
+  },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
     "@types/node": "^25.0.3",
