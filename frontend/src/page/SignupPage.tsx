@@ -9,8 +9,12 @@ import BrutalistButton from "../components/BrutalistButton";
 
 const SignUpSchema = z.object({
   email: z.string().email("Enter a valid email"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-  name: z.string().min(3, "Name must be at least 3 characters"),
+  password: z
+    .string()
+    .min(6, "Password must be at least 6 characters")
+    .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
+    .regex(/[0-9]/, "Password must contain at least one number"),
+  name: z.string().min(2, "Name must be at least 2 characters"),
 });
 
 type SignUpFormData = z.infer<typeof SignUpSchema>;
