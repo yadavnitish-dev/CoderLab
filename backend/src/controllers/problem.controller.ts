@@ -93,7 +93,7 @@ export const getProblemById = async (
   try {
     const { id } = validateInput<{ id: string }>(
       req.params,
-      z.object({ id: z.string().uuid("Invalid problem ID format") }),
+      z.object({ id: z.string() }),
     );
 
     const problem = await problemService.getProblemById(id);
@@ -125,7 +125,7 @@ export const updateProblem = async (
 
     const { id } = validateInput<{ id: string }>(
       req.params,
-      z.object({ id: z.string().uuid("Invalid problem ID format") }),
+      z.object({ id: z.string() }),
     );
 
     const validatedData = validateInput<UpdateProblemInput>(
@@ -165,7 +165,7 @@ export const deleteProblem = async (
 
     const { id } = validateInput<{ id: string }>(
       req.params,
-      z.object({ id: z.string().uuid("Invalid problem ID format") }),
+      z.object({ id: z.string() }),
     );
 
     await problemService.deleteProblem(id, req.user.id);

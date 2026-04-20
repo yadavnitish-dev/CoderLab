@@ -215,7 +215,7 @@ export class ProblemService {
       throw new ForbiddenError("You are not allowed to delete this problem");
     }
 
-    await db.problem.delete({ where: { id: problemId } });
+    await db.problem.deleteMany({ where: { id: problemId } });
   }
 
   /**
