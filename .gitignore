@@ -32,3 +32,7 @@ yarn-debug.log*
 yarn-error.log*
 
 CODEBASE_ARCHITECTURE.md
+API_DOCUMENTATION.md
+SECURITY.md
+GEMINI.md
+createProblemRule.md
