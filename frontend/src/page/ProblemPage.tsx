@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import Editor from "@monaco-editor/react";
 import {
@@ -6,7 +7,6 @@ import {
   Lightbulb,
   Clock,
   Code2,
-
   CheckCircle2,
   XCircle,
   ArrowLeft,
@@ -19,8 +19,9 @@ import {
   Plus,
   Minus,
   GripVertical,
+  ChevronRight,
 } from "lucide-react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { useProblemStore } from "../store/useProblemStore";
 import { getLanguageId } from "../lib/lang";
 import { useExecutionStore } from "../store/useExecutionStore";
@@ -40,6 +41,7 @@ const getDisplayLanguage = (lang: string) => displayLanguageMap[lang] || lang;
 
 const ProblemPage = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const { getProblemById, problem, isProblemLoading } = useProblemStore();
 
   const {
@@ -176,6 +178,24 @@ const ProblemPage = () => {
     initialSampleCases,
     executeCode,
   ]);
+
+  const nextProblemId = useMemo(() => {
+    if (!id || !id.startsWith('NC_')) return null;
+    const currentNum = parseInt(id.split('_')[1]);
+    const nextNum = currentNum + 1;
+    const nextId = `NC_${nextNum}`;
+    
+    // Check if next ID exists in our samples or overall dataset
+    // For now, we only know about samples NC_1 to NC_5 in frontend
+    // but in a real app, we'd check the store/database
+    return nextNum <= 150 ? nextId : null;
+  }, [id]);
+
+  const handleNextChallenge = useCallback(() => {
+    if (nextProblemId) {
+      navigate(`/problem/${nextProblemId}`);
+    }
+  }, [nextProblemId, navigate]);
 
   const handleSubmit = useCallback(() => {
     if (!problem || !id || isRunning || isSubmitting) return;
@@ -357,7 +377,7 @@ const ProblemPage = () => {
           <div className="h-4 w-px bg-zinc-800" />
 
           <BrutalistSelect
-            className="min-w-[140px]"
+            className="min-w-35"
             icon={Code2}
             value={selectedLanguage}
             onChange={(val) => {
@@ -402,14 +422,14 @@ const ProblemPage = () => {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-sm text-xs font-semibold transition-all ${
+                  className={`flex items-center gap-2 px-4 py-2 border transition-all duration-300 relative ${
                     activeTab === tab.id
-                      ? "text-white bg-zinc-900 border border-zinc-700"
-                      : "text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800"
+                      ? "text-white bg-zinc-900 border-zinc-700 z-10"
+                      : "text-zinc-500 border-transparent hover:text-zinc-300 hover:bg-zinc-800"
                   }`}
                 >
                   <tab.icon className="size-3.5" />
-                  {tab.label}
+                  <span className="text-[10px] font-bold uppercase tracking-widest">{tab.label}</span>
                 </button>
               ))}
             </div>
@@ -513,6 +533,17 @@ const ProblemPage = () => {
                   )}
                   Run
                 </button>
+
+                {nextProblemId && (
+                  <button
+                    onClick={handleNextChallenge}
+                    className="flex items-center gap-2 px-4 py-1.5 rounded-sm text-xs font-bold text-zinc-500 hover:text-white border border-zinc-800 bg-black hover:bg-zinc-900 transition-all group"
+                  >
+                    Next Challenge
+                    <ChevronRight className="size-3.5 group-hover:translate-x-0.5 transition-transform" />
+                  </button>
+                )}
+
                 <button
                   onClick={handleSubmit}
                   disabled={isRunning || isSubmitting}
@@ -659,7 +690,7 @@ const ProblemPage = () => {
 
       {/* Submission Details */}
       {selectedSubmission && (
-        <div className="fixed inset-0 z-[100] bg-black/80 flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-100 bg-black/80 flex items-center justify-center p-4">
           <div className="bg-[#0a0a0a] border border-zinc-800 rounded-sm w-full max-w-4xl max-h-[90vh] overflow-y-auto relative animate-in zoom-in-95 duration-200 shadow-2xl">
             <button
               className="absolute top-4 right-4 p-2 text-zinc-600 hover:text-white hover:bg-zinc-900 rounded-sm transition-all"

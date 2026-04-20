@@ -24,7 +24,7 @@ import { usePlaylistStore } from "../store/usePlaylistStore";
 import { useProblemStore } from "../store/useProblemStore";
 import { useSubmissionStore } from "../store/useSubmissionStore";
 
-const ProfilePage = () => {
+const DashboardPage = () => {
   const { authUser } = useAuthStore();
   const { getSolvedProblemByUser, solvedProblems } = useProblemStore();
   const { getAllPlaylists, playlists } = usePlaylistStore();
@@ -115,9 +115,14 @@ const ProfilePage = () => {
   if (!authUser) return null;
 
   return (
-    <div className="min-h-screen pb-20">
+    <div className="min-h-screen pb-20 relative overflow-hidden">
+      {/* Subtle Decorative Grid */}
+      <div className="absolute inset-0 opacity-[0.03] pointer-events-none">
+        <div className="absolute inset-0" style={{ backgroundImage: 'radial-gradient(#fff 1px, transparent 1px)', backgroundSize: '40px 40px' }}></div>
+      </div>
+
       {/* Profile Header */}
-      <div className="border-b border-zinc-800 bg-[#0d0d0d] py-16 mb-8">
+      <div className="border-b border-zinc-800 bg-[#0d0d0d] py-16 mb-8 relative z-10">
         <div className="workspace-container">
           <div className="flex flex-col md:flex-row items-center gap-8">
             <div className="relative group">
@@ -207,7 +212,7 @@ const ProfilePage = () => {
               <h3 className="text-sm font-bold uppercase tracking-widest text-zinc-500 flex items-center gap-2 mb-6">
                 <Target className="size-4" /> Skill Radar
               </h3>
-              <div className="flex-1 min-h-[250px] w-full mt-4">
+              <div className="flex-1 min-h-62.5 w-full mt-4">
                 <ResponsiveContainer width="100%" height="100%">
                   <RadarChart cx="50%" cy="50%" outerRadius="75%" data={radarData}>
                     <PolarGrid stroke="#3f3f46" />
@@ -232,7 +237,7 @@ const ProfilePage = () => {
                   <TrendingUp className="size-4" /> Activity Heatmap
                 </h3>
               </div>
-              <div className="min-w-[800px] flex justify-center text-[10px]">
+              <div className="min-w-200 flex justify-center text-[10px]">
                 <ActivityCalendar
                   data={activityData}
                   theme={explicitTheme}
@@ -303,4 +308,4 @@ const ProfilePage = () => {
   );
 };
 
-export default ProfilePage;
+export default DashboardPage;

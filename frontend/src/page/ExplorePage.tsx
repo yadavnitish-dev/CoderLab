@@ -79,6 +79,47 @@ const ExplorePage = () => {
       </div>
 
       <div className="workspace-container">
+        {/* Mastery Header Stats */}
+        <div className="mb-12 bg-black border border-zinc-800 p-4 rounded-sm flex flex-wrap items-center justify-between gap-6 relative overflow-hidden">
+          <div className="absolute top-0 right-0 h-full w-32 bg-emerald-500/5 blur-2xl pointer-events-none"></div>
+          
+          <div className="flex items-center gap-8">
+            <div className="space-y-1">
+              <p className="text-[10px] font-mono font-bold text-zinc-600 uppercase tracking-widest">Global Status</p>
+              <div className="flex items-baseline gap-2">
+                <span className="text-2xl font-bold text-white font-mono">{solvedIds.size}</span>
+                <span className="text-zinc-700 font-mono text-sm">/ 150</span>
+              </div>
+            </div>
+            
+            <div className="h-10 w-px bg-zinc-800 hidden sm:block"></div>
+            
+            <div className="space-y-1">
+              <p className="text-[10px] font-mono font-bold text-zinc-600 uppercase tracking-widest">Rank</p>
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-bold text-emerald-500 uppercase tracking-tighter">
+                  {solvedIds.size === 150 ? "Master" : 
+                   solvedIds.size > 100 ? "Expert" :
+                   solvedIds.size > 50 ? "Intermediate" : "Novice"}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex-1 max-w-md hidden lg:block">
+            <div className="flex justify-between items-end mb-1">
+              <span className="text-[10px] font-mono font-bold text-zinc-500 uppercase">Completion</span>
+              <span className="text-[10px] font-mono text-zinc-400">{((solvedIds.size / 150) * 100).toFixed(1)}%</span>
+            </div>
+            <div className="h-1.5 bg-zinc-900 border border-zinc-800 overflow-hidden">
+              <div 
+                className="h-full bg-emerald-500 transition-all duration-1000 shadow-[0_0_8px_rgba(16,185,129,0.3)]" 
+                style={{ width: `${(solvedIds.size / 150) * 100}%` }}
+              />
+            </div>
+          </div>
+        </div>
+
         {!selectedCategory ? (
           <div className="space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-500">
             <NC150Roadmap 

@@ -142,6 +142,64 @@ export const logout = async (req: Request, res: Response): Promise<any> => {
   }
 };
 
+export const updateProfile = async (req: AuthenticatedRequest, res: Response): Promise<any> => {
+  const { name } = req.body;
+  const userId = req.user?.id;
+
+  if (!userId) return res.status(401).json({ error: "Unauthorized" });
+
+  try {
+    const updatedUser = await db.user.update({
+      where: { id: userId },
+      data: { name },
+    });
+
+    res.status(200).json({
+      success: true,
+      message: "Profile updated successfully",
+      user: {
+        id: updatedUser.id,
+        email: updatedUser.email,
+        name: updatedUser.name,
+        role: updatedUser.role,
+        image: updatedUser.image,
+      },
+    });
+  } catch (error) {
+    console.error("Error updating profile", error);
+    res.status(500).json({ error: "Error updating profile" });
+  }
+};
+
+export const updatePassword = async (req: AuthenticatedRequest, res: Response): Promise<any> => {
+  const { oldPassword, newPassword } = req.body;
+  const userId = req.user?.id;
+
+  if (!userId) return res.status(401).json({ error: "Unauthorized" });
+
+  try {
+    const user = await db.user.findUnique({ where: { id: userId } });
+    if (!user) return res.status(404).json({ error: "User not found" });
+
+    const isMatch = await bcrypt.compare(oldPassword, user.password);
+    if (!isMatch) return res.status(400).json({ error: "Incorrect current password" });
+
+    const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+    await db.user.update({
+      where: { id: userId },
+      data: { password: hashedNewPassword },
+    });
+
+    res.status(200).json({
+      success: true,
+      message: "Password updated successfully",
+    });
+  } catch (error) {
+    console.error("Error updating password", error);
+    res.status(500).json({ error: "Error updating password" });
+  }
+};
+
 export const check = async (
   req: AuthenticatedRequest,
   res: Response

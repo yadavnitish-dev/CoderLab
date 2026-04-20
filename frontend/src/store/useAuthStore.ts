@@ -9,11 +9,14 @@ interface AuthState {
   isSigninUp: boolean;
   isLoggingIn: boolean;
   isCheckingAuth: boolean;
+  isUpdatingProfile: boolean;
   
   checkAuth: () => Promise<void>;
   signup: (data: any) => Promise<void>; 
   login: (data: any) => Promise<void>; 
   logout: () => Promise<void>;
+  updateProfile: (data: any) => Promise<void>;
+  updatePassword: (data: any) => Promise<void>;
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
@@ -21,6 +24,7 @@ export const useAuthStore = create<AuthState>((set) => ({
   isSigninUp: false,
   isLoggingIn: false,
   isCheckingAuth: true,
+  isUpdatingProfile: false,
 
   checkAuth: async () => {
     set({ isCheckingAuth: true });
@@ -78,6 +82,33 @@ export const useAuthStore = create<AuthState>((set) => ({
     } catch (error) {
       console.log("Error logging out", error);
       toast.error("Error logging out");
+    }
+  },
+
+  updateProfile: async (data) => {
+    set({ isUpdatingProfile: true });
+    try {
+      const res = await axiosInstance.put("/auth/update-profile", data);
+      set({ authUser: res.data.user });
+      toast.success(res.data.message);
+    } catch (error: any) {
+      console.log("Error updating profile", error);
+      toast.error(error.response?.data?.error || "Error updating profile");
+    } finally {
+      set({ isUpdatingProfile: false });
+    }
+  },
+
+  updatePassword: async (data) => {
+    set({ isUpdatingProfile: true });
+    try {
+      const res = await axiosInstance.put("/auth/update-password", data);
+      toast.success(res.data.message);
+    } catch (error: any) {
+      console.log("Error updating password", error);
+      toast.error(error.response?.data?.error || "Error updating password");
+    } finally {
+      set({ isUpdatingProfile: false });
     }
   },
 }));

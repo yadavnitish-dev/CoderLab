@@ -1,4 +1,4 @@
-import { User, LogOut, Code2, LayoutDashboard } from "lucide-react";
+import { User, LogOut, Code2, LayoutDashboard, Settings } from "lucide-react";
 import { useAuthStore } from "../store/useAuthStore";
 import { Link, useLocation } from "react-router-dom";
 import LogoutButton from "./LogoutButton";
@@ -16,8 +16,8 @@ const Navbar = () => {
         {/* Brand */}
         <div className="flex items-center gap-8">
           <Link to="/" className="flex items-center gap-2 group">
-            <div className="bg-white p-1.5 rounded-sm group-hover:bg-accent transition-colors duration-300">
-              <Code2 className="size-5 text-black" />
+            <div className="bg-zinc-900 border border-zinc-800 p-1.5 rounded-sm group-hover:border-zinc-500 transition-all duration-300">
+              <Code2 className="size-5 text-white" />
             </div>
             <span className="text-lg font-bold tracking-tighter text-white font-display uppercase">
               AlgoPrep
@@ -25,16 +25,16 @@ const Navbar = () => {
           </Link>
 
           {/* Main Nav */}
-          <div className="hidden md:flex items-center gap-2">
+          <div className="hidden md:flex items-center">
             <Link
               to="/explore"
-              className={`nav-link ${isActive("/explore") ? "text-white bg-zinc-900 rounded-sm" : ""}`}
+              className={`px-4 py-2 text-xs font-bold uppercase tracking-widest transition-all border ${isActive("/explore") ? "text-white bg-zinc-900 border-zinc-700" : "text-zinc-500 border-transparent hover:text-zinc-300 hover:bg-zinc-800"}`}
             >
               Roadmap
             </Link>
             <Link
               to="/playlists"
-              className={`nav-link ${isActive("/playlists") ? "text-white bg-zinc-900 rounded-sm" : ""}`}
+              className={`px-4 py-2 text-xs font-bold uppercase tracking-widest transition-all border ${isActive("/playlists") ? "text-white bg-zinc-900 border-zinc-700" : "text-zinc-500 border-transparent hover:text-zinc-300 hover:bg-zinc-800"}`}
             >
               Playlists
             </Link>
@@ -103,11 +103,21 @@ const Navbar = () => {
 
                 <li>
                   <Link
-                    to="/profile"
+                    to="/dashboard"
                     className="flex items-center gap-3 p-3 hover:bg-zinc-800 rounded-sm transition-all text-zinc-300 hover:text-white"
                   >
                     <User className="size-4" />
-                    <span className="text-sm font-medium">Profile</span>
+                    <span className="text-sm font-medium">Dashboard</span>
+                  </Link>
+                </li>
+
+                <li>
+                  <Link
+                    to="/settings"
+                    className="flex items-center gap-3 p-3 hover:bg-zinc-800 rounded-sm transition-all text-zinc-300 hover:text-white"
+                  >
+                    <Settings className="size-4" />
+                    <span className="text-sm font-medium">Settings</span>
                   </Link>
                 </li>
 

@@ -10,9 +10,13 @@ This file contains foundational mandates and project-specific instructions for G
 ## Architectural Guidelines
 
 ### Design Philosophy (CRITICAL)
-- **Aesthetic**: Premium, monochromatic workspace ("Engineer's Lab") aesthetic. Rely on zinc grays (`zinc-900`, `zinc-800`), rich black (`#0a0a0a`), and subtle single-color accents (e.g., emerald for success).
-- **Core Rules**: **AVOID glassmorphism**, heavily saturated gradients, or overly bubbly designs. Stick to brutalist-adjacent structural elements (solid borders, crisp paddings).
-- **UI Elements**: High-density IDE feel. Use `lucide-react` for iconography. Formatting must remain consistent with the functional layout of the rest of the application.
+- **Aesthetic**: Premium, monochromatic workspace ("Engineer's Lab") aesthetic. Rely on zinc grays (`zinc-900`, `zinc-800`), rich black (`#0a0a0a`), and emerald accents (`emerald-500`) for success/progress.
+- **Visual Unification**: Every primary page (Dashboard, Explore, Auth, Settings) MUST use the subtle blueprint grid background: `radial-gradient(#fff 1px, transparent 1px)` at 40px size with ~3% opacity.
+- **Structure**: 
+  - **Intuitive Mastery**: Use a linear roadmap for core curriculum (NeetCode 150).
+  - **Semantic Clarity**: Use clear, accessible labels (Novice, Expert, Completion) instead of technical jargon (Protocol, Synchronization).
+  - **High-Density Layout**: Maximize screen real estate with IDE-like layouts, monospaced metadata, and brutalist-adjacent structural elements (solid borders, crisp paddings).
+- **UI Elements**: **AVOID glassmorphism**, heavily saturated gradients, or overly bubbly designs. Use `lucide-react` for iconography and `BrutalistButton/Select` components.
 
 - **Frontend:**
   - Use Zustand for state management (`frontend/src/store`).
@@ -21,7 +25,7 @@ This file contains foundational mandates and project-specific instructions for G
   - TailwindCSS 4 is used; avoid legacy Tailwind configurations if possible.
 - **Backend:**
   - Prisma for database interactions. Generated client is in `backend/src/generated/prisma`.
-  - Controllers in `backend/src/controllers`, Routes in `backend/src/controllers`.
+  - Controllers in `backend/src/controllers`, Routes in `backend/src/routes`.
   - Use `backend/src/libs/db.ts` for Prisma client instance.
   - Authentication via JWT and cookies.
 

@@ -12,8 +12,9 @@ import AdminRoute from "./components/AdminRoute";
 import AddProblem from "./page/AddProblem";
 import ProblemPage from "./page/ProblemPage";
 import ExplorePage from "./page/ExplorePage";
+import SettingsPage from "./page/SettingsPage";
 
-import ProfilePage from "./page/ProfilePage";
+import DashboardPage from "./page/DashboardPage";
 import PlaylistPage from "./page/PlaylistPage";
 import PlaylistsPage from "./page/PlaylistsPage";
 
@@ -46,8 +47,12 @@ const App = () => {
             element={authUser ? <ExplorePage /> : <Navigate to="/login" />}
           />
           <Route
-            path="/profile"
-            element={authUser ? <ProfilePage /> : <Navigate to="/login" />}
+            path="/dashboard"
+            element={authUser ? <DashboardPage /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/settings"
+            element={authUser ? <SettingsPage /> : <Navigate to="/login" />}
           />
           <Route
             path="/playlists"

@@ -1,4 +1,4 @@
-import { Code2, Github, Twitter, Linkedin, Activity } from "lucide-react";
+import { Code2, Activity, Twitter, Linkedin } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Footer = () => {
@@ -9,8 +9,8 @@ const Footer = () => {
           {/* Brand Column */}
           <div className="md:col-span-2 space-y-6">
             <Link to="/" className="flex items-center gap-2 group w-fit">
-              <div className="bg-white p-1.5 rounded-sm group-hover:bg-emerald-500 transition-colors duration-300">
-                <Code2 className="size-5 text-black" />
+              <div className="bg-zinc-900 border border-zinc-800 p-1.5 rounded-sm group-hover:border-zinc-500 transition-all duration-300">
+                <Code2 className="size-5 text-white" />
               </div>
               <span className="text-xl font-bold tracking-tighter text-white uppercase font-display">
                 AlgoPrep
@@ -52,7 +52,7 @@ const Footer = () => {
                   </Link>
                 </li>
                 <li>
-                  <Link to="/profile" className="text-sm text-zinc-500 hover:text-white transition-colors flex items-center gap-2 group">
+                  <Link to="/dashboard" className="text-sm text-zinc-500 hover:text-white transition-colors flex items-center gap-2 group">
                     <span className="size-1 rounded-full bg-zinc-800 group-hover:bg-emerald-500 transition-colors"></span>
                     Dashboard
                   </Link>
