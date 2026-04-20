@@ -6,6 +6,7 @@ import { Eye, EyeOff, Lock, Mail, Code2 } from "lucide-react";
 import { z } from "zod";
 import { useAuthStore } from "../store/useAuthStore";
 import BrutalistButton from "../components/BrutalistButton";
+import SocialAuthButtons from "../components/SocialAuthButtons";
 
 const LoginSchema = z.object({
   email: z.string().email("Enter a valid email"),
@@ -124,6 +125,8 @@ const LoginPage = () => {
               Sign In
             </BrutalistButton>
           </form>
+
+          <SocialAuthButtons />
 
           <div className="mt-8 text-center">
             <p className="text-zinc-500 text-sm">

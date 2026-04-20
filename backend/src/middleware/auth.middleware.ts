@@ -2,15 +2,22 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
 import { db } from "../libs/db.js";
 
-export interface AuthenticatedRequest extends Request {
-  user?: {
-    id: string;
-    name?: string | null;
-    email?: string | null;
-    image?: string | null;
-    role?: string;
-  } | null;
+declare global {
+  namespace Express {
+    interface User {
+      id: string;
+      name?: string | null;
+      email?: string | null;
+      image?: string | null;
+      role?: string;
+      createdAt?: Date;
+    }
+  }
 }
+
+// Since we're using Passport's global augmentation, 
+// we can use the standard Request type.
+export type AuthenticatedRequest = Request;
 
 export const authMiddleware = async (
   req: AuthenticatedRequest,

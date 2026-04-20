@@ -13,8 +13,12 @@ import {
   authLimiter,
   passwordChangeLimiter,
 } from "../middleware/rateLimiter.middleware.js";
+import oauthRoutes from "./oauth.route.js";
 
 const authRoutes = express.Router();
+
+// --- OAuth Routes ---
+authRoutes.use("/", oauthRoutes);
 
 authRoutes.post("/register", authLimiter, sanitizeInputs, register);
 

@@ -20,6 +20,10 @@ app.set("trust proxy", 1);
 // Security headers
 app.use(helmet());
 
+// Passport initialization
+import passport from "./libs/passport.js";
+app.use(passport.initialize());
+
 // Validate CORS origin
 const allowedOrigins = [];
 if (process.env.FRONTEND_URL) {

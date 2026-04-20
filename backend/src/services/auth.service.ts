@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { db } from "../libs/db.js";
+import { generateToken } from "../libs/jwt.util.js";
 import { UserRole } from "../generated/prisma/index.js";
 import {
   ValidationError,
@@ -66,7 +67,7 @@ export class AuthService {
     });
 
     // Generate token
-    const token = this.generateToken(newUser.id);
+    const token = generateToken(newUser.id);
 
     return {
       user: this.formatUserResponse(newUser),
@@ -97,7 +98,7 @@ export class AuthService {
     }
 
     // Generate token
-    const token = this.generateToken(user.id);
+    const token = generateToken(user.id);
 
     return {
       user: this.formatUserResponse(user),
@@ -156,19 +157,6 @@ export class AuthService {
     await db.user.update({
       where: { id: userId },
       data: { password: hashedNewPassword },
-    });
-  }
-
-  /**
-   * Generate JWT token
-   */
-  private generateToken(userId: string): string {
-    if (!process.env.JWT_SECRET) {
-      throw new Error("JWT_SECRET is not defined");
-    }
-
-    return jwt.sign({ id: userId }, process.env.JWT_SECRET, {
-      expiresIn: "7d",
     });
   }
 

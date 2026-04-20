@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { authService, AppError } from "../services/index.js";
+import { setCookie, clearCookie } from "../libs/cookie.util.js";
 import { AuthenticatedRequest } from "../middleware/auth.middleware.js";
 import { validateInput } from "../services/validation.helper.js";
 import {
@@ -13,14 +14,6 @@ import {
   UpdatePasswordInput,
 } from "../middleware/validation.schema.js";
 
-const setCookie = (res: Response, token: string): void => {
-  res.cookie("jwt", token, {
-    httpOnly: true,
-    sameSite: "strict",
-    secure: process.env.NODE_ENV !== "development",
-    maxAge: 1000 * 60 * 60 * 24 * 7,
-  });
-};
 
 export const register = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -61,11 +54,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
 
 export const logout = async (req: Request, res: Response): Promise<void> => {
   try {
-    res.clearCookie("jwt", {
-      httpOnly: true,
-      sameSite: "strict",
-      secure: process.env.NODE_ENV !== "development",
-    });
+    clearCookie(res);
 
     res.status(200).json({
       success: true,
