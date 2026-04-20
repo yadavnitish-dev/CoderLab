@@ -111,7 +111,7 @@ export class ProblemService {
             },
           },
         },
-        orderBy: { createdAt: "desc" },
+        orderBy: { createdAt: "asc" },
       }),
       db.problem.count(),
     ]);
