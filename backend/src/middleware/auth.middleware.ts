@@ -55,6 +55,7 @@ export const authMiddleware = async (
         email: true,
         image: true,
         role: true,
+        createdAt: true,
       },
     });
 
@@ -66,8 +67,7 @@ export const authMiddleware = async (
 
     req.user = user;
     next();
-  } catch (_error) {
-    console.log("Error authenticating user:", _error);
+  } catch {
     return res.status(500).json({
       message: "Error authenticating user",
     });
@@ -100,8 +100,7 @@ export const checkAdmin = async (
     }
 
     next();
-  } catch (_error) {
-    console.log("Error checking admin role:", _error);
+  } catch {
     res.status(500).json({
       message: "Error checking admin role",
     });

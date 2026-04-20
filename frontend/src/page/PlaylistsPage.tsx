@@ -19,7 +19,12 @@ const PlaylistsPage = () => {
   }
 
   return (
-    <div className="min-h-screen pb-20">
+    <div className="min-h-screen pb-20 relative overflow-hidden">
+      {/* Subtle Decorative Grid */}
+      <div className="absolute inset-0 opacity-[0.03] pointer-events-none">
+        <div className="absolute inset-0" style={{ backgroundImage: 'radial-gradient(#fff 1px, transparent 1px)', backgroundSize: '40px 40px' }}></div>
+      </div>
+
       {/* Hero Section */}
       <div className="border-b border-zinc-800 bg-[#0d0d0d] py-16 mb-8">
         <div className="workspace-container flex flex-col md:flex-row justify-between items-end gap-6">

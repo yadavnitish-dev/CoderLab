@@ -1,200 +1,229 @@
-import { db } from "../libs/db.js";
 import { Response } from "express";
+import { playlistService, AppError } from "../services/index.js";
 import { AuthenticatedRequest } from "../middleware/auth.middleware.js";
+import { validateInput } from "../services/validation.helper.js";
+import {
+  createPlaylistSchema,
+  addProblemsSchema,
+  removeProblemSchema,
+  CreatePlaylistInput,
+  AddProblemsInput,
+  RemoveProblemInput,
+} from "../middleware/validation.schema.js";
+import { z } from "zod";
 
+/**
+ * Create a new playlist
+ */
 export const createPlayList = async (
   req: AuthenticatedRequest,
-  res: Response
-): Promise<Response> => {
-  try {
-    const { name, description } = req.body;
-    if (!req.user) {
-        return res.status(401).json({ error: "Unauthorized" });
-    }
-    const userId = req.user.id;
-
-    const playList = await db.playlist.create({
-      data: {
-        name,
-        description,
-        userId,
-      },
-    });
-    return res.status(200).json({
-      success: true,
-      message: "Playlist created successfully",
-      playList,
-    });
-  } catch (error) {
-    console.error("Error creating playlist:", error);
-    return res.status(500).json({ error: "Failed to create playlist" });
-  }
-};
-
-export const getPlayAllListDetails = async (
-  req: AuthenticatedRequest,
-  res: Response
-): Promise<Response> => {
+  res: Response,
+): Promise<void> => {
   try {
     if (!req.user) {
-        return res.status(401).json({ error: "Unauthorized" });
-    }
-    const playLists = await db.playlist.findMany({
-      where: {
-        userId: req.user.id,
-      },
-      include: {
-        problems: {
-          include: {
-            problem: true,
-          },
-        },
-      },
-    });
-    return res.status(200).json({
-      success: true,
-      message: "Playlist fetched successfully",
-      playLists,
-    });
-  } catch (error) {
-    console.error("Error fetching playlist:", error);
-    return res.status(500).json({ error: "Failed to fetch playlist" });
-  }
-};
-export const getPlayListDetails = async (
-  req: AuthenticatedRequest,
-  res: Response
-): Promise<Response> => {
-  const { playlistId } = req.params;
-
-  try {
-    if (!req.user) {
-        return res.status(401).json({ error: "Unauthorized" });
-    }
-    const playList = await db.playlist.findFirst({
-      where: { id: playlistId, userId: req.user.id },
-      include: {
-        problems: {
-          include: {
-            problem: {
-              include: {
-                solvedBy: {
-                  select: {
-                    userId: true,
-                  },
-                },
-              },
-            },
-          },
-        },
-      },
-    });
-
-    if (!playList) {
-      return res.status(404).json({ error: "Playlist not found" });
+      res.status(401).json({ error: "Unauthorized" });
+      return;
     }
 
-    return res.status(200).json({
-      success: true,
-      message: "Playlist fetched successfully",
-      playList,
-    });
-  } catch (error) {
-    console.error("Error fetching playlist:", error);
-    return res.status(500).json({ error: "Failed to fetch playlist" });
-  }
-};
-
-export const addProblemToPlaylist = async (
-  req: AuthenticatedRequest,
-  res: Response
-): Promise<Response> => {
-  const { playlistId } = req.params;
-  const { problemIds } = req.body;
-
-  try {
-    if (!Array.isArray(problemIds) || problemIds.length === 0) {
-      return res.status(400).json({ error: "Invalid or missing problemIds" });
-    }
-
-    console.log(
-      problemIds.map((problemId) => ({
-        playlistId,
-        problemId,
-      }))
+    const validatedData = validateInput<CreatePlaylistInput>(
+      req.body,
+      createPlaylistSchema,
+    );
+    const playlist = await playlistService.createPlaylist(
+      req.user.id,
+      validatedData,
     );
 
-    const problemsInPlaylist = await db.problemInPlaylist.createMany({
-      data: problemIds.map((problemId) => ({
-        playListId: playlistId,
-        problemId,
-      })),
-    });
-
-    return res.status(201).json({
+    res.status(201).json({
       success: true,
-      message: "Problems added to playlist successfully",
-      problemsInPlaylist,
+      message: "Playlist created successfully",
+      playlist,
     });
-  } catch (error: any) {
-    console.error("Error adding problems to playlist:", error?.message || error);
-    return res.status(500).json({ error: "Failed to add problems to playlist" });
+  } catch (error) {
+    handlePlaylistError(error, res);
   }
 };
 
-export const deletePlayList = async (
+/**
+ * Get all playlists for the authenticated user
+ */
+export const getPlayAllListDetails = async (
   req: AuthenticatedRequest,
-  res: Response
-): Promise<Response> => {
-  const { playlistId } = req.params;
-
+  res: Response,
+): Promise<void> => {
   try {
-    const deletedPlaylist = await db.playlist.delete({
-      where: {
-        id: playlistId,
-      },
-    });
-
-    return res.status(200).json({
-      success: true,
-      message: "Playlist deleted successfully",
-      deletedPlaylist,
-    });
-  } catch (error: any) {
-    console.error("Error deleting playlist:", error?.message || error);
-    return res.status(500).json({ error: "Failed to delete playlist" });
-  }
-};
-
-export const removeProblemFromPlaylist = async (
-  req: AuthenticatedRequest,
-  res: Response
-): Promise<Response> => {
-  const { playlistId } = req.params;
-  const { problemIds } = req.body;
-
-  try {
-    if (!Array.isArray(problemIds) || problemIds.length === 0) {
-      return res.status(400).json({ error: "Invalid or missing problemIds" });
+    if (!req.user) {
+      res.status(401).json({ error: "Unauthorized" });
+      return;
     }
 
-    const deletedProblem = await db.problemInPlaylist.deleteMany({
-      where: {
-        playListId: playlistId,
-        problemId: {
-          in: problemIds,
-        },
-      },
-    });
+    const playlists = await playlistService.getAllPlaylists(req.user.id);
 
-    return res.status(200).json({
+    res.status(200).json({
       success: true,
-      message: "Problem removed from playlist successfully",
-      deletedProblem,
+      message: "Playlists fetched successfully",
+      playlists,
     });
-  } catch (error: any) {
-    console.error("Error removing problem from playlist:", error?.message || error);
-    return res.status(500).json({ error: "Failed to remove problem from playlist" });
+  } catch (error) {
+    handlePlaylistError(error, res);
   }
 };
 
+/**
+ * Get a single playlist by ID
+ */
+export const getPlayListDetails = async (
+  req: AuthenticatedRequest,
+  res: Response,
+): Promise<void> => {
+  try {
+    if (!req.user) {
+      res.status(401).json({ error: "Unauthorized" });
+      return;
+    }
+
+    const { playlistId } = validateInput<{ playlistId: string }>(
+      req.params,
+      z.object({ playlistId: z.string().uuid("Invalid playlist ID format") }),
+    );
+
+    const playlist = await playlistService.getPlaylistById(
+      playlistId,
+      req.user.id,
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "Playlist fetched successfully",
+      playlist,
+    });
+  } catch (error) {
+    handlePlaylistError(error, res);
+  }
+};
+
+/**
+ * Add problems to a playlist
+ */
+export const addProblemToPlaylist = async (
+  req: AuthenticatedRequest,
+  res: Response,
+): Promise<void> => {
+  try {
+    if (!req.user) {
+      res.status(401).json({ error: "Unauthorized" });
+      return;
+    }
+
+    const { playlistId } = validateInput<{ playlistId: string }>(
+      req.params,
+      z.object({ playlistId: z.string().uuid("Invalid playlist ID format") }),
+    );
+
+    const validatedData = validateInput<AddProblemsInput>(
+      req.body,
+      addProblemsSchema,
+    );
+
+    const result = await playlistService.addProblemsToPlaylist(
+      playlistId,
+      req.user.id,
+      validatedData,
+    );
+
+    res.status(201).json({
+      success: true,
+      message: "Problems added to playlist successfully",
+      result,
+    });
+  } catch (error) {
+    handlePlaylistError(error, res);
+  }
+};
+
+/**
+ * Delete a playlist
+ */
+export const deletePlayList = async (
+  req: AuthenticatedRequest,
+  res: Response,
+): Promise<void> => {
+  try {
+    if (!req.user) {
+      res.status(401).json({ error: "Unauthorized" });
+      return;
+    }
+
+    const { playlistId } = validateInput<{ playlistId: string }>(
+      req.params,
+      z.object({ playlistId: z.string().uuid("Invalid playlist ID format") }),
+    );
+
+    await playlistService.deletePlaylist(playlistId, req.user.id);
+
+    res.status(200).json({
+      success: true,
+      message: "Playlist deleted successfully",
+    });
+  } catch (error) {
+    handlePlaylistError(error, res);
+  }
+};
+
+/**
+ * Remove problem from playlist
+ */
+export const removeProblemFromPlaylist = async (
+  req: AuthenticatedRequest,
+  res: Response,
+): Promise<void> => {
+  try {
+    if (!req.user) {
+      res.status(401).json({ error: "Unauthorized" });
+      return;
+    }
+
+    const { playlistId } = validateInput<{ playlistId: string }>(
+      req.params,
+      z.object({ playlistId: z.string().uuid("Invalid playlist ID format") }),
+    );
+
+    const { problemIds } = validateInput<RemoveProblemInput>(
+      req.body,
+      removeProblemSchema,
+    );
+
+    for (const problemId of problemIds) {
+      await playlistService.removeProblemFromPlaylist(
+        playlistId,
+        problemId,
+        req.user.id,
+      );
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Problem removed from playlist successfully",
+    });
+  } catch (error) {
+    handlePlaylistError(error, res);
+  }
+};
+
+/**
+ * Centralized error handler for playlist controller
+ */
+function handlePlaylistError(error: any, res: Response): void {
+  if (error instanceof AppError) {
+    res.status(error.statusCode).json({
+      error: error.message,
+      code: error.code,
+    });
+    return;
+  }
+
+  console.error("Unexpected error in playlist controller:", error);
+  res.status(500).json({
+    error: "Internal server error",
+  });
+}

@@ -1,22 +1,52 @@
 import express from "express";
 import { authMiddleware, checkAdmin } from "../middleware/auth.middleware.js";
-import { createProblem, getAllProblems, getProblemById, getAllProblemsSolvedByUser, updateProblem, deleteProblem } from "../controllers/problem.controller.js";
-
+import { sanitizeInputs } from "../middleware/validation.middleware.js";
+import { generalLimiter } from "../middleware/rateLimiter.middleware.js";
+import {
+  createProblem,
+  getAllProblems,
+  getProblemById,
+  getAllProblemsSolvedByUser,
+  updateProblem,
+  deleteProblem,
+} from "../controllers/problem.controller.js";
 
 const problemRoutes = express.Router();
 
+problemRoutes.post(
+  "/create-problem",
+  authMiddleware,
+  checkAdmin,
+  generalLimiter,
+  sanitizeInputs,
+  createProblem,
+);
 
-problemRoutes.post("/create-problem", authMiddleware, checkAdmin, createProblem)
+problemRoutes.get("/get-all-problems", getAllProblems);
 
-problemRoutes.get("/get-all-problems", authMiddleware, getAllProblems)
+problemRoutes.get("/get-problem/:id", getProblemById);
 
-problemRoutes.get("/get-problem/:id", authMiddleware, getProblemById)
+problemRoutes.put(
+  "/update-problem/:id",
+  authMiddleware,
+  checkAdmin,
+  generalLimiter,
+  sanitizeInputs,
+  updateProblem,
+);
 
-problemRoutes.put("/update-problem/:id", authMiddleware, checkAdmin, updateProblem)
+problemRoutes.delete(
+  "/delete-problem/:id",
+  authMiddleware,
+  checkAdmin,
+  generalLimiter,
+  deleteProblem,
+);
 
-problemRoutes.delete("/delete-problem/:id", authMiddleware, checkAdmin, deleteProblem)
-
-problemRoutes.get("/get-solved-problems", authMiddleware, getAllProblemsSolvedByUser)
-
+problemRoutes.get(
+  "/get-solved-problems",
+  authMiddleware,
+  getAllProblemsSolvedByUser,
+);
 
 export default problemRoutes;

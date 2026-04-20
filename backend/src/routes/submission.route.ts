@@ -1,5 +1,6 @@
 import express from "express";
 import { authMiddleware } from "../middleware/auth.middleware.js";
+import { generalLimiter } from "../middleware/rateLimiter.middleware.js";
 import {
   getAllSubmission,
   getAllTheSubmissionsForProblem,
@@ -8,17 +9,25 @@ import {
 
 const submissionRoutes = express.Router();
 
-submissionRoutes.get("/get-all-submissions", authMiddleware, getAllSubmission);
+submissionRoutes.get(
+  "/get-all-submissions",
+  authMiddleware,
+  generalLimiter,
+  getAllSubmission,
+);
+
 submissionRoutes.get(
   "/get-submission/:problemId",
   authMiddleware,
-  getSubmissionsForProblem
+  generalLimiter,
+  getSubmissionsForProblem,
 );
 
 submissionRoutes.get(
   "/get-submissions-count/:problemId",
   authMiddleware,
-  getAllTheSubmissionsForProblem
+  generalLimiter,
+  getAllTheSubmissionsForProblem,
 );
 
 export default submissionRoutes;

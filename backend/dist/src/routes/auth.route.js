@@ -1,0 +1,13 @@
+import express from "express";
+import { check, login, logout, register, updatePassword, updateProfile, } from "../controllers/auth.controller.js";
+import { authMiddleware } from "../middleware/auth.middleware.js";
+import { sanitizeInputs } from "../middleware/validation.middleware.js";
+import { authLimiter, passwordChangeLimiter, } from "../middleware/rateLimiter.middleware.js";
+const authRoutes = express.Router();
+authRoutes.post("/register", authLimiter, sanitizeInputs, register);
+authRoutes.post("/login", authLimiter, sanitizeInputs, login);
+authRoutes.post("/logout", authMiddleware, logout);
+authRoutes.get("/check", authMiddleware, check);
+authRoutes.put("/update-profile", authMiddleware, sanitizeInputs, updateProfile);
+authRoutes.put("/update-password", authMiddleware, passwordChangeLimiter, sanitizeInputs, updatePassword);
+export default authRoutes;

@@ -37,7 +37,7 @@ export const usePlaylistStore = create<PlaylistState>((set, get) => ({
       );
 
       set((state) => ({
-        playlists: [...state.playlists, response.data.playList],
+        playlists: [...state.playlists, response.data.playlist],
       }));
 
       toast.success("Playlist created successfully");
@@ -55,7 +55,7 @@ export const usePlaylistStore = create<PlaylistState>((set, get) => ({
     try {
       set({ isLoading: true });
       const response = await axiosInstance.get("/playlist");
-      set({ playlists: response.data.playLists });
+      set({ playlists: response.data.playlists });
     } catch (error) {
       console.error("Error fetching playlists:", error);
       toast.error("Failed to fetch playlists");
@@ -68,7 +68,7 @@ export const usePlaylistStore = create<PlaylistState>((set, get) => ({
     try {
       set({ isLoading: true });
       const response = await axiosInstance.get(`/playlist/${playlistId}`);
-      set({ currentPlaylist: response.data.playList });
+      set({ currentPlaylist: response.data.playlist });
     } catch (error) {
       console.error("Error fetching playlist details:", error);
       toast.error("Failed to fetch playlist details");

@@ -1,3 +1,11 @@
+export enum SubmissionStatus {
+  ACCEPTED = "Accepted",
+  WRONG_ANSWER = "Wrong Answer",
+  TIME_LIMIT_EXCEEDED = "Time Limit Exceeded",
+  RUNTIME_ERROR = "Runtime Error",
+  COMPILATION_ERROR = "Compilation Error",
+}
+
 export interface User {
   id: string;
   name: string;
@@ -50,7 +58,7 @@ export interface Submission {
   id?: string;
   userId?: string;
   problemId?: string;
-  status: "Accepted" | "Wrong Answer" | "Time Limit Exceeded" | "Runtime Error" | "Compilation Error";
+  status: SubmissionStatus;
   language: string;
   timeTaken?: number;
   memoryTaken?: number;

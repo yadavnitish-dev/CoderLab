@@ -1,128 +1,65 @@
-import bcrypt from "bcryptjs";
-import { db } from "../libs/db.js";
-import { UserRole } from "../generated/prisma/index.js";
-import jwt from "jsonwebtoken";
 import { Request, Response } from "express";
+import { authService, AppError } from "../services/index.js";
 import { AuthenticatedRequest } from "../middleware/auth.middleware.js";
+import { validateInput } from "../services/validation.helper.js";
+import {
+  registerSchema,
+  loginSchema,
+  updateProfileSchema,
+  updatePasswordSchema,
+  RegisterInput,
+  LoginInput,
+  UpdateProfileInput,
+  UpdatePasswordInput,
+} from "../middleware/validation.schema.js";
 
-export const register = async (req: Request, res: Response): Promise<any> => {
-  const { email, password, name } = req.body;
+const setCookie = (res: Response, token: string): void => {
+  res.cookie("jwt", token, {
+    httpOnly: true,
+    sameSite: "strict",
+    secure: process.env.NODE_ENV !== "development",
+    maxAge: 1000 * 60 * 60 * 24 * 7,
+  });
+};
 
+export const register = async (req: Request, res: Response): Promise<void> => {
   try {
-    const existingUser = await db.user.findUnique({
-      where: {
-        email,
-      },
-    });
+    const validatedData = validateInput<RegisterInput>(
+      req.body,
+      registerSchema,
+    );
+    const result = await authService.register(validatedData);
 
-    if (existingUser) {
-      return res.status(400).json({
-        error: "User already exists",
-      });
-    }
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    const newUser = await db.user.create({
-      data: {
-        email,
-        password: hashedPassword,
-        name,
-        role: UserRole.USER,
-      },
-    });
-
-    if (!process.env.JWT_SECRET) {
-      throw new Error("JWT_SECRET is not defined");
-    }
-    const token = jwt.sign({ id: newUser.id }, process.env.JWT_SECRET, {
-      expiresIn: "7d",
-    });
-
-    res.cookie("jwt", token, {
-      httpOnly: true,
-      sameSite: "strict",
-      secure: process.env.NODE_ENV !== "development",
-      maxAge: 1000 * 60 * 60 * 24 * 7,
-    });
+    setCookie(res, result.token);
 
     res.status(201).json({
       success: true,
       message: "User created successfully",
-      user: {
-        id: newUser.id,
-        email: newUser.email,
-        name: newUser.name,
-        role: newUser.role,
-        image: newUser.image,
-      },
+      user: result.user,
     });
   } catch (error) {
-    console.error("Error creating user", error);
-    res.status(500).json({
-      error: "Error creating user",
-    });
+    handleAuthError(error, res);
   }
 };
 
-export const login = async (req: Request, res: Response): Promise<any> => {
-  const { email, password } = req.body;
-
+export const login = async (req: Request, res: Response): Promise<void> => {
   try {
-    const user = await db.user.findUnique({
-      where: {
-        email,
-      },
-    });
+    const validatedData = validateInput<LoginInput>(req.body, loginSchema);
+    const result = await authService.login(validatedData);
 
-    if (!user) {
-      return res.status(401).json({
-        error: "user not found",
-      });
-    }
-
-    const isMatch = await bcrypt.compare(password, user.password);
-
-    if (!isMatch) {
-      return res.status(401).json({
-        error: "Invalid credentials",
-      });
-    }
-
-    if (!process.env.JWT_SECRET) {
-      throw new Error("JWT_SECRET is not defined");
-    }
-    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
-      expiresIn: "7d",
-    });
-
-    res.cookie("jwt", token, {
-      httpOnly: true,
-      sameSite: "strict",
-      secure: process.env.NODE_ENV !== "development",
-      maxAge: 1000 * 60 * 60 * 24 * 7,
-    });
+    setCookie(res, result.token);
 
     res.status(200).json({
       success: true,
       message: "User Logged In successfully",
-      user: {
-        id: user.id,
-        email: user.email,
-        name: user.name,
-        role: user.role,
-        image: user.image,
-      },
+      user: result.user,
     });
   } catch (error) {
-    console.error("Error logging in user", error);
-    res.status(500).json({
-      error: "Error logging in user",
-    });
+    handleAuthError(error, res);
   }
 };
 
-export const logout = async (req: Request, res: Response): Promise<any> => {
+export const logout = async (req: Request, res: Response): Promise<void> => {
   try {
     res.clearCookie("jwt", {
       httpOnly: true,
@@ -135,85 +72,94 @@ export const logout = async (req: Request, res: Response): Promise<any> => {
       message: "User logged out successfully",
     });
   } catch (error) {
-    console.error("Error logging out user", error);
-    res.status(500).json({
-      error: "Error logging out user",
-    });
+    handleAuthError(error, res);
   }
 };
 
-export const updateProfile = async (req: AuthenticatedRequest, res: Response): Promise<any> => {
-  const { name } = req.body;
-  const userId = req.user?.id;
-
-  if (!userId) return res.status(401).json({ error: "Unauthorized" });
-
+export const check = async (
+  req: AuthenticatedRequest,
+  res: Response,
+): Promise<void> => {
   try {
-    const updatedUser = await db.user.update({
-      where: { id: userId },
-      data: { name },
+    if (!req.user) {
+      res.status(401).json({ error: "Not authenticated" });
+      return;
+    }
+
+    res.status(200).json({
+      success: true,
+      user: req.user,
     });
+  } catch (error) {
+    handleAuthError(error, res);
+  }
+};
+
+export const updateProfile = async (
+  req: AuthenticatedRequest,
+  res: Response,
+): Promise<void> => {
+  try {
+    if (!req.user?.id) {
+      res.status(401).json({ error: "Unauthorized" });
+      return;
+    }
+
+    const validatedData = validateInput<UpdateProfileInput>(
+      req.body,
+      updateProfileSchema,
+    );
+    const user = await authService.updateProfile(req.user.id, validatedData);
 
     res.status(200).json({
       success: true,
       message: "Profile updated successfully",
-      user: {
-        id: updatedUser.id,
-        email: updatedUser.email,
-        name: updatedUser.name,
-        role: updatedUser.role,
-        image: updatedUser.image,
-      },
+      user,
     });
   } catch (error) {
-    console.error("Error updating profile", error);
-    res.status(500).json({ error: "Error updating profile" });
+    handleAuthError(error, res);
   }
 };
 
-export const updatePassword = async (req: AuthenticatedRequest, res: Response): Promise<any> => {
-  const { oldPassword, newPassword } = req.body;
-  const userId = req.user?.id;
-
-  if (!userId) return res.status(401).json({ error: "Unauthorized" });
-
+export const updatePassword = async (
+  req: AuthenticatedRequest,
+  res: Response,
+): Promise<void> => {
   try {
-    const user = await db.user.findUnique({ where: { id: userId } });
-    if (!user) return res.status(404).json({ error: "User not found" });
+    if (!req.user?.id) {
+      res.status(401).json({ error: "Unauthorized" });
+      return;
+    }
 
-    const isMatch = await bcrypt.compare(oldPassword, user.password);
-    if (!isMatch) return res.status(400).json({ error: "Incorrect current password" });
-
-    const hashedNewPassword = await bcrypt.hash(newPassword, 10);
-    await db.user.update({
-      where: { id: userId },
-      data: { password: hashedNewPassword },
-    });
+    const validatedData = validateInput<UpdatePasswordInput>(
+      req.body,
+      updatePasswordSchema,
+    );
+    await authService.updatePassword(req.user.id, validatedData);
 
     res.status(200).json({
       success: true,
       message: "Password updated successfully",
     });
   } catch (error) {
-    console.error("Error updating password", error);
-    res.status(500).json({ error: "Error updating password" });
+    handleAuthError(error, res);
   }
 };
 
-export const check = async (
-  req: AuthenticatedRequest,
-  res: Response
-): Promise<any> => {
-  try {
-    res.status(200).json({
-      success: true,
-      message: "user authorized successfully",
-      user: req.user,
+/**
+ * Centralized error handler for auth controller
+ */
+function handleAuthError(error: any, res: Response): void {
+  if (error instanceof AppError) {
+    res.status(error.statusCode).json({
+      error: error.message,
+      code: error.code,
     });
-  } catch (error) {
-    console.log("Error checking user:", error);
-    res.status(500).json({
-      error: "error checking user",
-    });
+    return;
   }
-};
+
+  console.error("Unexpected error in auth controller:", error);
+  res.status(500).json({
+    error: "Internal server error",
+  });
+}

@@ -91,7 +91,7 @@ const ProblemsTable: React.FC<ProblemsTableProps> = ({
           </div>
 
           <BrutalistSelect
-            className="flex-1 md:flex-none md:min-w-[180px]"
+            className="flex-1 md:flex-none md:min-w-45"
             icon={SlidersHorizontal}
             options={[
               { value: "ALL", label: "All Categories" },
@@ -102,7 +102,7 @@ const ProblemsTable: React.FC<ProblemsTableProps> = ({
           />
 
           <BrutalistSelect
-            className="flex-1 md:flex-none md:min-w-[160px]"
+            className="flex-1 md:flex-none md:min-w-40"
             options={[
               { value: "ALL", label: "All Difficulties" },
               { value: "Easy", label: "Easy" },
