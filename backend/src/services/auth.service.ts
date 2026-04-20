@@ -92,6 +92,10 @@ export class AuthService {
     }
 
     // Verify password
+    if (!user.password) {
+      throw new UnauthorizedError("Please use social login or reset your password");
+    }
+
     const isMatch = await bcrypt.compare(validatedInput.password, user.password);
     if (!isMatch) {
       throw new UnauthorizedError("Invalid credentials");
@@ -147,6 +151,10 @@ export class AuthService {
     }
 
     // Verify old password
+    if (!user.password) {
+      throw new ValidationError("Account does not have a password set. Use social login.");
+    }
+
     const isMatch = await bcrypt.compare(input.oldPassword, user.password);
     if (!isMatch) {
       throw new ValidationError("Incorrect current password");
