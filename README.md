@@ -15,8 +15,8 @@ AlgoPrep is a full-stack competitive programming platform where users solve codi
 
 ## Features
 
-- 🔐 **Secure Authentication** with JWT (HTTP-only cookies)
-- 📚 **Problem Library** with examples, constraints, and hidden testcases
+- 🔐 **Secure Authentication** with JWT (HTTP-only cookies) and **OAuth 2.0** (Google/GitHub)
+- 📚 **Roadmap Mastery** with curated categories and progress tracking
 - ⚡ **Code Execution** for Python, Java, JavaScript, TypeScript, and C++ (via JDoodle API)
 - 📊 **Submission History** with per-testcase results
 - 📁 **Playlists** for organizing problems
@@ -27,7 +27,7 @@ AlgoPrep is a full-stack competitive programming platform where users solve codi
 
 - **Authentication**: JWT tokens stored in HTTP-only cookies
 - **Password Security**: bcrypt hashing with salt rounds
-- **Rate Limiting**: Different limits for auth (5/15min), general (100/15min), code execution (10/min)
+- **Rate Limiting**: Different limits for auth (20/15min), general (100/15min), code execution (10/min)
 - **Input Validation**: Zod schemas with size limits (100KB source code, 200KB execution payload)
 - **Security Headers**: Helmet middleware (HSTS, CSP, X-Frame-Options, etc.)
 - **CORS Protection**: Validated origins only
@@ -82,7 +82,15 @@ DATABASE_URL=postgresql://USER:PASSWORD@localhost:5432/algoprep
 JWT_SECRET=replace_this
 JDOODLE_CLIENT_ID=your_client_id
 JDOODLE_CLIENT_SECRET=your_client_secret
+
+# OAuth Credentials (See OAUTH_SETUP_GUIDE.md)
+GOOGLE_CLIENT_ID=...
+GOOGLE_CLIENT_SECRET=...
+GITHUB_CLIENT_ID=...
+GITHUB_CLIENT_SECRET=...
 ```
+
+For detailed instructions on generating OAuth keys, see the **[OAuth Setup Guide](file:///Users/nitish/.gemini/antigravity/brain/dec500f0-228c-4717-81c3-9a8d8f493c18/OAUTH_SETUP_GUIDE.md)**.
 
 Then run:
 
