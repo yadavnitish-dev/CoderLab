@@ -79,7 +79,6 @@ const SettingsPage: FC = () => {
           </div>
           <div>
             <h1 className="text-3xl font-bold text-white tracking-tight">System Configuration</h1>
-            <p className="text-zinc-500 text-sm font-mono uppercase tracking-[0.2em] mt-1">Protocol // User Settings</p>
           </div>
         </div>
 

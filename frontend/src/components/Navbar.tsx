@@ -27,8 +27,8 @@ const Navbar = () => {
           {/* Main Nav */}
           <div className="hidden md:flex items-center">
             <Link
-              to="/explore"
-              className={`px-4 py-2 text-xs font-bold uppercase tracking-widest transition-all border ${isActive("/explore") ? "text-white bg-zinc-900 border-zinc-700" : "text-zinc-500 border-transparent hover:text-zinc-300 hover:bg-zinc-800"}`}
+              to="/roadmap"
+              className={`px-4 py-2 text-xs font-bold uppercase tracking-widest transition-all border ${isActive("/roadmap") ? "text-white bg-zinc-900 border-zinc-700" : "text-zinc-500 border-transparent hover:text-zinc-300 hover:bg-zinc-800"}`}
             >
               Roadmap
             </Link>

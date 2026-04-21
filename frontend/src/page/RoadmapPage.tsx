@@ -4,7 +4,7 @@ import { Loader2, ArrowLeft } from "lucide-react";
 import ProblemTable from "../components/ProblemTable";
 import NC150Roadmap from "../components/NC150Roadmap";
 
-const ExplorePage = () => {
+const RoadmapPage = () => {
   const { getAllProblems, problems, isProblemsLoading, solvedProblems, getSolvedProblemByUser } = useProblemStore();
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
@@ -156,4 +156,4 @@ const ExplorePage = () => {
   );
 };
 
-export default ExplorePage;
+export default RoadmapPage;

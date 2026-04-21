@@ -11,7 +11,7 @@ import Layout from "./layout/Layout";
 import AdminRoute from "./components/AdminRoute";
 import AddProblem from "./page/AddProblem";
 import ProblemPage from "./page/ProblemPage";
-import ExplorePage from "./page/ExplorePage";
+import RoadmapPage from "./page/RoadmapPage";
 import SettingsPage from "./page/SettingsPage";
 
 import DashboardPage from "./page/DashboardPage";
@@ -40,11 +40,11 @@ const App = () => {
         <Route path="/" element={<Layout />}>
           <Route
             index
-            element={authUser ? <Navigate to={"/explore"} /> : <HomePage />}
+            element={authUser ? <Navigate to={"/roadmap"} /> : <HomePage />}
           />
           <Route
-            path="/explore"
-            element={authUser ? <ExplorePage /> : <Navigate to="/login" />}
+            path="/roadmap"
+            element={authUser ? <RoadmapPage /> : <Navigate to="/login" />}
           />
           <Route
             path="/dashboard"

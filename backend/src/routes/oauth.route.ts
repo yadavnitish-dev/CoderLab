@@ -28,7 +28,7 @@ router.get(
     const token = generateToken(user.id);
     setCookie(res, token);
 
-    res.redirect(`${process.env.FRONTEND_URL}/dashboard`);
+    res.redirect(`${process.env.FRONTEND_URL}/roadmap`);
   }
 );
 
@@ -50,7 +50,7 @@ router.get(
     const token = generateToken(user.id);
     setCookie(res, token);
 
-    res.redirect(`${process.env.FRONTEND_URL}/dashboard`);
+    res.redirect(`${process.env.FRONTEND_URL}/roadmap`);
   }
 );
 
