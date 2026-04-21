@@ -1,10 +1,12 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { usePlaylistStore } from "../store/usePlaylistStore";
 import { Loader2, Plus, ListMusic, ChevronRight } from "lucide-react";
+import CreatePlaylistModal from "../components/CreatePlaylistModal";
 
 const PlaylistsPage = () => {
-  const { getAllPlaylists, playlists, isLoading } = usePlaylistStore();
+  const { getAllPlaylists, playlists, isLoading, createPlaylist } = usePlaylistStore();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     getAllPlaylists();
@@ -37,7 +39,10 @@ const PlaylistsPage = () => {
               progress and master specific topics.
             </p>
           </div>
-          <button className="flex items-center gap-2 bg-white text-black px-6 py-3 rounded-sm font-bold text-sm hover:bg-zinc-200 transition-all shrink-0 mb-1">
+          <button 
+            onClick={() => setIsModalOpen(true)}
+            className="flex items-center gap-2 bg-white text-black px-6 py-3 rounded-sm font-bold text-sm hover:bg-zinc-200 transition-all shrink-0 mb-1"
+          >
              <Plus className="size-4" />
              Create Playlist
           </button>
@@ -87,12 +92,23 @@ const PlaylistsPage = () => {
               Start by creating a playlist to organize your favorite problems
               and study tracks.
             </p>
-            <button className="bg-white text-black px-8 py-3 rounded-sm font-bold text-sm hover:bg-zinc-200 transition-all">
+            <button 
+              onClick={() => setIsModalOpen(true)}
+              className="bg-white text-black px-8 py-3 rounded-sm font-bold text-sm hover:bg-zinc-200 transition-all"
+            >
               Create Your First Playlist
             </button>
           </div>
         )}
-      </div>
+        <CreatePlaylistModal 
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSubmit={async (data) => {
+          await createPlaylist(data);
+          getAllPlaylists();
+        }}
+      />
+    </div>
     </div>
   );
 };

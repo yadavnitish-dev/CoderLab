@@ -330,7 +330,7 @@ const ProblemPage = () => {
       <header className="h-14 border-b border-zinc-800 bg-[#0d0d0d] px-4 flex items-center justify-between shrink-0">
         <div className="flex items-center gap-4">
           <Link
-            to="/explore"
+            to="/roadmap"
             className="p-2 text-zinc-500 hover:text-white hover:bg-zinc-800 rounded-sm transition-all border border-transparent hover:border-zinc-700"
           >
             <ArrowLeft className="size-4" />
