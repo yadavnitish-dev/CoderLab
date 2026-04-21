@@ -126,9 +126,32 @@ jobs:
 
             echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u "${{ secrets.GHCR_USERNAME }}" --password-stdin
 
+            # Generate .env file from GitHub Secrets
+            cat <<EOF > backend/.env
+            PORT=8080
+            FRONTEND_URL=${{ secrets.FRONTEND_URL }}
+            DATABASE_URL=${{ secrets.DATABASE_URL }}
+            JWT_SECRET=${{ secrets.JWT_SECRET }}
+            JDOODLE_CLIENT_ID=${{ secrets.JDOODLE_CLIENT_ID }}
+            JDOODLE_CLIENT_SECRET=${{ secrets.JDOODLE_CLIENT_SECRET }}
+
+            GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}
+            GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}
+            GOOGLE_CALLBACK_URL=${{ secrets.GOOGLE_CALLBACK_URL }}
+
+            GITHUB_CLIENT_ID=${{ secrets.GH_CLIENT_ID }}
+            GITHUB_CLIENT_SECRET=${{ secrets.GH_CLIENT_SECRET }}
+            GITHUB_CALLBACK_URL=${{ secrets.GH_CALLBACK_URL }}
+
+            RESEND_API_KEY=${{ secrets.RESEND_API_KEY }}
+            EOF
+
+            # Clean up indentation in .env
+            sed -i 's/^[[:space:]]*//' backend/.env
+
             export BACKEND_IMAGE
             export FRONTEND_IMAGE
 
             docker compose pull
             docker compose up -d --remove-orphans
-            docker image prune -f
+            docker image prune -af

@@ -1,11 +1,23 @@
 import { Resend } from "resend";
 
 /**
- * Email Utility
- * Handles sending verification and password reset emails using Resend SDK
+ * Resend Client Instance
+ * Initialized lazily to prevent startup crashes if the API key is missing.
  */
+let resendInstance: Resend | null = null;
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const getResendClient = () => {
+  if (resendInstance) return resendInstance;
+
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey || apiKey === "re_123456789") {
+    console.warn("⚠️ [SECURITY] RESEND_API_KEY is missing or using default. Email protocols are disabled.");
+    return null;
+  }
+
+  resendInstance = new Resend(apiKey);
+  return resendInstance;
+};
 
 const APP_NAME = "AlgoPrep";
 const BRAND_COLOR = "#10b981"; // Emerald-500
@@ -55,6 +67,12 @@ export const sendVerificationEmail = async (email: string, token: string) => {
   `;
 
   try {
+    const resend = getResendClient();
+    if (!resend) {
+      console.error("❌ Identity Protocol Error: Resend client not initialized. verification-link-not-sent");
+      return null;
+    }
+
     const { data, error } = await resend.emails.send({
       from: FROM_EMAIL,
       to: email,
@@ -114,6 +132,12 @@ export const sendPasswordResetEmail = async (email: string, token: string) => {
   `;
 
   try {
+    const resend = getResendClient();
+    if (!resend) {
+      console.error("❌ Recovery Protocol Error: Resend client not initialized. reset-link-not-sent");
+      return null;
+    }
+
     const { data, error } = await resend.emails.send({
       from: FROM_EMAIL,
       to: email,
