@@ -92,12 +92,26 @@ jobs:
 
       - name: Deploy over SSH
         uses: appleboy/ssh-action@v1.2.0
+        env:
+          FRONTEND_URL: ${{ secrets.FRONTEND_URL }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          JDOODLE_CLIENT_ID: ${{ secrets.JDOODLE_CLIENT_ID }}
+          JDOODLE_CLIENT_SECRET: ${{ secrets.JDOODLE_CLIENT_SECRET }}
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+          GOOGLE_CALLBACK_URL: ${{ secrets.GOOGLE_CALLBACK_URL }}
+          GH_CLIENT_ID: ${{ secrets.GH_CLIENT_ID }}
+          GH_CLIENT_SECRET: ${{ secrets.GH_CLIENT_SECRET }}
+          GH_CALLBACK_URL: ${{ secrets.GH_CALLBACK_URL }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script_stop: true
           command_timeout: 30m
+          envs: FRONTEND_URL,DATABASE_URL,JWT_SECRET,JDOODLE_CLIENT_ID,JDOODLE_CLIENT_SECRET,GOOGLE_CLIENT_ID,GOOGLE_CLIENT_SECRET,GOOGLE_CALLBACK_URL,GH_CLIENT_ID,GH_CLIENT_SECRET,GH_CALLBACK_URL,RESEND_API_KEY
           script: |
             set -euo pipefail
 
@@ -126,24 +140,24 @@ jobs:
 
             echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u "${{ secrets.GHCR_USERNAME }}" --password-stdin
 
-            # Generate .env file from GitHub Secrets
+            # Generate .env file from environment variables passed via SSH
             cat <<EOF > backend/.env
             PORT=8080
-            FRONTEND_URL=${{ secrets.FRONTEND_URL }}
-            DATABASE_URL=${{ secrets.DATABASE_URL }}
-            JWT_SECRET=${{ secrets.JWT_SECRET }}
-            JDOODLE_CLIENT_ID=${{ secrets.JDOODLE_CLIENT_ID }}
-            JDOODLE_CLIENT_SECRET=${{ secrets.JDOODLE_CLIENT_SECRET }}
+            FRONTEND_URL=$FRONTEND_URL
+            DATABASE_URL=$DATABASE_URL
+            JWT_SECRET=$JWT_SECRET
+            JDOODLE_CLIENT_ID=$JDOODLE_CLIENT_ID
+            JDOODLE_CLIENT_SECRET=$JDOODLE_CLIENT_SECRET
 
-            GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}
-            GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}
-            GOOGLE_CALLBACK_URL=${{ secrets.GOOGLE_CALLBACK_URL }}
+            GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID
+            GOOGLE_CLIENT_SECRET=$GOOGLE_CLIENT_SECRET
+            GOOGLE_CALLBACK_URL=$GOOGLE_CALLBACK_URL
 
-            GITHUB_CLIENT_ID=${{ secrets.GH_CLIENT_ID }}
-            GITHUB_CLIENT_SECRET=${{ secrets.GH_CLIENT_SECRET }}
-            GITHUB_CALLBACK_URL=${{ secrets.GH_CALLBACK_URL }}
+            GITHUB_CLIENT_ID=$GH_CLIENT_ID
+            GITHUB_CLIENT_SECRET=$GH_CLIENT_SECRET
+            GITHUB_CALLBACK_URL=$GH_CALLBACK_URL
 
-            RESEND_API_KEY=${{ secrets.RESEND_API_KEY }}
+            RESEND_API_KEY=$RESEND_API_KEY
             EOF
 
             # Clean up indentation in .env
