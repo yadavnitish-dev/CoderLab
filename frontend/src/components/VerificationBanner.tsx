@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { ShieldAlert, Send, Loader2, X } from "lucide-react";
 import { useAuthStore } from "../store/useAuthStore";
-import toast from "react-hot-toast";
 
 /**
  * Verification Banner Component

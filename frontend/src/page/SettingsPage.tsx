@@ -73,7 +73,7 @@ const SettingsPage: FC = () => {
     setIsDeleting(true);
     try {
       await deleteAccount();
-    } catch (error) {
+    } catch {
       setIsDeleting(false);
       setShowConfirmModal(false);
     }

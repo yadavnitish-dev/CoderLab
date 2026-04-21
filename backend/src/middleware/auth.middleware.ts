@@ -3,6 +3,7 @@ import { Request, Response, NextFunction } from "express";
 import { db } from "../libs/db.js";
 
 declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Express {
     interface User {
       id: string;

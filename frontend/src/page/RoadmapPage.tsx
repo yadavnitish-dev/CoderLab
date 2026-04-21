@@ -4,16 +4,16 @@ import { Loader2, ArrowLeft } from "lucide-react";
 import ProblemTable from "../components/ProblemTable";
 import NC150Roadmap from "../components/NC150Roadmap";
 
+const NC_CATEGORIES = [
+  "Arrays & Hashing", "Two Pointers", "Sliding Window", "Stack", "Binary Search",
+  "Linked List", "Trees", "Tries", "Heap / Priority Queue", "Backtracking",
+  "Graphs", "Advanced Graphs", "1-D Dynamic Programming", "2-D Dynamic Programming",
+  "Greedy", "Intervals", "Math & Geometry", "Bit Manipulation"
+];
+
 const RoadmapPage = () => {
   const { getAllProblems, problems, isProblemsLoading, solvedProblems, getSolvedProblemByUser } = useProblemStore();
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-
-  const NC_CATEGORIES = [
-    "Arrays & Hashing", "Two Pointers", "Sliding Window", "Stack", "Binary Search",
-    "Linked List", "Trees", "Tries", "Heap / Priority Queue", "Backtracking",
-    "Graphs", "Advanced Graphs", "1-D Dynamic Programming", "2-D Dynamic Programming",
-    "Greedy", "Intervals", "Math & Geometry", "Bit Manipulation"
-  ];
 
   useEffect(() => {
     getAllProblems();

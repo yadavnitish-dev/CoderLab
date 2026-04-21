@@ -95,6 +95,7 @@ const ProblemPage = () => {
 
   useEffect(() => {
     if (problem) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setCode(
         problem.codeSnippets?.[selectedLanguage] ||
           "",
@@ -107,7 +108,6 @@ const ProblemPage = () => {
       setUserTestCases(cases);
     }
     // We only want to initialize code when problem or language changes
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [problem, selectedLanguage]);
 
   useEffect(() => {

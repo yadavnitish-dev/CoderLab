@@ -1,9 +1,7 @@
-import React from "react";
 import { useForm } from "react-hook-form";
 import { useSearchParams, Link, useNavigate } from "react-router-dom";
-import { Lock, ArrowLeft, Loader2, ShieldCheck } from "lucide-react";
+import { Lock, Loader2, ShieldCheck } from "lucide-react";
 import { useAuthStore } from "../store/useAuthStore";
-import toast from "react-hot-toast";
 
 /**
  * Reset Password Page
@@ -16,6 +14,7 @@ const ResetPasswordPage = () => {
   const { resetPassword, isLoggingIn } = useAuthStore();
 
   const { register, handleSubmit, formState: { errors }, watch } = useForm();
+  // eslint-disable-next-line react-hooks/incompatible-library
   const password = watch("password");
 
   const onSubmit = async (data: any) => {
