@@ -294,7 +294,7 @@ const DashboardPage = () => {
               </div>
 
               <Link
-                to="/explore"
+                to="/roadmap"
                 className="mt-8 flex items-center justify-center gap-2 w-full py-4 bg-white text-black rounded-sm text-xs font-bold hover:bg-zinc-200 transition-all"
               >
                 <Zap className="size-3.5" />

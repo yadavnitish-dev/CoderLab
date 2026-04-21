@@ -40,7 +40,7 @@ const Footer = () => {
               <h4 className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-zinc-600">Workspace</h4>
               <ul className="space-y-3">
                 <li>
-                  <Link to="/explore" className="text-sm text-zinc-500 hover:text-white transition-colors flex items-center gap-2 group">
+                  <Link to="/roadmap" className="text-sm text-zinc-500 hover:text-white transition-colors flex items-center gap-2 group">
                     <span className="size-1 rounded-full bg-zinc-800 group-hover:bg-emerald-500 transition-colors"></span>
                     Problems
                   </Link>

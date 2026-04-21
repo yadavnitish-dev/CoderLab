@@ -134,7 +134,7 @@ const PlaylistPage = () => {
               library to add problems.
             </p>
             <Link
-              to="/explore"
+              to="/roadmap"
               className="bg-white text-black px-8 py-3 rounded-sm font-bold text-sm hover:bg-zinc-200 transition-all"
             >
               Browse Problems

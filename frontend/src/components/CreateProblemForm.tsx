@@ -127,7 +127,7 @@ const CreateProblemForm = () => {
         } catch (error) {
           console.error("Error fetching problem:", error);
           toast.error("Failed to load problem");
-          navigation("/explore");
+          navigation("/roadmap");
         }
       };
       fetchProblem();
@@ -179,7 +179,7 @@ const CreateProblemForm = () => {
         toast.success(res.data.message || "Problem Created successfully⚡");
       }
 
-      navigation("/explore");
+      navigation("/roadmap");
     } catch (error) {
       console.log(error);
       toast.error(
