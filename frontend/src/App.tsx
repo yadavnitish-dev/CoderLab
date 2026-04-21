@@ -17,6 +17,9 @@ import SettingsPage from "./page/SettingsPage";
 import DashboardPage from "./page/DashboardPage";
 import PlaylistPage from "./page/PlaylistPage";
 import PlaylistsPage from "./page/PlaylistsPage";
+import VerifyEmailPage from "./page/VerifyEmailPage";
+import ForgotPasswordPage from "./page/ForgotPasswordPage";
+import ResetPasswordPage from "./page/ResetPasswordPage";
 
 const App = () => {
   const { authUser, checkAuth, isCheckingAuth } = useAuthStore();
@@ -72,6 +75,21 @@ const App = () => {
         <Route
           path="/signup"
           element={!authUser ? <SignUpPage /> : <Navigate to={"/"} />}
+        />
+
+        <Route
+          path="/forgot-password"
+          element={!authUser ? <ForgotPasswordPage /> : <Navigate to={"/"} />}
+        />
+
+        <Route
+          path="/reset-password"
+          element={!authUser ? <ResetPasswordPage /> : <Navigate to={"/"} />}
+        />
+
+        <Route
+          path="/verify-email"
+          element={<VerifyEmailPage />}
         />
 
         <Route

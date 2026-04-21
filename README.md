@@ -15,13 +15,14 @@ AlgoPrep is a full-stack competitive programming platform where users solve codi
 
 ## Features
 
-- 🔐 **Secure Authentication** with JWT (HTTP-only cookies) and **OAuth 2.0** (Google/GitHub)
+- 🔐 **Secure Authentication** with JWT (HTTP-only cookies), **OAuth 2.0** (Google/GitHub), and **Email Verification**.
+- 🛠️ **Account Resilience**: Self-service **Password Recovery** via secure recovery tokens.
 - 📚 **Roadmap Mastery** with curated categories and progress tracking
 - ⚡ **Code Execution** for Python, Java, JavaScript, TypeScript, and C++ (via JDoodle API)
 - 📊 **Submission History** with per-testcase results
 - 📁 **Playlists** for organizing problems
 - 🎨 **Modern UI** with React, Monaco editor, and TailwindCSS
-- 🛡️ **Security Features**: Rate limiting, input validation, security headers
+- 🛡️ **Security Features**: Rate limiting, input validation, security headers, and **Strict Verification Enforcement**.
 
 ## Security Features
 
@@ -83,14 +84,10 @@ JWT_SECRET=replace_this
 JDOODLE_CLIENT_ID=your_client_id
 JDOODLE_CLIENT_SECRET=your_client_secret
 
-# OAuth Credentials (See OAUTH_SETUP_GUIDE.md)
-GOOGLE_CLIENT_ID=...
-GOOGLE_CLIENT_SECRET=...
-GITHUB_CLIENT_ID=...
-GITHUB_CLIENT_SECRET=...
-```
-
-For detailed instructions on generating OAuth keys, see the **[OAuth Setup Guide](file:///Users/nitish/.gemini/antigravity/brain/dec500f0-228c-4717-81c3-9a8d8f493c18/OAUTH_SETUP_GUIDE.md)**.
+# OAuth & Email Configuration
+See the dedicated guides for generating secure credentials:
+- **[OAuth Setup Guide](file:///Users/nitish/.gemini/antigravity/brain/dec500f0-228c-4717-81c3-9a8d8f493c18/OAUTH_SETUP_GUIDE.md)**
+- **[Resend Setup Guide](file:///Users/nitish/.gemini/antigravity/brain/dec500f0-228c-4717-81c3-9a8d8f493c18/RESEND_SETUP_GUIDE.md)**
 
 Then run:
 

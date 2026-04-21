@@ -108,11 +108,21 @@ const LoginPage = () => {
                   )}
                 </button>
               </div>
-              {errors.password && (
-                <p className="text-rose-500 text-[10px] font-bold uppercase tracking-wider ml-1">
-                  {errors.password.message}
-                </p>
-              )}
+              <div className="flex justify-between items-center px-1">
+                {errors.password ? (
+                  <p className="text-rose-500 text-[10px] font-bold uppercase tracking-wider">
+                    {errors.password.message}
+                  </p>
+                ) : (
+                  <div />
+                )}
+                <Link
+                  to="/forgot-password"
+                  className="text-[10px] font-mono font-bold uppercase tracking-widest text-zinc-600 hover:text-white transition-colors"
+                >
+                  Forgot Password?
+                </Link>
+              </div>
             </div>
 
             <BrutalistButton

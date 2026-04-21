@@ -39,6 +39,23 @@ export const updatePasswordSchema = z.object({
     .regex(/[0-9]/, "Password must contain at least one number"),
 });
 
+export const forgotPasswordSchema = z.object({
+  email: z.string().email("Invalid email format").trim().toLowerCase(),
+});
+
+export const resetPasswordSchema = z.object({
+  token: z.string().min(1, "Token is required"),
+  password: z
+    .string()
+    .min(6, "Password must be at least 6 characters")
+    .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
+    .regex(/[0-9]/, "Password must contain at least one number"),
+});
+
+export const verifyEmailSchema = z.object({
+  token: z.string().min(1, "Token is required"),
+});
+
 // ============ PROBLEM SCHEMAS ============
 
 export const createProblemSchema = z.object({
@@ -116,6 +133,9 @@ export type RegisterInput = z.infer<typeof registerSchema>;
 export type LoginInput = z.infer<typeof loginSchema>;
 export type UpdateProfileInput = z.infer<typeof updateProfileSchema>;
 export type UpdatePasswordInput = z.infer<typeof updatePasswordSchema>;
+export type ForgotPasswordInput = z.infer<typeof forgotPasswordSchema>;
+export type ResetPasswordInput = z.infer<typeof resetPasswordSchema>;
+export type VerifyEmailInput = z.infer<typeof verifyEmailSchema>;
 export type CreateProblemInput = z.infer<typeof createProblemSchema>;
 export type UpdateProblemInput = z.infer<typeof updateProblemSchema>;
 export type CreatePlaylistInput = z.infer<typeof createPlaylistSchema>;

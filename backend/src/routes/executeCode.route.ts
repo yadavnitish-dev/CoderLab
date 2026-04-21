@@ -1,5 +1,6 @@
 import express from "express";
 import { authMiddleware } from "../middleware/auth.middleware.js";
+import { isVerified } from "../middleware/verified.middleware.js";
 import { sanitizeInputs } from "../middleware/validation.middleware.js";
 import { codeExecutionLimiter } from "../middleware/rateLimiter.middleware.js";
 import { executeCode } from "../controllers/executeCode.controller.js";
@@ -13,6 +14,7 @@ executionRoutes.post(
   "/",
   largePayloadMiddleware,
   authMiddleware,
+  isVerified,
   codeExecutionLimiter,
   sanitizeInputs,
   executeCode,

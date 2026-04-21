@@ -12,6 +12,7 @@ export interface User {
   email: string;
   role: "ADMIN" | "USER";
   image?: string;
+  isVerified: boolean;
   createdAt: string;
   updatedAt: string;
 }

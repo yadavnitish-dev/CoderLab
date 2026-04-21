@@ -6,6 +6,10 @@ import {
   register,
   updatePassword,
   updateProfile,
+  verifyEmail,
+  resendVerification,
+  forgotPassword,
+  resetPassword,
 } from "../controllers/auth.controller.js";
 import { authMiddleware } from "../middleware/auth.middleware.js";
 import { sanitizeInputs } from "../middleware/validation.middleware.js";
@@ -42,5 +46,12 @@ authRoutes.put(
   sanitizeInputs,
   updatePassword,
 );
+
+// --- Auth Resilience Routes ---
+authRoutes.get("/verify-email", verifyEmail);
+authRoutes.post("/resend-verification", authMiddleware, resendVerification);
+authRoutes.post("/forgot-password", sanitizeInputs, forgotPassword);
+authRoutes.post("/reset-password", sanitizeInputs, resetPassword);
+
 
 export default authRoutes;

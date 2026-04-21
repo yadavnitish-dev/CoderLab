@@ -26,6 +26,7 @@ import { useProblemStore } from "../store/useProblemStore";
 import { getLanguageId } from "../lib/lang";
 import { useExecutionStore } from "../store/useExecutionStore";
 import { useSubmissionStore } from "../store/useSubmissionStore";
+import { useAuthStore } from "../store/useAuthStore";
 import SubmissionsList from "../components/SubmissionList";
 import SubmissionResults from "../components/Submission";
 import BrutalistSelect from "../components/BrutalistSelect";
@@ -43,6 +44,7 @@ const ProblemPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { getProblemById, problem, isProblemLoading } = useProblemStore();
+  const { authUser } = useAuthStore();
 
   const {
     submissions,
@@ -523,8 +525,9 @@ const ProblemPage = () => {
               <div className="flex items-center gap-2">
                 <button
                   onClick={handleRunCode}
-                  disabled={isRunning || isSubmitting}
-                  className="flex items-center gap-2 px-4 py-1.5 rounded-sm text-xs font-bold text-zinc-400 hover:text-white border border-zinc-800 bg-black hover:bg-zinc-900 transition-all disabled:opacity-30"
+                  disabled={isRunning || isSubmitting || !authUser?.isVerified}
+                  title={!authUser?.isVerified ? "Protocol Restricted: Verify identity to run code" : ""}
+                  className="flex items-center gap-2 px-4 py-1.5 rounded-sm text-xs font-bold text-zinc-400 hover:text-white border border-zinc-800 bg-black hover:bg-zinc-900 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
                 >
                   {isRunning ? (
                     <Loader2 className="size-3.5 animate-spin" />
@@ -546,8 +549,9 @@ const ProblemPage = () => {
 
                 <button
                   onClick={handleSubmit}
-                  disabled={isRunning || isSubmitting}
-                  className="flex items-center justify-center gap-2 px-6 py-1.5 rounded-sm text-xs font-bold bg-white text-black hover:bg-zinc-200 transition-all disabled:opacity-30 min-w-20"
+                  disabled={isRunning || isSubmitting || !authUser?.isVerified}
+                  title={!authUser?.isVerified ? "Protocol Restricted: Verify identity to submit code" : ""}
+                  className="flex items-center justify-center gap-2 px-6 py-1.5 rounded-sm text-xs font-bold bg-white text-black hover:bg-zinc-200 transition-all disabled:opacity-30 disabled:cursor-not-allowed min-w-20"
                 >
                   {isSubmitting ? (
                     <Loader2 className="size-3.5 animate-spin" />

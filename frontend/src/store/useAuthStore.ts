@@ -17,6 +17,10 @@ interface AuthState {
   logout: () => Promise<void>;
   updateProfile: (data: any) => Promise<void>;
   updatePassword: (data: any) => Promise<void>;
+  verifyEmail: (token: string) => Promise<void>;
+  resendVerification: () => Promise<void>;
+  forgotPassword: (email: string) => Promise<void>;
+  resetPassword: (data: any) => Promise<void>;
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
@@ -109,6 +113,52 @@ export const useAuthStore = create<AuthState>((set) => ({
       toast.error(error.response?.data?.error || "Error updating password");
     } finally {
       set({ isUpdatingProfile: false });
+    }
+  },
+
+  verifyEmail: async (token) => {
+    set({ isCheckingAuth: true });
+    try {
+      const res = await axiosInstance.get(`/auth/verify-email?token=${token}`);
+      toast.success(res.data.message);
+      // Refresh user state after verification
+      const checkRes = await axiosInstance.get("/auth/check");
+      set({ authUser: checkRes.data.user });
+    } catch (error: any) {
+      console.log("Error verifying email", error);
+      toast.error(error.response?.data?.error || "Verification failed");
+    } finally {
+      set({ isCheckingAuth: false });
+    }
+  },
+
+  resendVerification: async () => {
+    try {
+      const res = await axiosInstance.post("/auth/resend-verification");
+      toast.success(res.data.message);
+    } catch (error: any) {
+      console.log("Error resending verification", error);
+      toast.error(error.response?.data?.error || "Failed to resend link");
+    }
+  },
+
+  forgotPassword: async (email: string) => {
+    try {
+      const res = await axiosInstance.post("/auth/forgot-password", { email });
+      toast.success(res.data.message);
+    } catch (error: any) {
+      console.log("Error requesting reset", error);
+      toast.error(error.response?.data?.error || "Error requesting reset");
+    }
+  },
+
+  resetPassword: async (data: any) => {
+    try {
+      const res = await axiosInstance.post("/auth/reset-password", data);
+      toast.success(res.data.message);
+    } catch (error: any) {
+      console.log("Error resetting password", error);
+      toast.error(error.response?.data?.error || "Error resetting password");
     }
   },
 }));
