@@ -22,7 +22,7 @@ const HomePage = () => {
               </div>
 
               <h1 className="text-6xl md:text-7xl font-bold tracking-tighter text-white mb-8 leading-[1.1]">
-                The laboratory for <span className="text-zinc-600">algorithmic evolution.</span>
+                The laboratory for <span className="text-zinc-600">algorithm mastery.</span>
               </h1>
 
               <p className="text-lg text-zinc-400 max-w-xl mb-12 leading-relaxed">
@@ -164,7 +164,7 @@ const HomePage = () => {
                 <span className="relative inline-flex rounded-sm h-2 w-2 bg-emerald-500"></span>
               </span>
               <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-zinc-400">
-                Awaiting Connection...
+                Ready to start?
               </span>
             </div>
             
@@ -205,18 +205,18 @@ const HomePage = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
               {
-                title: "Curated Mastery Tracks",
+                title: "Curated Roadmaps",
                 desc: "Hand-picked algorithm challenges spanning core Data Structures to advanced Dynamic Programming. Engineered for maximum depth.",
                 icon: BookOpen,
               },
               {
-                title: "Batched Runtime Engine",
-                desc: "Execute entire test suites in a single high-performance run. Precision tracking for latency and memory allocation at the kernel level.",
+                title: "Fast Code Execution",
+                desc: "Execute entire test suites in a single high-performance run. Precision tracking for latency and memory usage.",
                 icon: Cpu,
               },
               {
-                title: "Quantitative Progression",
-                desc: "Visualize your growth with Skill Radar charts and GitHub-style heatmaps. Data-driven insights to identify and bridges gaps.",
+                title: "Progress Analytics",
+                desc: "Visualize your growth with Skill Radar charts and heatmaps. Data-driven insights to identify and bridge gaps.",
                 icon: BarChart3,
               },
             ].map((feature, i) => (
