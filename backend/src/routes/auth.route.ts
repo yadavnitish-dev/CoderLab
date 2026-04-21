@@ -10,6 +10,7 @@ import {
   resendVerification,
   forgotPassword,
   resetPassword,
+  deleteAccount,
 } from "../controllers/auth.controller.js";
 import { authMiddleware } from "../middleware/auth.middleware.js";
 import { sanitizeInputs } from "../middleware/validation.middleware.js";
@@ -53,5 +54,6 @@ authRoutes.post("/resend-verification", authMiddleware, resendVerification);
 authRoutes.post("/forgot-password", sanitizeInputs, forgotPassword);
 authRoutes.post("/reset-password", sanitizeInputs, resetPassword);
 
+authRoutes.delete("/delete-account", authMiddleware, deleteAccount);
 
 export default authRoutes;

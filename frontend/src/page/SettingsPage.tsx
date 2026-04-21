@@ -8,7 +8,9 @@ import {
   Settings as SettingsIcon, 
   Shield,
   Save,
-  Loader2
+  Loader2,
+  Trash2,
+  AlertTriangle
 } from "lucide-react";
 import { useAuthStore } from "../store/useAuthStore";
 import BrutalistButton from "../components/BrutalistButton";
@@ -30,8 +32,10 @@ type ProfileFormData = z.infer<typeof ProfileSchema>;
 type PasswordFormData = z.infer<typeof PasswordSchema>;
 
 const SettingsPage: FC = () => {
-  const { authUser, updateProfile, updatePassword, isUpdatingProfile } = useAuthStore();
-  const [activeTab, setActiveTab] = useState<"profile" | "security">("profile");
+  const { authUser, updateProfile, updatePassword, isUpdatingProfile, deleteAccount } = useAuthStore();
+  const [activeTab, setActiveTab] = useState<"profile" | "security" | "danger">("profile");
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   const {
     register: registerProfile,
@@ -63,6 +67,16 @@ const SettingsPage: FC = () => {
       newPassword: data.newPassword,
     });
     resetPassword();
+  };
+
+  const handleDeleteAccount = async () => {
+    setIsDeleting(true);
+    try {
+      await deleteAccount();
+    } catch (error) {
+      setIsDeleting(false);
+      setShowConfirmModal(false);
+    }
   };
 
   return (
@@ -107,6 +121,17 @@ const SettingsPage: FC = () => {
               <Shield className="size-4" />
               Security
             </button>
+            <button
+              onClick={() => setActiveTab("danger")}
+              className={`w-full flex items-center gap-3 px-4 py-3 border transition-all text-sm font-bold uppercase tracking-widest ${
+                activeTab === "danger"
+                  ? "bg-zinc-900 border-zinc-700 text-rose-500"
+                  : "bg-black border-transparent text-zinc-500 hover:bg-zinc-900 hover:text-rose-400"
+              }`}
+            >
+              <Trash2 className="size-4" />
+              Danger Zone
+            </button>
           </div>
 
           {/* Main Form Content */}
@@ -148,7 +173,7 @@ const SettingsPage: FC = () => {
                     </BrutalistButton>
                   </div>
                 </form>
-              ) : (
+              ) : activeTab === "security" ? (
                 <form onSubmit={handleSubmitPassword(onPasswordSubmit)} className="space-y-8 animate-in fade-in duration-500">
                   <div className="space-y-6">
                     <div className="space-y-2">
@@ -227,11 +252,78 @@ const SettingsPage: FC = () => {
                     </BrutalistButton>
                   </div>
                 </form>
+              ) : (
+                <div className="space-y-8 animate-in fade-in duration-500">
+                  <div className="p-6 border border-rose-900/50 bg-rose-950/10 rounded-sm space-y-4">
+                    <div className="flex items-center gap-3 text-rose-500">
+                      <AlertTriangle className="size-5" />
+                      <h3 className="font-bold uppercase tracking-widest text-sm">Critical Action: Account Termination</h3>
+                    </div>
+                    <p className="text-zinc-400 text-sm leading-relaxed font-mono">
+                      Proceeding with this action will permanently purge your identity from the grid. 
+                      All solve records, code submissions, and personalized playlists will be irreversibly deleted. 
+                      This operation cannot be undone.
+                    </p>
+                    <div className="pt-4">
+                      <BrutalistButton
+                        variant="primary"
+                        onClick={() => setShowConfirmModal(true)}
+                        className="bg-rose-600 hover:bg-rose-500 border-rose-700 text-white"
+                        icon={Trash2}
+                      >
+                        Terminate Account
+                      </BrutalistButton>
+                    </div>
+                  </div>
+                </div>
               )}
             </div>
           </div>
         </div>
       </div>
+
+      {/* Confirmation Modal */}
+      {showConfirmModal && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" onClick={() => !isDeleting && setShowConfirmModal(false)}></div>
+          <div className="relative w-full max-w-md bg-zinc-950 border border-zinc-800 p-8 shadow-2xl animate-in zoom-in duration-300">
+            <div className="flex items-center gap-4 mb-6">
+              <div className="bg-rose-950/30 p-3 rounded-full">
+                <AlertTriangle className="size-6 text-rose-500" />
+              </div>
+              <h2 className="text-xl font-bold text-white uppercase tracking-tighter">Confirm Deletion</h2>
+            </div>
+            
+            <p className="text-zinc-400 text-sm mb-8 font-mono leading-relaxed">
+              Are you absolutely certain? This is the point of no return. Your data will be wiped from our nodes permanently.
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-4">
+              <button
+                disabled={isDeleting}
+                onClick={() => setShowConfirmModal(false)}
+                className="flex-1 px-6 py-3 border border-zinc-800 text-zinc-400 text-sm font-bold uppercase tracking-widest hover:bg-zinc-900 hover:text-white transition-all disabled:opacity-50"
+              >
+                Abort
+              </button>
+              <button
+                disabled={isDeleting}
+                onClick={handleDeleteAccount}
+                className="flex-1 px-6 py-3 bg-rose-600 border border-rose-700 text-white text-sm font-bold uppercase tracking-widest hover:bg-rose-500 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+              >
+                {isDeleting ? (
+                  <>
+                    <Loader2 className="size-4 animate-spin" />
+                    Purging...
+                  </>
+                ) : (
+                  "Confirm Purge"
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

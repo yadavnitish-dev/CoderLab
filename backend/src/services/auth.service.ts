@@ -279,6 +279,25 @@ export class AuthService {
   }
 
   /**
+   * Delete user account and all associated data
+   */
+  async deleteAccount(userId: string): Promise<void> {
+    if (!userId) {
+      throw new UnauthorizedError();
+    }
+
+    const user = await db.user.findUnique({ where: { id: userId } });
+    if (!user) {
+      throw new NotFoundError("User");
+    }
+
+    // Cascade delete is handled by Prisma schema (onDelete: Cascade)
+    await db.user.delete({
+      where: { id: userId },
+    });
+  }
+
+  /**
    * Format user response
    */
   private formatUserResponse(user: any): UserResponse {

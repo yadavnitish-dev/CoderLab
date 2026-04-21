@@ -201,6 +201,28 @@ export const resetPassword = async (req: Request, res: Response): Promise<void> 
   }
 };
 
+export const deleteAccount = async (
+  req: AuthenticatedRequest,
+  res: Response,
+): Promise<void> => {
+  try {
+    if (!req.user?.id) {
+      res.status(401).json({ error: "Unauthorized" });
+      return;
+    }
+
+    await authService.deleteAccount(req.user.id);
+    clearCookie(res);
+
+    res.status(200).json({
+      success: true,
+      message: "Account terminated. Data purge complete.",
+    });
+  } catch (error) {
+    handleAuthError(error, res);
+  }
+};
+
 /**
  * Centralized error handler for auth controller
  */

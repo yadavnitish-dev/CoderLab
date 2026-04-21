@@ -21,6 +21,7 @@ interface AuthState {
   resendVerification: () => Promise<void>;
   forgotPassword: (email: string) => Promise<void>;
   resetPassword: (data: any) => Promise<void>;
+  deleteAccount: () => Promise<void>;
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
@@ -159,6 +160,17 @@ export const useAuthStore = create<AuthState>((set) => ({
     } catch (error: any) {
       console.log("Error resetting password", error);
       toast.error(error.response?.data?.error || "Error resetting password");
+    }
+  },
+  deleteAccount: async () => {
+    try {
+      const res = await axiosInstance.delete("/auth/delete-account");
+      set({ authUser: null });
+      toast.success(res.data.message);
+    } catch (error: any) {
+      console.log("Error deleting account", error);
+      toast.error(error.response?.data?.error || "Error deleting account");
+      throw error;
     }
   },
 }));
