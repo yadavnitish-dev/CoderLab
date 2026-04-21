@@ -92,7 +92,7 @@ const SettingsPage: FC = () => {
             <SettingsIcon className="size-6 text-white" />
           </div>
           <div>
-            <h1 className="text-3xl font-bold text-white tracking-tight">System Configuration</h1>
+            <h1 className="text-3xl font-bold text-white tracking-tight">Settings</h1>
           </div>
         </div>
 
@@ -142,14 +142,14 @@ const SettingsPage: FC = () => {
                   <div className="space-y-6">
                     <div className="space-y-2">
                       <label className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-zinc-500 ml-1">
-                        Display Identity
+                        Display Name
                       </label>
                       <div className="relative group">
                         <UserIcon className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-zinc-600 group-focus-within:text-emerald-500/50 transition-colors" />
                         <input
                           {...registerProfile("name")}
                           className={`w-full bg-[#050505] border ${profileErrors.name ? "border-rose-500/50" : "border-zinc-800"} rounded-sm py-3 pl-10 pr-4 text-sm text-zinc-200 focus:outline-none focus:border-emerald-500/50 transition-all font-mono`}
-                          placeholder="Your identity name"
+                          placeholder="Your name"
                         />
                       </div>
                       {profileErrors.name && (
@@ -257,11 +257,11 @@ const SettingsPage: FC = () => {
                   <div className="p-6 border border-rose-900/50 bg-rose-950/10 rounded-sm space-y-4">
                     <div className="flex items-center gap-3 text-rose-500">
                       <AlertTriangle className="size-5" />
-                      <h3 className="font-bold uppercase tracking-widest text-sm">Critical Action: Account Termination</h3>
+                      <h3 className="font-bold uppercase tracking-widest text-sm">Delete Account</h3>
                     </div>
                     <p className="text-zinc-400 text-sm leading-relaxed font-mono">
-                      Proceeding with this action will permanently purge your identity from the grid. 
-                      All solve records, code submissions, and personalized playlists will be irreversibly deleted. 
+                      Proceeding with this action will permanently delete your account and all associated data. 
+                      All solve records, code submissions, and playlists will be irreversibly removed. 
                       This operation cannot be undone.
                     </p>
                     <div className="pt-4">
@@ -271,7 +271,7 @@ const SettingsPage: FC = () => {
                         className="bg-rose-600 hover:bg-rose-500 border-rose-700 text-white"
                         icon={Trash2}
                       >
-                        Terminate Account
+                        Delete Account
                       </BrutalistButton>
                     </div>
                   </div>
@@ -314,10 +314,10 @@ const SettingsPage: FC = () => {
                 {isDeleting ? (
                   <>
                     <Loader2 className="size-4 animate-spin" />
-                    Purging...
+                    Deleting...
                   </>
                 ) : (
-                  "Confirm Purge"
+                  "Confirm Deletion"
                 )}
               </button>
             </div>

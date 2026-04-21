@@ -56,7 +56,7 @@ export const useAuthStore = create<AuthState>((set) => ({
       toast.success(res.data.message);
     } catch (error: any) {
       console.log("Error signing up", error);
-      toast.error(error.response?.data?.error || "Error signing up");
+      toast.error(error.response?.data?.error || "Signup failed");
     } finally {
       set({ isSigninUp: false });
     }
@@ -72,7 +72,7 @@ export const useAuthStore = create<AuthState>((set) => ({
       toast.success(res.data.message);
     } catch (error: any) {
       console.log("Error logging in", error);
-      toast.error(error.response?.data?.error || "Error logging in");
+      toast.error(error.response?.data?.error || "Login failed");
     } finally {
       set({ isLoggingIn: false });
     }
@@ -83,10 +83,10 @@ export const useAuthStore = create<AuthState>((set) => ({
       await axiosInstance.post("/auth/logout");
       set({ authUser: null });
 
-      toast.success("Logout successful");
+      toast.success("Logged out");
     } catch (error) {
       console.log("Error logging out", error);
-      toast.error("Error logging out");
+      toast.error("Logout failed");
     }
   },
 
@@ -98,7 +98,7 @@ export const useAuthStore = create<AuthState>((set) => ({
       toast.success(res.data.message);
     } catch (error: any) {
       console.log("Error updating profile", error);
-      toast.error(error.response?.data?.error || "Error updating profile");
+      toast.error(error.response?.data?.error || "Update failed");
     } finally {
       set({ isUpdatingProfile: false });
     }
@@ -111,7 +111,7 @@ export const useAuthStore = create<AuthState>((set) => ({
       toast.success(res.data.message);
     } catch (error: any) {
       console.log("Error updating password", error);
-      toast.error(error.response?.data?.error || "Error updating password");
+      toast.error(error.response?.data?.error || "Update failed");
     } finally {
       set({ isUpdatingProfile: false });
     }
@@ -121,13 +121,12 @@ export const useAuthStore = create<AuthState>((set) => ({
     set({ isCheckingAuth: true });
     try {
       const res = await axiosInstance.get(`/auth/verify-email?token=${token}`);
+      set({ authUser: res.data.user });
       toast.success(res.data.message);
-      // Refresh user state after verification
-      const checkRes = await axiosInstance.get("/auth/check");
-      set({ authUser: checkRes.data.user });
     } catch (error: any) {
       console.log("Error verifying email", error);
       toast.error(error.response?.data?.error || "Verification failed");
+      set({ authUser: null });
     } finally {
       set({ isCheckingAuth: false });
     }
@@ -139,7 +138,7 @@ export const useAuthStore = create<AuthState>((set) => ({
       toast.success(res.data.message);
     } catch (error: any) {
       console.log("Error resending verification", error);
-      toast.error(error.response?.data?.error || "Failed to resend link");
+      toast.error(error.response?.data?.error || "Failed to send link");
     }
   },
 
@@ -149,7 +148,7 @@ export const useAuthStore = create<AuthState>((set) => ({
       toast.success(res.data.message);
     } catch (error: any) {
       console.log("Error requesting reset", error);
-      toast.error(error.response?.data?.error || "Error requesting reset");
+      toast.error(error.response?.data?.error || "Request failed");
     }
   },
 
@@ -159,7 +158,7 @@ export const useAuthStore = create<AuthState>((set) => ({
       toast.success(res.data.message);
     } catch (error: any) {
       console.log("Error resetting password", error);
-      toast.error(error.response?.data?.error || "Error resetting password");
+      toast.error(error.response?.data?.error || "Reset failed");
     }
   },
   deleteAccount: async () => {
@@ -169,7 +168,7 @@ export const useAuthStore = create<AuthState>((set) => ({
       toast.success(res.data.message);
     } catch (error: any) {
       console.log("Error deleting account", error);
-      toast.error(error.response?.data?.error || "Error deleting account");
+      toast.error(error.response?.data?.error || "Deletion failed");
       throw error;
     }
   },

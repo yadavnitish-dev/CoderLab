@@ -187,7 +187,7 @@ export class AuthService {
   /**
    * Verify email address
    */
-  async verifyEmail(token: string): Promise<void> {
+  async verifyEmail(token: string): Promise<AuthResponse> {
     const user = await db.user.findFirst({
       where: {
         verificationToken: token,
@@ -199,7 +199,7 @@ export class AuthService {
       throw new ValidationError("Invalid or expired verification token");
     }
 
-    await db.user.update({
+    const updatedUser = await db.user.update({
       where: { id: user.id },
       data: {
         isVerified: true,
@@ -207,6 +207,11 @@ export class AuthService {
         verificationTokenExpires: null,
       },
     });
+
+    return {
+      user: this.formatUserResponse(updatedUser),
+      token: generateToken(updatedUser.id),
+    };
   }
 
   /**

@@ -50,7 +50,7 @@ const RoadmapPage = () => {
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div>
               <div className="inline-flex items-center gap-2 px-2 py-0.5 rounded-sm bg-zinc-900 border border-zinc-800 mb-4">
-                <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-emerald-500">Curated Program</span>
+                <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-emerald-500">Roadmap</span>
               </div>
               <h1 className="text-4xl md:text-6xl font-bold tracking-tighter mb-4 text-white uppercase">
                 {selectedCategory ? selectedCategory : "The Roadmap"}
@@ -135,9 +135,7 @@ const RoadmapPage = () => {
               <ProblemTable problems={filteredByCategory} />
             ) : (
               <div className="flex flex-col items-center justify-center py-24 border border-dashed border-zinc-800 rounded-sm bg-[#0a0a0a]">
-                <p className="text-zinc-500 font-bold text-lg uppercase tracking-widest">
-                  Unit: Pending Data
-                </p>
+                  No Problems Found
                 <p className="text-zinc-600 text-sm mt-2">
                   No core challenges have been deployed for this category yet.
                 </p>
@@ -145,7 +143,7 @@ const RoadmapPage = () => {
                   onClick={() => setSelectedCategory(null)}
                   className="mt-6 text-emerald-500 font-mono text-xs hover:underline uppercase tracking-widest"
                 >
-                  Return to Command Center
+                  Return to Roadmap
                 </button>
               </div>
             )}

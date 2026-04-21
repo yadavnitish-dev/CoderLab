@@ -526,7 +526,7 @@ const ProblemPage = () => {
                 <button
                   onClick={handleRunCode}
                   disabled={isRunning || isSubmitting || !authUser?.isVerified}
-                  title={!authUser?.isVerified ? "Protocol Restricted: Verify identity to run code" : ""}
+                  title={!authUser?.isVerified ? "Verify your email to run code" : ""}
                   className="flex items-center gap-2 px-4 py-1.5 rounded-sm text-xs font-bold text-zinc-400 hover:text-white border border-zinc-800 bg-black hover:bg-zinc-900 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
                 >
                   {isRunning ? (
@@ -550,7 +550,7 @@ const ProblemPage = () => {
                 <button
                   onClick={handleSubmit}
                   disabled={isRunning || isSubmitting || !authUser?.isVerified}
-                  title={!authUser?.isVerified ? "Protocol Restricted: Verify identity to submit code" : ""}
+                  title={!authUser?.isVerified ? "Verify your email to submit code" : ""}
                   className="flex items-center justify-center gap-2 px-6 py-1.5 rounded-sm text-xs font-bold bg-white text-black hover:bg-zinc-200 transition-all disabled:opacity-30 disabled:cursor-not-allowed min-w-20"
                 >
                   {isSubmitting ? (

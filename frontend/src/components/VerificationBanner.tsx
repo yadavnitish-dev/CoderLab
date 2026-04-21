@@ -34,11 +34,11 @@ const VerificationBanner: React.FC = () => {
           </div>
           <div>
             <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-500 block leading-none mb-1">
-              Identity Protocol Restricted
+              Email Verification Required
             </span>
             <p className="text-sm text-zinc-300 leading-tight">
-              A verification link was dispatched to <span className="text-white font-mono">{authUser.email}</span>. 
-              Confirm your identity to enable execution nodes.
+              A verification link was sent to <span className="text-white font-mono">{authUser.email}</span>. 
+              Verify your account to enable code execution.
             </p>
           </div>
         </div>

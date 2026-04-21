@@ -61,7 +61,7 @@ export const useExecutionStore = create<ExecutionState>((set) => ({
       toast.success(res.data.message);
     } catch (error) {
       console.log("Error executing code", error);
-      toast.error("Error executing code");
+      toast.error("Execution failed");
     } finally {
       if (mode === "run") {
         set({ isRunning: false });

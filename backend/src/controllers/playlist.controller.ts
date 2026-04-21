@@ -133,7 +133,7 @@ export const addProblemToPlaylist = async (
 
     res.status(201).json({
       success: true,
-      message: "Problems added to playlist successfully",
+      message: "Problem added to playlist",
       result,
     });
   } catch (error) {
@@ -203,7 +203,7 @@ export const removeProblemFromPlaylist = async (
 
     res.status(200).json({
       success: true,
-      message: "Problem removed from playlist successfully",
+      message: "Problem removed from playlist",
     });
   } catch (error) {
     handlePlaylistError(error, res);

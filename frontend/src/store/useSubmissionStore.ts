@@ -45,7 +45,7 @@ export const useSubmissionStore = create<SubmissionState>((set) => ({
     } catch (error) {
       console.log("Error getting submissions for problem", error);
 
-      toast.error("Error getting submissions for problem");
+      toast.error("Failed to load submissions");
     } finally {
       set({ isLoading: false });
     }
@@ -60,7 +60,7 @@ export const useSubmissionStore = create<SubmissionState>((set) => ({
       set({ submissionCount: res.data.count });
     } catch (error) {
       console.log("Error getting submission count for problem", error);
-      toast.error("Error getting submission count for problem");
+      toast.error("Failed to load solve count");
     }
   },
 }));

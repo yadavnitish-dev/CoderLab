@@ -40,7 +40,7 @@ export const usePlaylistStore = create<PlaylistState>((set, get) => ({
         playlists: [...state.playlists, response.data.playlist],
       }));
 
-      toast.success("Playlist created successfully");
+      toast.success("Playlist created");
       return response.data.playList;
     } catch (error: any) {
       console.error("Error creating playlist:", error);
@@ -92,7 +92,7 @@ export const usePlaylistStore = create<PlaylistState>((set, get) => ({
       }
     } catch (error) {
       console.error("Error adding problem to playlist:", error);
-      toast.error("Failed to add problem to playlist");
+      toast.error("Failed to add problem");
     } finally {
       set({ isLoading: false });
     }
@@ -112,7 +112,7 @@ export const usePlaylistStore = create<PlaylistState>((set, get) => ({
       }
     } catch (error) {
       console.error("Error removing problem from playlist:", error);
-      toast.error("Failed to remove problem from playlist");
+      toast.error("Failed to remove problem");
     } finally {
       set({ isLoading: false });
     }
@@ -127,7 +127,7 @@ export const usePlaylistStore = create<PlaylistState>((set, get) => ({
         playlists: state.playlists.filter((p) => p.id !== playlistId),
       }));
 
-      toast.success("Playlist deleted successfully");
+      toast.success("Playlist deleted");
     } catch (error) {
       console.error("Error deleting playlist:", error);
       toast.error("Failed to delete playlist");

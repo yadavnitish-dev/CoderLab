@@ -32,7 +32,7 @@ export const useProblemStore = create<ProblemState>((set) => ({
       set({ problems: res.data.problems });
     } catch (error) {
       console.log("Error getting all problems", error);
-      toast.error("Error in getting problems");
+      toast.error("Failed to load problems");
     } finally {
       set({ isProblemsLoading: false });
     }
@@ -48,7 +48,7 @@ export const useProblemStore = create<ProblemState>((set) => ({
 
     } catch (error) {
       console.log("Error getting problem", error);
-      toast.error("Error in getting problem");
+      toast.error("Failed to load problem");
     } finally {
       set({ isProblemLoading: false });
     }
@@ -61,7 +61,7 @@ export const useProblemStore = create<ProblemState>((set) => ({
       set({ solvedProblems: res.data.problems });
     } catch (error) {
       console.log("Error getting solved problems", error);
-      toast.error("Error getting solved problems");
+      toast.error("Failed to load solved problems");
     }
   },
   removeProblem: (id: string) => {

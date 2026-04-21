@@ -32,8 +32,8 @@ const ResetPasswordPage = () => {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#0a0a0a] p-4">
         <div className="max-w-md w-full text-center space-y-6">
-          <h1 className="text-2xl font-bold tracking-tight text-white uppercase">Invalid Protocol</h1>
-          <p className="text-zinc-500 text-sm">Security token is required to reset credentials.</p>
+          <h1 className="text-2xl font-bold tracking-tight text-white uppercase">Invalid Link</h1>
+          <p className="text-zinc-500 text-sm">Security token is required to reset password.</p>
           <Link to="/login" className="inline-flex items-center gap-2 text-white bg-zinc-900 border border-zinc-800 px-6 py-2.5 rounded-sm text-xs font-bold hover:bg-zinc-800 transition-all">
             Return to Login
           </Link>
@@ -47,10 +47,10 @@ const ResetPasswordPage = () => {
       <div className="w-full max-w-sm space-y-8 animate-in fade-in slide-in-from-bottom duration-500">
         <div className="text-center space-y-2">
           <div className="text-[10px] font-bold uppercase tracking-[0.3em] text-zinc-600 mb-6">
-            AlgoPrep // Protocol Update
+            AlgoPrep // Reset Password
           </div>
-          <h1 className="text-3xl font-bold tracking-tight text-white mb-2">Update <span className="text-emerald-500">Passkey</span></h1>
-          <p className="text-zinc-500 text-sm">Define your new algorithmic identity credentials.</p>
+          <h1 className="text-3xl font-bold tracking-tight text-white mb-2">Update <span className="text-emerald-500">Password</span></h1>
+          <p className="text-zinc-500 text-sm">Set a new password for your account.</p>
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -109,15 +109,12 @@ const ResetPasswordPage = () => {
             ) : (
               <ShieldCheck className="size-4 group-hover:scale-110 transition-transform" />
             )}
-            Initialize New Password
+            Set New Password
           </button>
         </form>
 
         <div className="text-center">
-          <Link to="/login" className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-zinc-600 hover:text-white transition-colors">
-            <ArrowLeft className="size-3" />
-            Abort & Return
-          </Link>
+            Go Back
         </div>
       </div>
     </div>

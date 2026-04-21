@@ -22,11 +22,11 @@ const ForgotPasswordPage = () => {
         {/* Header */}
         <div className="text-center space-y-2">
           <div className="text-[10px] font-bold uppercase tracking-[0.3em] text-zinc-600 mb-6">
-            AlgoPrep // Access Recovery
+            AlgoPrep // Forgot Password
           </div>
-          <h1 className="text-3xl font-bold tracking-tight text-white mb-2">Initialize <span className="text-rose-500">Recovery</span></h1>
+          <h1 className="text-3xl font-bold tracking-tight text-white mb-2">Reset <span className="text-rose-500">Password</span></h1>
           <p className="text-zinc-500 text-sm">
-            Enter your terminal address to receive a one-time security link.
+            Enter your email address to receive a password reset link.
           </p>
         </div>
 
@@ -66,7 +66,7 @@ const ForgotPasswordPage = () => {
             ) : (
               <Send className="size-4 group-hover:translate-x-0.5 transition-transform" />
             )}
-            Send Recovery Link
+            Send Reset Link
           </button>
         </form>
 

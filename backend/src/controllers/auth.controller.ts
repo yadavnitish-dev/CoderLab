@@ -33,7 +33,7 @@ export const register = async (req: Request, res: Response): Promise<void> => {
 
     res.status(201).json({
       success: true,
-      message: "User created successfully",
+      message: "Account created successfully",
       user: result.user,
     });
   } catch (error) {
@@ -50,7 +50,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
 
     res.status(200).json({
       success: true,
-      message: "User Logged In successfully",
+      message: "Login successful",
       user: result.user,
     });
   } catch (error) {
@@ -64,7 +64,7 @@ export const logout = async (req: Request, res: Response): Promise<void> => {
 
     res.status(200).json({
       success: true,
-      message: "User logged out successfully",
+      message: "Logout successful",
     });
   } catch (error) {
     handleAuthError(error, res);
@@ -144,11 +144,14 @@ export const updatePassword = async (
 export const verifyEmail = async (req: Request, res: Response): Promise<void> => {
   try {
     const { token } = validateInput<VerifyEmailInput>(req.query, verifyEmailSchema);
-    await authService.verifyEmail(token);
+    const result = await authService.verifyEmail(token);
+
+    setCookie(res, result.token);
 
     res.status(200).json({
       success: true,
-      message: "Email verified successfully. Access granted to execution nodes.",
+      message: "Email verified successfully",
+      user: result.user,
     });
   } catch (error) {
     handleAuthError(error, res);
@@ -166,7 +169,7 @@ export const resendVerification = async (req: AuthenticatedRequest, res: Respons
 
     res.status(200).json({
       success: true,
-      message: "A new verification link has been dispatched to your terminal.",
+      message: "Verification link sent to your email",
     });
   } catch (error) {
     handleAuthError(error, res);
@@ -180,7 +183,7 @@ export const forgotPassword = async (req: Request, res: Response): Promise<void>
 
     res.status(200).json({
       success: true,
-      message: "If an account exists, a recovery link has been dispatched.",
+      message: "Password recovery link sent to your email",
     });
   } catch (error) {
     handleAuthError(error, res);
@@ -194,7 +197,7 @@ export const resetPassword = async (req: Request, res: Response): Promise<void> 
 
     res.status(200).json({
       success: true,
-      message: "Password reset complete. Protocol updated.",
+      message: "Password reset successfully",
     });
   } catch (error) {
     handleAuthError(error, res);
@@ -216,7 +219,7 @@ export const deleteAccount = async (
 
     res.status(200).json({
       success: true,
-      message: "Account terminated. Data purge complete.",
+      message: "Account deleted successfully",
     });
   } catch (error) {
     handleAuthError(error, res);
