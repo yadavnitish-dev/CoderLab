@@ -78,8 +78,7 @@ app.get("/health", async (req, res) => {
       services: {
         database: "disconnected",
         api: "running"
-      },
-      error: error instanceof Error ? error.message : "Unknown error"
+      }
     });
   }
 });
@@ -134,6 +133,11 @@ app.use((req: Request, res: Response, _next: NextFunction) => {
 });
 
 const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => {
-  console.log(`Server is running at PORT ${PORT}`);
-});
+
+if (process.env.NODE_ENV !== "test") {
+  app.listen(PORT, () => {
+    console.log(`Server is running at PORT ${PORT}`);
+  });
+}
+
+export default app;

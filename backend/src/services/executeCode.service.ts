@@ -1,4 +1,5 @@
 import { db } from "../libs/db.js";
+import { cacheManager } from "../libs/redis.lib.js";
 import {
   buildBatchedStdin,
   executeSubmission,
@@ -115,6 +116,9 @@ export class CodeExecutionService {
           problemId: input.problemId,
         },
       });
+
+      // Invalidate user solved problems cache
+      await cacheManager.invalidate(`user:${userId}:solved`);
     }
 
     // Save test case results

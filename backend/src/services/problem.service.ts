@@ -1,4 +1,5 @@
 import { db } from "../libs/db.js";
+import { cacheManager } from "../libs/redis.lib.js";
 import {
   buildBatchedStdin,
   executeSubmission,
@@ -38,7 +39,7 @@ export interface CreateProblemInput {
   description: string;
   difficulty: "EASY" | "MEDIUM" | "HARD";
   tags?: string[];
-  examples: Record<string, { input: string; output: string; explanation?: string }>;
+  examples: Array<{ input: any; output: any; explanation?: string }>;
   constraints: string;
   testcases: ProblemTestcase[];
   codeSnippets: Record<string, string>;
@@ -50,7 +51,7 @@ export interface UpdateProblemInput {
   description?: string;
   difficulty?: "EASY" | "MEDIUM" | "HARD";
   tags?: string[];
-  examples?: Record<string, { input: string; output: string; explanation?: string }>;
+  examples?: Array<{ input: any; output: any; explanation?: string }>;
   constraints?: string;
   testcases?: ProblemTestcase[];
   codeSnippets?: Record<string, string>;
@@ -91,6 +92,9 @@ export class ProblemService {
       },
     });
 
+    // Invalidate list cache
+    await this.invalidateProblemListCache();
+
     return newProblem;
   }
 
@@ -105,38 +109,51 @@ export class ProblemService {
     total: number;
     pages: number;
   }> {
-    const skip = (page - 1) * limit;
+    const cacheKey = `problems:all:page_${page}_limit_${limit}`;
 
-    const [problems, total] = await Promise.all([
-      db.problem.findMany({
-        skip,
-        take: limit,
-        select: {
-          id: true,
-          title: true,
-          description: true,
-          difficulty: true,
-          tags: true,
-          examples: true,
-          constraints: true,
-          createdAt: true,
-          _count: {
+    return cacheManager.getOrSet(
+      cacheKey,
+      async () => {
+        const skip = (page - 1) * limit;
+
+        const [problems, total] = await Promise.all([
+          db.problem.findMany({
+            skip,
+            take: limit,
             select: {
-              solvedBy: true,
-              submission: true,
+              id: true,
+              createdAt: true,
+              title: true,
+              difficulty: true,
+              tags: true,
+              solvedBy: {
+                select: {
+                  createdAt: true,
+                },
+              },
+              _count: {
+                select: {
+                  submission: true,
+                },
+              },
             },
-          },
-        },
-        orderBy: { createdAt: "asc" },
-      }),
-      db.problem.count(),
-    ]);
+            orderBy: {
+              createdAt: "desc",
+            },
+          }),
+          db.problem.count(),
+        ]);
 
-    return {
-      problems: problems as unknown as ProblemResponse[],
-      total,
-      pages: Math.ceil(total / limit),
-    };
+        const pages = Math.ceil(total / limit);
+
+        return {
+          problems: problems as unknown as ProblemResponse[],
+          total,
+          pages,
+        };
+      },
+      600 // 10 minutes cache
+    );
   }
 
   /**
@@ -208,6 +225,9 @@ export class ProblemService {
       },
     });
 
+    // Invalidate list cache
+    await this.invalidateProblemListCache();
+
     return updatedProblem;
   }
 
@@ -231,44 +251,66 @@ export class ProblemService {
       throw new ForbiddenError("You are not allowed to delete this problem");
     }
 
-    await db.problem.deleteMany({ where: { id: problemId } });
+    await db.problem.delete({
+      where: { id: problemId },
+    });
+
+    // Invalidate list cache
+    await this.invalidateProblemListCache();
+  }
+
+  /**
+   * Helper to invalidate all paginated problem list caches
+   */
+  private async invalidateProblemListCache(): Promise<void> {
+    // In a real production app with many pages, we might use Redis SCAN or a versioning strategy.
+    // For now, we'll clear the most common first page and a few others.
+    for (let i = 1; i <= 5; i++) {
+      await cacheManager.invalidate(`problems:all:page_${i}_limit_20`);
+    }
   }
 
   /**
    * Get all problems solved by a user
    */
   async getProblemsSolvedByUser(userId: string): Promise<ProblemResponse[]> {
-    const problems = await db.problem.findMany({
-      where: {
-        solvedBy: {
-          some: {
-            userId,
-          },
-        },
-      },
-      select: {
-        id: true,
-        title: true,
-        difficulty: true,
-        tags: true,
-        createdAt: true,
-        solvedBy: {
+    return cacheManager.getOrSet(
+      `user:${userId}:solved`,
+      async () => {
+        const problems = await db.problem.findMany({
           where: {
-            userId,
+            solvedBy: {
+              some: {
+                userId,
+              },
+            },
           },
           select: {
+            id: true,
+            title: true,
+            difficulty: true,
+            tags: true,
             createdAt: true,
+            solvedBy: {
+              where: {
+                userId,
+              },
+              select: {
+                createdAt: true,
+              },
+            },
+            _count: {
+              select: {
+                submission: true,
+              },
+            },
           },
-        },
-        _count: {
-          select: {
-            submission: true,
-          },
-        },
-      },
-    });
+        });
 
-    return problems as unknown as ProblemResponse[];
+        return problems as unknown as ProblemResponse[];
+      },
+      300 // 5 minutes cache
+    );
   }
 
   /**

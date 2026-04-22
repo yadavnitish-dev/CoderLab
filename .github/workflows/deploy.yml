@@ -41,6 +41,17 @@ jobs:
           npm audit --audit-level moderate
         continue-on-error: false
 
+      - name: Run Backend Tests
+        run: |
+          cd backend
+          npm install
+          npx prisma generate
+          npm test
+        env:
+          NODE_ENV: test
+          DATABASE_URL: postgresql://mock:mock@localhost:5432/mock
+          JWT_SECRET: mock_secret
+
       - name: Validate image namespace
         run: |
           if [ -z "${IMAGE_NAMESPACE}" ]; then
@@ -105,13 +116,15 @@ jobs:
           GH_CLIENT_SECRET: ${{ secrets.GH_CLIENT_SECRET }}
           GH_CALLBACK_URL: ${{ secrets.GH_CALLBACK_URL }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          UPSTASH_REDIS_REST_URL: ${{ secrets.UPSTASH_REDIS_REST_URL }}
+          UPSTASH_REDIS_REST_TOKEN: ${{ secrets.UPSTASH_REDIS_REST_TOKEN }}
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script_stop: true
           command_timeout: 30m
-          envs: FRONTEND_URL,DATABASE_URL,JWT_SECRET,JDOODLE_CLIENT_ID,JDOODLE_CLIENT_SECRET,GOOGLE_CLIENT_ID,GOOGLE_CLIENT_SECRET,GOOGLE_CALLBACK_URL,GH_CLIENT_ID,GH_CLIENT_SECRET,GH_CALLBACK_URL,RESEND_API_KEY
+          envs: FRONTEND_URL,DATABASE_URL,JWT_SECRET,JDOODLE_CLIENT_ID,JDOODLE_CLIENT_SECRET,GOOGLE_CLIENT_ID,GOOGLE_CLIENT_SECRET,GOOGLE_CALLBACK_URL,GH_CLIENT_ID,GH_CLIENT_SECRET,GH_CALLBACK_URL,RESEND_API_KEY,UPSTASH_REDIS_REST_URL,UPSTASH_REDIS_REST_TOKEN
           script: |
             set -euo pipefail
 
@@ -158,6 +171,8 @@ jobs:
             GITHUB_CALLBACK_URL=$GH_CALLBACK_URL
 
             RESEND_API_KEY=$RESEND_API_KEY
+            UPSTASH_REDIS_REST_URL=$UPSTASH_REDIS_REST_URL
+            UPSTASH_REDIS_REST_TOKEN=$UPSTASH_REDIS_REST_TOKEN
             EOF
 
             # Clean up indentation in .env
