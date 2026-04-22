@@ -342,9 +342,9 @@ const ProblemPage = () => {
             {problem.title}
             <span
               className={`px-2 py-0.5 rounded-sm text-[10px] font-bold uppercase tracking-tighter ${
-                problem.difficulty === "Easy"
+                problem.difficulty === "EASY"
                   ? "bg-emerald-500/10 text-emerald-500"
-                  : problem.difficulty === "Medium"
+                  : problem.difficulty === "MEDIUM"
                     ? "bg-amber-500/10 text-amber-500"
                     : "bg-rose-500/10 text-rose-500"
               }`}

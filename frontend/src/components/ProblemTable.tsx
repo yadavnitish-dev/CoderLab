@@ -85,9 +85,9 @@ const ProblemsTable: React.FC<ProblemsTableProps> = ({
             className="flex-1 md:flex-none md:min-w-40"
             options={[
               { value: "ALL", label: "All Difficulties" },
-              { value: "Easy", label: "Easy" },
-              { value: "Medium", label: "Medium" },
-              { value: "Hard", label: "Hard" },
+              { value: "EASY", label: "Easy" },
+              { value: "MEDIUM", label: "Medium" },
+              { value: "HARD", label: "Hard" },
             ]}
             value={difficulty}
             onChange={setDifficulty}
@@ -128,11 +128,11 @@ const ProblemsTable: React.FC<ProblemsTableProps> = ({
             {paginatedProblems.length > 0 ? (
               paginatedProblems.map((problem) => {
                 const difficultyClass =
-                  problem.difficulty === "Easy"
-                    ? "bg-emerald-500/10 text-emerald-400"
-                    : problem.difficulty === "Medium"
-                      ? "bg-amber-500/10 text-amber-400"
-                      : "bg-rose-500/10 text-rose-400";
+                  problem.difficulty === "EASY"
+                    ? "!bg-emerald-500/10 !text-emerald-400"
+                    : problem.difficulty === "MEDIUM"
+                      ? "!bg-amber-500/10 !text-amber-400"
+                      : "!bg-rose-500/10 !text-rose-400";
                 const isSolved = problem.solvedBy?.some(
                   (u) => u.userId === authUser?.id,
                 );

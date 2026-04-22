@@ -21,7 +21,7 @@ export interface Problem {
   id: string;
   title: string;
   description: string;
-  difficulty: "Easy" | "Medium" | "Hard";
+  difficulty: "EASY" | "MEDIUM" | "HARD";
   tags?: string[];
   createdAt: string;
   updatedAt: string;
