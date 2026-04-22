@@ -32,6 +32,13 @@ passport.use(
           where: { googleId: profile.id },
         });
 
+        if (user && !user.isVerified) {
+          user = await db.user.update({
+            where: { id: user.id },
+            data: { isVerified: true }
+          });
+        }
+
         // 2. If not found by googleId, check by email
         if (!user) {
           user = await db.user.findUnique({
@@ -91,6 +98,13 @@ passport.use(
         let user = await db.user.findUnique({
           where: { githubId: profile.id },
         });
+
+        if (user && !user.isVerified) {
+          user = await db.user.update({
+            where: { id: user.id },
+            data: { isVerified: true }
+          });
+        }
 
         if (!user) {
           user = await db.user.findUnique({

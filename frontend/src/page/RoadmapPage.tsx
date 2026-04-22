@@ -31,13 +31,13 @@ const RoadmapPage = () => {
 
   // Stats Calculation
   const stats = useMemo(() => {
-    const totalEasy = nc150Problems.filter(p => p.difficulty === "EASY").length;
-    const totalMedium = nc150Problems.filter(p => p.difficulty === "MEDIUM").length;
-    const totalHard = nc150Problems.filter(p => p.difficulty === "HARD").length;
+    const totalEasy = nc150Problems.filter(p => p.difficulty?.toUpperCase() === "EASY").length;
+    const totalMedium = nc150Problems.filter(p => p.difficulty?.toUpperCase() === "MEDIUM").length;
+    const totalHard = nc150Problems.filter(p => p.difficulty?.toUpperCase() === "HARD").length;
 
-    const solvedEasy = solvedProblems.filter(p => p.difficulty === "EASY").length;
-    const solvedMedium = solvedProblems.filter(p => p.difficulty === "MEDIUM").length;
-    const solvedHard = solvedProblems.filter(p => p.difficulty === "HARD").length;
+    const solvedEasy = solvedProblems.filter(p => p.difficulty?.toUpperCase() === "EASY").length;
+    const solvedMedium = solvedProblems.filter(p => p.difficulty?.toUpperCase() === "MEDIUM").length;
+    const solvedHard = solvedProblems.filter(p => p.difficulty?.toUpperCase() === "HARD").length;
 
     // Streak Logic
     const solveDates = [...new Set(solvedProblems.map(p => {
@@ -224,7 +224,7 @@ const RoadmapPage = () => {
             </div>
           </div>
 
-          <div className="flex-1 max-w-xs hidden 2xl:block">
+          <div className="flex-1 max-w-xs hidden lg:block">
             <div className="flex justify-between items-end mb-1">
               <span className="text-[10px] font-mono font-bold text-zinc-600 uppercase">Completion</span>
               <span className="text-[10px] font-mono text-zinc-500">{((solvedIds.size / 150) * 100).toFixed(1)}%</span>
