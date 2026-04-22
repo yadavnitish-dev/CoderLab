@@ -14,6 +14,8 @@ import { validateInput } from "./validation.helper.js";
 import {
   registerSchema,
   loginSchema,
+  updateProfileSchema,
+  updatePasswordSchema,
   type RegisterInput,
   type LoginInput,
   type UpdateProfileInput,
@@ -27,6 +29,8 @@ export interface UserResponse {
   role: string;
   image: string | null;
   isVerified: boolean;
+  isSocial: boolean;
+  socialProvider: "google" | "github" | null;
 }
 
 export interface AuthResponse {
@@ -133,6 +137,12 @@ export class AuthService {
     userId: string,
     input: UpdateProfileInput
   ): Promise<UserResponse> {
+    // Validate input
+    const validatedInput = validateInput<UpdateProfileInput>(
+      input,
+      updateProfileSchema,
+    );
+
     if (!userId) {
       throw new UnauthorizedError();
     }
@@ -157,6 +167,9 @@ export class AuthService {
     userId: string,
     input: UpdatePasswordInput
   ): Promise<void> {
+    // Validate input
+    validateInput<UpdatePasswordInput>(input, updatePasswordSchema);
+
     if (!userId) {
       throw new UnauthorizedError();
     }
@@ -312,6 +325,7 @@ export class AuthService {
     role: string;
     image: string | null;
     isVerified: boolean;
+    password?: string | null;
   }): UserResponse {
     return {
       id: user.id,
@@ -320,6 +334,8 @@ export class AuthService {
       role: user.role,
       image: user.image,
       isVerified: user.isVerified || false,
+      isSocial: !user.password,
+      socialProvider: (user as any).googleId ? "google" : (user as any).githubId ? "github" : null,
     };
   }
 }

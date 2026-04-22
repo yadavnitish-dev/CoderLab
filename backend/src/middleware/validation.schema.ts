@@ -13,7 +13,8 @@ export const registerSchema = z.object({
     .string()
     .min(6, "Password must be at least 6 characters")
     .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
-    .regex(/[0-9]/, "Password must contain at least one number"),
+    .regex(/[0-9]/, "Password must contain at least one number")
+    .regex(/[!@#$%^&*(),.?":{}|<>]/, "Password must contain at least one special character"),
   name: z.string().min(2, "Name must be at least 2 characters").trim(),
 });
 
@@ -25,7 +26,7 @@ export const loginSchema = z.object({
 export const updateProfileSchema = z.object({
   name: z
     .string()
-    .min(2, "Name must be at least 2 characters")
+    .min(3, "Name must be at least 3 characters")
     .trim()
     .optional(),
 });
@@ -36,7 +37,8 @@ export const updatePasswordSchema = z.object({
     .string()
     .min(6, "New password must be at least 6 characters")
     .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
-    .regex(/[0-9]/, "Password must contain at least one number"),
+    .regex(/[0-9]/, "Password must contain at least one number")
+    .regex(/[!@#$%^&*(),.?":{}|<>]/, "Password must contain at least one special character"),
 });
 
 export const forgotPasswordSchema = z.object({
@@ -49,7 +51,8 @@ export const resetPasswordSchema = z.object({
     .string()
     .min(6, "Password must be at least 6 characters")
     .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
-    .regex(/[0-9]/, "Password must contain at least one number"),
+    .regex(/[0-9]/, "Password must contain at least one number")
+    .regex(/[!@#$%^&*(),.?":{}|<>]/, "Password must contain at least one special character"),
 });
 
 export const verifyEmailSchema = z.object({

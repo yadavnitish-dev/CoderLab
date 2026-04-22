@@ -67,7 +67,7 @@ const ResetPasswordPage = () => {
                   {...register("password", { 
                     required: "Password required",
                     minLength: { value: 6, message: "Min 6 characters" },
-                    pattern: { value: /(?=.*[A-Z])(?=.*[0-9])/, message: "Must include Uppercase + Number"}
+                    pattern: { value: /(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*(),.?":{}|<>])/, message: "Must include Uppercase + Number + Special Char"}
                   })}
                 />
               </div>

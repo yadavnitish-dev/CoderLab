@@ -13,6 +13,8 @@ export interface User {
   role: "ADMIN" | "USER";
   image?: string;
   isVerified: boolean;
+  isSocial: boolean;
+  socialProvider?: "google" | "github" | null;
   createdAt: string;
   updatedAt: string;
 }

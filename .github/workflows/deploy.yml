@@ -41,12 +41,12 @@ jobs:
           npm audit --audit-level moderate
         continue-on-error: false
 
-      - name: Run Backend Tests
+      - name: Run Backend Tests & Coverage
         run: |
           cd backend
           npm install
           npx prisma generate
-          npm test
+          npm run test:coverage
         env:
           NODE_ENV: test
           DATABASE_URL: postgresql://mock:mock@localhost:5432/mock

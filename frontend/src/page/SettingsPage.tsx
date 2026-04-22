@@ -10,7 +10,8 @@ import {
   Save,
   Loader2,
   Trash2,
-  AlertTriangle
+  AlertTriangle,
+  Mail
 } from "lucide-react";
 import { useAuthStore } from "../store/useAuthStore";
 import BrutalistButton from "../components/BrutalistButton";
@@ -20,8 +21,13 @@ const ProfileSchema = z.object({
 });
 
 const PasswordSchema = z.object({
-  oldPassword: z.string().min(6, "Password must be at least 6 characters"),
-  newPassword: z.string().min(6, "New password must be at least 6 characters"),
+  oldPassword: z.string().min(1, "Current password is required"),
+  newPassword: z
+    .string()
+    .min(6, "New password must be at least 6 characters")
+    .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
+    .regex(/[0-9]/, "Password must contain at least one number")
+    .regex(/[!@#$%^&*(),.?":{}|<>]/, "Password must contain at least one special character"),
   confirmPassword: z.string()
 }).refine((data) => data.newPassword === data.confirmPassword, {
   message: "Passwords don't match",
@@ -142,6 +148,23 @@ const SettingsPage: FC = () => {
                   <div className="space-y-6">
                     <div className="space-y-2">
                       <label className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-zinc-500 ml-1">
+                        Email Address
+                      </label>
+                      <div className="relative group opacity-50">
+                        <Mail className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-zinc-600" />
+                        <input
+                          readOnly
+                          value={authUser?.email || ""}
+                          className="w-full bg-[#050505] border border-zinc-900 rounded-sm py-3 pl-10 pr-4 text-sm text-zinc-500 font-mono cursor-not-allowed"
+                        />
+                      </div>
+                      <p className="text-[9px] text-zinc-600 font-mono ml-1 italic">
+                        Email cannot be changed. Contact support for account migration.
+                      </p>
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-zinc-500 ml-1">
                         Display Name
                       </label>
                       <div className="relative group">
@@ -174,84 +197,101 @@ const SettingsPage: FC = () => {
                   </div>
                 </form>
               ) : activeTab === "security" ? (
-                <form onSubmit={handleSubmitPassword(onPasswordSubmit)} className="space-y-8 animate-in fade-in duration-500">
-                  <div className="space-y-6">
-                    <div className="space-y-2">
-                      <label className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-zinc-500 ml-1">
-                        Current Password
-                      </label>
-                      <div className="relative group">
-                        <Lock className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-zinc-600 group-focus-within:text-emerald-500/50 transition-colors" />
-                        <input
-                          type="password"
-                          {...registerPassword("oldPassword")}
-                          className={`w-full bg-[#050505] border ${passwordErrors.oldPassword ? "border-rose-500/50" : "border-zinc-800"} rounded-sm py-3 pl-10 pr-4 text-sm text-zinc-200 focus:outline-none focus:border-emerald-500/50 transition-all font-mono`}
-                          placeholder="••••••••"
-                        />
+                authUser?.isSocial ? (
+                  <div className="space-y-8 animate-in fade-in duration-500">
+                    <div className="p-12 border border-zinc-900 bg-[#050505] rounded-sm text-center space-y-6">
+                      <div className="bg-zinc-900/50 size-16 mx-auto rounded-full flex items-center justify-center">
+                        <Shield className="size-8 text-emerald-500/50" />
                       </div>
-                      {passwordErrors.oldPassword && (
-                        <p className="text-rose-500 text-[10px] font-bold uppercase tracking-wider ml-1">
-                          {passwordErrors.oldPassword.message}
+                      <div className="space-y-2">
+                        <h3 className="text-white font-bold uppercase tracking-[0.2em] text-sm">OAuth Account</h3>
+                        <p className="text-zinc-500 text-xs font-mono max-w-sm mx-auto leading-relaxed">
+                          Your account security is managed by <span className="text-emerald-500 uppercase">{authUser.socialProvider || "your social provider"}</span>. 
+                          Password updates are not available for social logins.
                         </p>
-                      )}
+                      </div>
                     </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  </div>
+                ) : (
+                  <form onSubmit={handleSubmitPassword(onPasswordSubmit)} className="space-y-8 animate-in fade-in duration-500">
+                    <div className="space-y-6">
                       <div className="space-y-2">
                         <label className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-zinc-500 ml-1">
-                          New Password
+                          Current Password
                         </label>
                         <div className="relative group">
                           <Lock className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-zinc-600 group-focus-within:text-emerald-500/50 transition-colors" />
                           <input
                             type="password"
-                            {...registerPassword("newPassword")}
-                            className={`w-full bg-[#050505] border ${passwordErrors.newPassword ? "border-rose-500/50" : "border-zinc-800"} rounded-sm py-3 pl-10 pr-4 text-sm text-zinc-200 focus:outline-none focus:border-emerald-500/50 transition-all font-mono`}
+                            {...registerPassword("oldPassword")}
+                            className={`w-full bg-[#050505] border ${passwordErrors.oldPassword ? "border-rose-500/50" : "border-zinc-800"} rounded-sm py-3 pl-10 pr-4 text-sm text-zinc-200 focus:outline-none focus:border-emerald-500/50 transition-all font-mono`}
                             placeholder="••••••••"
                           />
                         </div>
-                        {passwordErrors.newPassword && (
+                        {passwordErrors.oldPassword && (
                           <p className="text-rose-500 text-[10px] font-bold uppercase tracking-wider ml-1">
-                            {passwordErrors.newPassword.message}
+                            {passwordErrors.oldPassword.message}
                           </p>
                         )}
                       </div>
 
-                      <div className="space-y-2">
-                        <label className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-zinc-500 ml-1">
-                          Confirm Password
-                        </label>
-                        <div className="relative group">
-                          <Shield className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-zinc-600 group-focus-within:text-emerald-500/50 transition-colors" />
-                          <input
-                            type="password"
-                            {...registerPassword("confirmPassword")}
-                            className={`w-full bg-[#050505] border ${passwordErrors.confirmPassword ? "border-rose-500/50" : "border-zinc-800"} rounded-sm py-3 pl-10 pr-4 text-sm text-zinc-200 focus:outline-none focus:border-emerald-500/50 transition-all font-mono`}
-                            placeholder="••••••••"
-                          />
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="space-y-2">
+                          <label className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-zinc-500 ml-1">
+                            New Password
+                          </label>
+                          <div className="relative group">
+                            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-zinc-600 group-focus-within:text-emerald-500/50 transition-colors" />
+                            <input
+                              type="password"
+                              {...registerPassword("newPassword")}
+                              className={`w-full bg-[#050505] border ${passwordErrors.newPassword ? "border-rose-500/50" : "border-zinc-800"} rounded-sm py-3 pl-10 pr-4 text-sm text-zinc-200 focus:outline-none focus:border-emerald-500/50 transition-all font-mono`}
+                              placeholder="••••••••"
+                            />
+                          </div>
+                          {passwordErrors.newPassword && (
+                            <p className="text-rose-500 text-[10px] font-bold uppercase tracking-wider ml-1">
+                              {passwordErrors.newPassword.message}
+                            </p>
+                          )}
                         </div>
-                        {passwordErrors.confirmPassword && (
-                          <p className="text-rose-500 text-[10px] font-bold uppercase tracking-wider ml-1">
-                            {passwordErrors.confirmPassword.message}
-                          </p>
-                        )}
+
+                        <div className="space-y-2">
+                          <label className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-zinc-500 ml-1">
+                            Confirm Password
+                          </label>
+                          <div className="relative group">
+                            <Shield className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-zinc-600 group-focus-within:text-emerald-500/50 transition-colors" />
+                            <input
+                              type="password"
+                              {...registerPassword("confirmPassword")}
+                              className={`w-full bg-[#050505] border ${passwordErrors.confirmPassword ? "border-rose-500/50" : "border-zinc-800"} rounded-sm py-3 pl-10 pr-4 text-sm text-zinc-200 focus:outline-none focus:border-emerald-500/50 transition-all font-mono`}
+                              placeholder="••••••••"
+                            />
+                          </div>
+                          {passwordErrors.confirmPassword && (
+                            <p className="text-rose-500 text-[10px] font-bold uppercase tracking-wider ml-1">
+                              {passwordErrors.confirmPassword.message}
+                            </p>
+                          )}
+                        </div>
                       </div>
                     </div>
-                  </div>
 
-                  <div className="pt-4 border-t border-zinc-900 flex justify-end">
-                    <BrutalistButton
-                      type="submit"
-                      variant="primary"
-                      size="lg"
-                      icon={isUpdatingProfile ? Loader2 : Save}
-                      disabled={isUpdatingProfile}
-                      className={isUpdatingProfile ? "animate-pulse" : ""}
-                    >
-                      Update Password
-                    </BrutalistButton>
-                  </div>
-                </form>
+                    <div className="pt-4 border-t border-zinc-900 flex justify-end">
+                      <BrutalistButton
+                        type="submit"
+                        variant="primary"
+                        size="lg"
+                        icon={isUpdatingProfile ? Loader2 : Save}
+                        disabled={isUpdatingProfile}
+                        className={isUpdatingProfile ? "animate-pulse" : ""}
+                      >
+                        Update Password
+                      </BrutalistButton>
+                    </div>
+                  </form>
+                )
               ) : (
                 <div className="space-y-8 animate-in fade-in duration-500">
                   <div className="p-6 border border-rose-900/50 bg-rose-950/10 rounded-sm space-y-4">
