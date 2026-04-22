@@ -29,6 +29,84 @@ const RoadmapPage = () => {
     return new Set(solvedProblems.map(p => p.id));
   }, [solvedProblems]);
 
+  // Stats Calculation
+  const stats = useMemo(() => {
+    const totalEasy = nc150Problems.filter(p => p.difficulty === "EASY").length;
+    const totalMedium = nc150Problems.filter(p => p.difficulty === "MEDIUM").length;
+    const totalHard = nc150Problems.filter(p => p.difficulty === "HARD").length;
+
+    const solvedEasy = solvedProblems.filter(p => p.difficulty === "EASY").length;
+    const solvedMedium = solvedProblems.filter(p => p.difficulty === "MEDIUM").length;
+    const solvedHard = solvedProblems.filter(p => p.difficulty === "HARD").length;
+
+    // Streak Logic
+    const solveDates = [...new Set(solvedProblems.map(p => {
+      // Access the createdAt from the joined solvedBy record we just added to the backend
+      const solvedAt = p.solvedBy?.[0]?.createdAt;
+      return solvedAt ? new Date(solvedAt).toDateString() : null;
+    }).filter(Boolean))].map(d => new Date(d as string)).sort((a, b) => b.getTime() - a.getTime());
+
+    let currentStreak = 0;
+    let bestStreak = 0;
+    
+    if (solveDates.length > 0) {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      
+      const yesterday = new Date(today);
+      yesterday.setDate(yesterday.getDate() - 1);
+
+      const firstSolve = new Date(solveDates[0]);
+      firstSolve.setHours(0, 0, 0, 0);
+
+      // Current Streak
+      if (firstSolve.getTime() === today.getTime() || firstSolve.getTime() === yesterday.getTime()) {
+        let tempStreak = 1;
+        for (let i = 0; i < solveDates.length - 1; i++) {
+          const current = new Date(solveDates[i]);
+          current.setHours(0, 0, 0, 0);
+          const next = new Date(solveDates[i + 1]);
+          next.setHours(0, 0, 0, 0);
+          
+          const diff = (current.getTime() - next.getTime()) / (1000 * 60 * 60 * 24);
+          if (diff === 1) {
+            tempStreak++;
+          } else {
+            break;
+          }
+        }
+        currentStreak = tempStreak;
+      }
+
+      // Best Streak
+      let maxStreak = 1;
+      let tempMax = 1;
+      for (let i = 0; i < solveDates.length - 1; i++) {
+        const current = new Date(solveDates[i]);
+        current.setHours(0, 0, 0, 0);
+        const next = new Date(solveDates[i + 1]);
+        next.setHours(0, 0, 0, 0);
+        
+        const diff = (current.getTime() - next.getTime()) / (1000 * 60 * 60 * 24);
+        if (diff === 1) {
+          tempMax++;
+        } else {
+          maxStreak = Math.max(maxStreak, tempMax);
+          tempMax = 1;
+        }
+      }
+      bestStreak = Math.max(maxStreak, tempMax);
+    }
+
+    return {
+      easy: { solved: solvedEasy, total: totalEasy },
+      medium: { solved: solvedMedium, total: totalMedium },
+      hard: { solved: solvedHard, total: totalHard },
+      currentStreak,
+      bestStreak
+    };
+  }, [nc150Problems, solvedProblems]);
+
   const filteredByCategory = useMemo(() => {
     if (!selectedCategory) return [];
     return nc150Problems.filter(p => p.tags?.includes(selectedCategory));
@@ -79,41 +157,81 @@ const RoadmapPage = () => {
       </div>
 
       <div className="workspace-container">
-        {/* Mastery Header Stats */}
-        <div className="mb-12 bg-black border border-zinc-800 p-4 rounded-sm flex flex-wrap items-center justify-between gap-6 relative overflow-hidden">
-          <div className="absolute top-0 right-0 h-full w-32 bg-emerald-500/5 blur-2xl pointer-events-none"></div>
+        {/* Mastery Header Stats: High-density visualization of solved problems, streaks, and difficulty distribution */}
+        <div className="mb-12 bg-black border border-zinc-800 p-6 rounded-sm flex flex-wrap items-center justify-between gap-8 relative overflow-hidden">
+          <div className="absolute top-0 right-0 h-full w-48 bg-emerald-500/5 blur-3xl pointer-events-none"></div>
           
-          <div className="flex items-center gap-8">
-            <div className="space-y-1">
-              <p className="text-[10px] font-mono font-bold text-zinc-600 uppercase tracking-widest">Solved</p>
-              <div className="flex items-baseline gap-2">
-                <span className="text-2xl font-bold text-white font-mono">{solvedIds.size}</span>
-                <span className="text-zinc-700 font-mono text-sm">/ 150</span>
+          <div className="flex flex-wrap items-center gap-x-12 gap-y-6">
+            {/* Solved & Rank */}
+            <div className="flex items-center gap-8">
+              <div className="space-y-1">
+                <p className="text-[10px] font-mono font-bold text-zinc-600 uppercase tracking-widest">Solved</p>
+                <div className="flex items-baseline gap-2">
+                  <span className="text-3xl font-bold text-white font-mono">{solvedIds.size}</span>
+                  <span className="text-zinc-700 font-mono text-sm">/ 150</span>
+                </div>
+              </div>
+              
+              <div className="h-10 w-px bg-zinc-800"></div>
+              
+              <div className="space-y-1">
+                <p className="text-[10px] font-mono font-bold text-zinc-600 uppercase tracking-widest">Rank</p>
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-bold text-emerald-500 uppercase tracking-tighter">
+                    {solvedIds.size === 150 ? "Master" : 
+                     solvedIds.size > 100 ? "Expert" :
+                     solvedIds.size > 50 ? "Intermediate" : "Novice"}
+                  </span>
+                </div>
               </div>
             </div>
-            
-            <div className="h-10 w-px bg-zinc-800 hidden sm:block"></div>
-            
-            <div className="space-y-1">
-              <p className="text-[10px] font-mono font-bold text-zinc-600 uppercase tracking-widest">Rank</p>
-              <div className="flex items-center gap-2">
-                <span className="text-sm font-bold text-emerald-500 uppercase tracking-tighter">
-                  {solvedIds.size === 150 ? "Master" : 
-                   solvedIds.size > 100 ? "Expert" :
-                   solvedIds.size > 50 ? "Intermediate" : "Novice"}
-                </span>
+
+            {/* Streaks */}
+            <div className="flex items-center gap-8">
+              <div className="h-10 w-px bg-zinc-800 hidden md:block"></div>
+              <div className="space-y-1">
+                <p className="text-[10px] font-mono font-bold text-zinc-600 uppercase tracking-widest">Current Streak</p>
+                <div className="flex items-baseline gap-1">
+                  <span className="text-2xl font-bold text-white font-mono">{stats.currentStreak}</span>
+                  <span className="text-[10px] font-mono text-zinc-600 uppercase ml-1">Days</span>
+                </div>
+              </div>
+              <div className="space-y-1">
+                <p className="text-[10px] font-mono font-bold text-zinc-600 uppercase tracking-widest">Best</p>
+                <div className="flex items-baseline gap-1">
+                  <span className="text-sm font-bold text-zinc-400 font-mono">{stats.bestStreak}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Difficulty Breakdown */}
+            <div className="flex items-center gap-8">
+              <div className="h-10 w-px bg-zinc-800 hidden xl:block"></div>
+              <div className="flex items-center gap-6">
+                <div className="flex flex-col">
+                  <span className="text-[10px] font-mono font-bold text-emerald-500/70 uppercase mb-1">Easy</span>
+                  <span className="text-sm font-mono text-zinc-300">{stats.easy.solved}<span className="text-zinc-700 mx-1">/</span>{stats.easy.total}</span>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-[10px] font-mono font-bold text-amber-500/70 uppercase mb-1">Medium</span>
+                  <span className="text-sm font-mono text-zinc-300">{stats.medium.solved}<span className="text-zinc-700 mx-1">/</span>{stats.medium.total}</span>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-[10px] font-mono font-bold text-rose-500/70 uppercase mb-1">Hard</span>
+                  <span className="text-sm font-mono text-zinc-300">{stats.hard.solved}<span className="text-zinc-700 mx-1">/</span>{stats.hard.total}</span>
+                </div>
               </div>
             </div>
           </div>
 
-          <div className="flex-1 max-w-md hidden lg:block">
+          <div className="flex-1 max-w-xs hidden 2xl:block">
             <div className="flex justify-between items-end mb-1">
-              <span className="text-[10px] font-mono font-bold text-zinc-500 uppercase">Completion</span>
-              <span className="text-[10px] font-mono text-zinc-400">{((solvedIds.size / 150) * 100).toFixed(1)}%</span>
+              <span className="text-[10px] font-mono font-bold text-zinc-600 uppercase">Completion</span>
+              <span className="text-[10px] font-mono text-zinc-500">{((solvedIds.size / 150) * 100).toFixed(1)}%</span>
             </div>
-            <div className="h-1.5 bg-zinc-900 border border-zinc-800 overflow-hidden">
+            <div className="h-1 bg-zinc-900 border border-zinc-800 overflow-hidden">
               <div 
-                className="h-full bg-emerald-500 transition-all duration-1000 shadow-[0_0_8px_rgba(16,185,129,0.3)]" 
+                className="h-full bg-emerald-500 transition-all duration-1000" 
                 style={{ width: `${(solvedIds.size / 150) * 100}%` }}
               />
             </div>

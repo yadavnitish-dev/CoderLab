@@ -236,6 +236,14 @@ export class ProblemService {
         difficulty: true,
         tags: true,
         createdAt: true,
+        solvedBy: {
+          where: {
+            userId,
+          },
+          select: {
+            createdAt: true,
+          },
+        },
         _count: {
           select: {
             submission: true,

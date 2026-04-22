@@ -42,7 +42,11 @@ passport.use(
             // Link existing email account to Google
             user = await db.user.update({
               where: { email },
-              data: { googleId: profile.id, image: user.image || profile.photos?.[0].value },
+              data: { 
+                googleId: profile.id, 
+                image: user.image || profile.photos?.[0].value,
+                isVerified: true // OAuth users are verified by default
+              },
             });
           } else {
             // 3. Create new user
@@ -53,6 +57,7 @@ passport.use(
                 googleId: profile.id,
                 image: profile.photos?.[0].value,
                 password: null, // No password for OAuth users
+                isVerified: true // OAuth users are verified by default
               },
             });
           }
@@ -95,7 +100,11 @@ passport.use(
           if (user) {
             user = await db.user.update({
               where: { email },
-              data: { githubId: profile.id, image: user.image || profile.photos?.[0].value },
+              data: { 
+                githubId: profile.id, 
+                image: user.image || profile.photos?.[0].value,
+                isVerified: true 
+              },
             });
           } else {
             user = await db.user.create({
@@ -105,6 +114,7 @@ passport.use(
                 githubId: profile.id,
                 image: profile.photos?.[0].value,
                 password: null,
+                isVerified: true
               },
             });
           }

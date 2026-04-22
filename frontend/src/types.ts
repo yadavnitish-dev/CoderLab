@@ -42,6 +42,7 @@ export interface Problem {
     problemId: string;
     status: string;
     submittedAt: string;
+    createdAt: string;
   }>;
 }
 
