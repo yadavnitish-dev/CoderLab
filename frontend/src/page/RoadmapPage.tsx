@@ -85,7 +85,7 @@ const RoadmapPage = () => {
           
           <div className="flex items-center gap-8">
             <div className="space-y-1">
-              <p className="text-[10px] font-mono font-bold text-zinc-600 uppercase tracking-widest">Global Status</p>
+              <p className="text-[10px] font-mono font-bold text-zinc-600 uppercase tracking-widest">Solved</p>
               <div className="flex items-baseline gap-2">
                 <span className="text-2xl font-bold text-white font-mono">{solvedIds.size}</span>
                 <span className="text-zinc-700 font-mono text-sm">/ 150</span>

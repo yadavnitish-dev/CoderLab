@@ -11,7 +11,6 @@ import {
   Circle,
   ChevronLeft,
   ChevronRight,
-  SlidersHorizontal,
 } from "lucide-react";
 import { useActions } from "../store/useAction";
 import AddToPlaylistModal from "./AddToPlaylist";

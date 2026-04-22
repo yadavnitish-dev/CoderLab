@@ -11,7 +11,9 @@ declare global {
       email?: string | null;
       image?: string | null;
       role?: string;
+      isVerified?: boolean;
       createdAt?: Date;
+      updatedAt?: Date;
     }
   }
 }
@@ -63,7 +65,9 @@ export const authMiddleware = async (
         email: true,
         image: true,
         role: true,
+        isVerified: true,
         createdAt: true,
+        updatedAt: true,
       },
     });
 

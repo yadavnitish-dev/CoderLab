@@ -113,7 +113,12 @@ const ResetPasswordPage = () => {
         </form>
 
         <div className="text-center">
-            Go Back
+          <Link
+            to="/login"
+            className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-zinc-600 hover:text-white transition-colors"
+          >
+            Return to Login
+          </Link>
         </div>
       </div>
     </div>

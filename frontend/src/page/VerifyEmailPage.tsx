@@ -30,7 +30,7 @@ const VerifyEmailPage = () => {
             No verification token detected. Please use the link sent to your email.
           </p>
           <Link to="/" className="inline-flex items-center gap-2 text-white bg-zinc-900 border border-zinc-800 px-6 py-2.5 rounded-sm text-xs font-bold hover:bg-zinc-800 transition-all">
-            Return to Base
+            Go to Homepage
           </Link>
         </div>
       </div>
@@ -65,7 +65,7 @@ const VerifyEmailPage = () => {
                 to="/roadmap"
                 className="group inline-flex items-center gap-2 bg-white text-black px-8 py-3 rounded-sm text-sm font-bold hover:bg-zinc-200 transition-all shadow-xl shadow-white/5"
               >
-                Launch Workspace
+                Enter Workspace
                 <ArrowRight className="size-4 group-hover:translate-x-0.5 transition-transform" />
               </Link>
             </div>

@@ -295,7 +295,7 @@ const SettingsPage: FC = () => {
             </div>
             
             <p className="text-zinc-400 text-sm mb-8 font-mono leading-relaxed">
-              Are you absolutely certain? This is the point of no return. Your data will be wiped from our nodes permanently.
+              Are you absolutely certain? This operation cannot be reversed. Your data will be permanently removed.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4">
@@ -304,7 +304,7 @@ const SettingsPage: FC = () => {
                 onClick={() => setShowConfirmModal(false)}
                 className="flex-1 px-6 py-3 border border-zinc-800 text-zinc-400 text-sm font-bold uppercase tracking-widest hover:bg-zinc-900 hover:text-white transition-all disabled:opacity-50"
               >
-                Abort
+                Cancel
               </button>
               <button
                 disabled={isDeleting}

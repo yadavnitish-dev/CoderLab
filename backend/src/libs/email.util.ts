@@ -50,16 +50,16 @@ export const sendVerificationEmail = async (email: string, token: string) => {
       </head>
       <body>
         <div class="container">
-          <div class="header">${APP_NAME} // SECURITY IDENTITY PROTOCOL</div>
-          <h1 class="title">Verify your <span class="accent">identity</span></h1>
+          <div class="header">${APP_NAME} // Account Verification</div>
+          <h1 class="title">Verify your <span class="accent">email</span></h1>
           <div class="content">
-            Confirm your email address to activate your algorithmic laboratory. 
-            Verification is required to execute code and participate in the roadmap.
+            Please confirm your email address to complete your account setup. 
+            Verification is required to execute code and access the full roadmap.
           </div>
-          <a href="${verificationUrl}" class="btn">Verify Account</a>
+          <a href="${verificationUrl}" class="btn">Verify Email Address</a>
           <div class="footer">
             If you did not create an account on ${APP_NAME}, please ignore this email.<br>
-            Verification link expires in 24 hours.
+            This link will expire in 24 hours.
           </div>
         </div>
       </body>
@@ -115,16 +115,16 @@ export const sendPasswordResetEmail = async (email: string, token: string) => {
       </head>
       <body>
         <div class="container">
-          <div class="header">${APP_NAME} // RECOVERY PROTOCOL</div>
-          <h1 class="title">Reset your <span class="accent">passkey</span></h1>
+          <div class="header">${APP_NAME} // Password Recovery</div>
+          <h1 class="title">Reset your <span class="accent">password</span></h1>
           <div class="content">
-            A password reset was requested for your engineer account. 
-            Access this link to initialize your new credentials.
+            A password reset was requested for your account. 
+            Use the link below to set up your new credentials.
           </div>
           <a href="${resetUrl}" class="btn">Reset Password</a>
           <div class="footer">
-            If you did not request a password reset, please contact security immediately.<br>
-            Recovery link expires in 1 hour.
+            If you did not request a password reset, please ignore this email.<br>
+            This link will expire in 1 hour.
           </div>
         </div>
       </body>

@@ -74,7 +74,7 @@ const LoginPage = () => {
                   type="email"
                   {...register("email")}
                   className={`w-full bg-[#050505] border ${errors.email ? "border-rose-500/50" : "border-zinc-800"} rounded-sm py-2.5 pl-10 pr-4 text-sm text-zinc-200 focus:outline-none focus:border-emerald-500/50 transition-all placeholder:text-zinc-700 font-mono`}
-                  placeholder="admin@system.io"
+                  placeholder="name@example.com"
                 />
               </div>
               {errors.email && (
