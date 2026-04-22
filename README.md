@@ -15,14 +15,14 @@ AlgoPrep is a full-stack competitive programming platform where users solve codi
 
 ## Features
 
-- 🔐 **Secure Authentication** with JWT (HTTP-only cookies), **OAuth 2.0** (Google/GitHub), and **Email Verification**.
+- 🔐 **Secure Authentication** with JWT (HTTP-only cookies), **OAuth 2.0** (Google/GitHub), and **Automated Identity Verification**.
 - 🛠️ **Account Resilience**: Self-service **Password Recovery** and **Secure Account Deletion**.
-- 📚 **Roadmap Mastery** with curated categories and progress tracking.
+- 📚 **Roadmap Mastery** with curated categories, **Streak Tracking**, and **Difficulty Breakdown**.
 - ⚡ **Code Execution** for Python, Java, JavaScript, TypeScript, and C++ (via JDoodle API).
-- 📊 **Submission History** with per-testcase results.
+- 📊 **Submission History** with per-testcase results and **Success Metrics**.
 - 📁 **Playlists** for organizing problems.
-- 🎨 **Engineer's Lab UI**: Monochromatic, high-density aesthetic with **Semantic Clarity** overhaul.
-- 🛡️ **Security Hardened**: Rate limiting, input validation, security headers, and **Strict Verification Enforcement**.
+- 🎨 **Engineer's Lab UI**: Monochromatic, high-density aesthetic with **Semantic Clarity** and standardized navigation.
+- 🛡️ **Security Hardened**: Rate limiting, input validation, security headers, and **Zero-Trust Verification**.
 
 ## Security Features
 
@@ -144,20 +144,20 @@ npm run dev
 
 | Category | Rating | Status |
 |----------|---------|--------|
-| **Architecture** | 8.0/10 | Standard Service Layer / Missing centralized error handling |
-| **Code Quality** | 7.5/10 | Suppressed warnings / Some "any" usage / Long components |
-| **UI Aesthetic** | 9.0/10 | Strong niche aesthetic / Accessibility concerns |
-| **Functionality** | 8.0/10 | Core DSA flow / Missing social & persistence features |
-| **Performance** | 7.5/10 | SPA-only / No DB indexing strategy / Large client bundles |
-| **Maintainability** | 7.5/10 | Modular but dependent on 3rd party execution engine |
-| **Security** | 8.0/10 | JWT Cookies / Rate Limiting / Missing MFA |
-| **Testing** | 4.0/10 | **Critical Weakness**: Zero automated test coverage |
-| **Documentation** | 6.0/10 | Basic setup / Missing API docs (Swagger) |
-| **User Experience** | 8.0/10 | Clean workflow / Lacks onboarding & mobile optimization |
-| **Scalability** | 7.0/10 | Stateless API / Missing Caching (Redis) & Read Replicas |
-| **Innovation** | 7.5/10 | Strong aesthetic polish / Standard functional logic |
+| **Architecture** | 7.0/10 | Standard monolithic structure / Tight coupling with external API |
+| **Code Quality** | 6.0/10 | **Debt**: Extensive `any` usage, monolithic components, prop drilling |
+| **UI Aesthetic** | 9.0/10 | High-fidelity niche aesthetic / Accessibility needs work |
+| **Functionality** | 8.0/10 | Solid core DSA flow / **New**: Streak & Difficulty tracking |
+| **Performance** | 6.0/10 | Heavy client-side bundles / No SSR / Missing DB indexing |
+| **Maintainability** | 6.5/10 | Modular but lacks documentation for complex logic / Brittle testcases |
+| **Security** | 8.0/10 | Good cookie/rate-limit basics / Missing MFA & Audit logs |
+| **Testing** | 2.0/10 | **Critical**: Zero automated coverage / Manual verification only |
+| **Documentation** | 6.5/10 | Basic setup guides / Missing Swagger & Flow diagrams |
+| **User Experience** | 7.5/10 | Premium workspace / Lacks mobile responsiveness & onboarding |
+| **Scalability** | 5.0/10 | No caching layer (Redis) / Single-node monolith / Direct DB calls |
+| **Innovation** | 6.5/10 | Unique aesthetic wrapper on established DSA patterns |
 
-**Overall Score: 7.3/10**
+**Overall Technical Score: 6.3/10**
 
 > [!TIP]
 > AlgoPrep achieves a world-class workspace experience by blending brutalist structural elements with high-density metadata visualization.

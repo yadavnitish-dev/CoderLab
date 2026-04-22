@@ -143,9 +143,6 @@ const DashboardPage = () => {
                 <h1 className="text-4xl font-bold tracking-tight text-white">
                   {authUser.name}
                 </h1>
-                <span className="px-2 py-0.5 rounded-sm text-[10px] font-bold uppercase tracking-widest bg-amber-500/10 text-amber-500 border border-amber-500/20 flex items-center gap-1">
-                  <Award className="size-3" /> Top 5% Rank
-                </span>
               </div>
 
               <div className="flex flex-wrap justify-center md:justify-start gap-6 text-sm text-zinc-500">
@@ -245,7 +242,7 @@ const DashboardPage = () => {
             <div className="bg-black border border-zinc-800 p-6 rounded-sm h-full flex flex-col shadow-lg">
               <div className="flex items-center justify-between mb-6">
                 <h3 className="text-sm font-bold uppercase tracking-widest text-zinc-500">
-                  My Collections
+                  Playlists
                 </h3>
                 <Link
                   to="/playlists"
