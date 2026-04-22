@@ -7,7 +7,20 @@ import jwt from "jsonwebtoken";
 
 // Mock dependencies
 vi.mock("../libs/db.js");
-vi.mock("axios");
+vi.mock("../libs/judge0.lib.js", () => ({
+  executeSubmission: vi.fn(),
+  buildBatchedStdin: vi.fn((inputs: string[]) => inputs.join("\n")),
+  getLanguageName: vi.fn(() => "javascript"),
+  parseBatchedStdout: vi.fn((output: string) => {
+    if (output?.includes("__ALGOPREP_CASE_START__")) {
+      return output
+        .split("__ALGOPREP_CASE_START__")
+        .filter(Boolean)
+        .map((chunk) => chunk.split("__ALGOPREP_CASE_END__")[0].trim());
+    }
+    return null;
+  }),
+}));
 vi.mock("jsonwebtoken");
 
 describe("Execution Endpoints", () => {
@@ -39,13 +52,12 @@ describe("Execution Endpoints", () => {
       });
 
       // 3. Mock JDoodle API Response
-      (axios.post as any).mockResolvedValue({
-        data: {
-          output: "__ALGOPREP_CASE_START__\n1\n__ALGOPREP_CASE_END__",
-          statusCode: 200,
-          memory: "100",
-          cpuTime: "0.1",
-        },
+      const { executeSubmission } = await import("../libs/judge0.lib.js");
+      (executeSubmission as any).mockResolvedValue({
+        stdout: "__ALGOPREP_CASE_START__\n1\n__ALGOPREP_CASE_END__",
+        status: { id: 3, description: "Accepted" },
+        memory: "100",
+        time: "0.1",
       });
 
       // 4. Mock Submission & TestCaseResult creation

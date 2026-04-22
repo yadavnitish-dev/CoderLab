@@ -51,6 +51,8 @@ jobs:
           NODE_ENV: test
           DATABASE_URL: postgresql://mock:mock@localhost:5432/mock
           JWT_SECRET: mock_secret
+          JDOODLE_CLIENT_ID: mock_id
+          JDOODLE_CLIENT_SECRET: mock_secret
 
       - name: Validate image namespace
         run: |
