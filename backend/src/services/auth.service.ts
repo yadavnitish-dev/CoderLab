@@ -305,7 +305,14 @@ export class AuthService {
   /**
    * Format user response
    */
-  private formatUserResponse(user: any): UserResponse {
+  private formatUserResponse(user: {
+    id: string;
+    email: string;
+    name: string | null;
+    role: string;
+    image: string | null;
+    isVerified: boolean;
+  }): UserResponse {
     return {
       id: user.id,
       email: user.email,

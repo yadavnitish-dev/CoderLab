@@ -13,7 +13,6 @@ import { Link } from "react-router-dom";
 import {
   Mail,
   Calendar,
-  Award,
   ListMusic,
   ChevronRight,
   Zap,

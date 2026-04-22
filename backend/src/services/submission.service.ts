@@ -1,11 +1,23 @@
 import { db } from "../libs/db.js";
 import { UnauthorizedError, NotFoundError } from "./errors.js";
 
+export interface TestCaseResponse {
+  id: string;
+  passed: boolean;
+  expected: string;
+  stdout: string | null;
+  stderr: string | null;
+  compileOutput: string | null;
+  status: any;
+  memory: string | null;
+  time: string | null;
+}
+
 export interface SubmissionWithTestCases {
   id: string;
   userId: string;
   problemId: string;
-  sourceCode: any;
+  sourceCode: string;
   language: string;
   stdin?: string | null;
   stdout?: string | null;
@@ -16,7 +28,7 @@ export interface SubmissionWithTestCases {
   time?: string | null;
   createdAt: Date;
   updatedAt: Date;
-  testCases: any[];
+  testCases: TestCaseResponse[];
 }
 
 /**
@@ -27,7 +39,7 @@ export class SubmissionService {
   /**
    * Get all submissions for a user
    */
-  async getAllSubmissionsByUser(userId: string): Promise<any[]> {
+  async getAllSubmissionsByUser(userId: string): Promise<SubmissionWithTestCases[]> {
     if (!userId) {
       throw new UnauthorizedError();
     }
@@ -38,7 +50,7 @@ export class SubmissionService {
       orderBy: { createdAt: "desc" },
     });
 
-    return submissions;
+    return submissions as unknown as SubmissionWithTestCases[];
   }
 
   /**
@@ -47,7 +59,7 @@ export class SubmissionService {
   async getSubmissionsForProblem(
     userId: string,
     problemId: string
-  ): Promise<any[]> {
+  ): Promise<SubmissionWithTestCases[]> {
     if (!userId) {
       throw new UnauthorizedError();
     }
@@ -63,7 +75,7 @@ export class SubmissionService {
       orderBy: { createdAt: "desc" },
     });
 
-    return submissions;
+    return submissions as unknown as SubmissionWithTestCases[];
   }
 
   /**

@@ -17,15 +17,31 @@ export interface ProblemTestcase {
   output: string;
 }
 
+export interface ProblemResponse {
+  id: string;
+  title: string;
+  description?: string;
+  difficulty: "EASY" | "MEDIUM" | "HARD";
+  tags: string[];
+  examples?: any;
+  constraints?: string;
+  createdAt: Date;
+  _count?: {
+    solvedBy?: number;
+    submission?: number;
+  };
+  solvedBy?: Array<{ createdAt: Date }>;
+}
+
 export interface CreateProblemInput {
   title: string;
   description: string;
   difficulty: "EASY" | "MEDIUM" | "HARD";
   tags?: string[];
-  examples: any;
+  examples: Record<string, { input: string; output: string; explanation?: string }>;
   constraints: string;
   testcases: ProblemTestcase[];
-  codeSnippets: any;
+  codeSnippets: Record<string, string>;
   referenceSolutions: Record<string, string>;
 }
 
@@ -34,10 +50,10 @@ export interface UpdateProblemInput {
   description?: string;
   difficulty?: "EASY" | "MEDIUM" | "HARD";
   tags?: string[];
-  examples?: any;
+  examples?: Record<string, { input: string; output: string; explanation?: string }>;
   constraints?: string;
   testcases?: ProblemTestcase[];
-  codeSnippets?: any;
+  codeSnippets?: Record<string, string>;
   referenceSolutions?: Record<string, string>;
 }
 
@@ -49,7 +65,7 @@ export class ProblemService {
   /**
    * Create a new problem with reference solution validation
    */
-  async createProblem(userId: string, input: CreateProblemInput): Promise<any> {
+  async createProblem(userId: string, input: CreateProblemInput): Promise<ProblemResponse> {
     // Validate input
     this.validateProblemInput(input);
 
@@ -85,7 +101,7 @@ export class ProblemService {
     page = 1,
     limit = 20,
   ): Promise<{
-    problems: any[];
+    problems: ProblemResponse[];
     total: number;
     pages: number;
   }> {
@@ -117,7 +133,7 @@ export class ProblemService {
     ]);
 
     return {
-      problems,
+      problems: problems as unknown as ProblemResponse[],
       total,
       pages: Math.ceil(total / limit),
     };
@@ -126,7 +142,7 @@ export class ProblemService {
   /**
    * Get a single problem by ID
    */
-  async getProblemById(problemId: string): Promise<any> {
+  async getProblemById(problemId: string): Promise<ProblemResponse> {
     if (!problemId) {
       throw new ValidationError("Problem ID is required");
     }
@@ -149,7 +165,7 @@ export class ProblemService {
     problemId: string,
     userId: string,
     input: UpdateProblemInput,
-  ): Promise<any> {
+  ): Promise<ProblemResponse> {
     if (!problemId) {
       throw new ValidationError("Problem ID is required");
     }
@@ -221,7 +237,7 @@ export class ProblemService {
   /**
    * Get all problems solved by a user
    */
-  async getProblemsSolvedByUser(userId: string): Promise<any[]> {
+  async getProblemsSolvedByUser(userId: string): Promise<ProblemResponse[]> {
     const problems = await db.problem.findMany({
       where: {
         solvedBy: {
@@ -252,7 +268,7 @@ export class ProblemService {
       },
     });
 
-    return problems;
+    return problems as unknown as ProblemResponse[];
   }
 
   /**

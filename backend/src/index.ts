@@ -57,6 +57,33 @@ app.get("/", (req, res) => {
   res.send("Hello Guys Welcome to AlgoPrep🔥");
 });
 
+// Health check endpoint
+import { db } from "./libs/db.js";
+app.get("/health", async (req, res) => {
+  try {
+    // Check DB connection
+    await db.$queryRaw`SELECT 1`;
+    res.status(200).json({
+      status: "healthy",
+      timestamp: new Date().toISOString(),
+      services: {
+        database: "connected",
+        api: "running"
+      }
+    });
+  } catch (error) {
+    res.status(503).json({
+      status: "unhealthy",
+      timestamp: new Date().toISOString(),
+      services: {
+        database: "disconnected",
+        api: "running"
+      },
+      error: error instanceof Error ? error.message : "Unknown error"
+    });
+  }
+});
+
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/problems", problemRoutes);
 app.use("/api/v1/execute-code", executionRoutes);

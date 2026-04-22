@@ -72,6 +72,9 @@ model Problem {
   submission        Submission[]
   solvedBy          ProblemSolved[]
   problemsPlaylists ProblemInPlaylist[]
+
+  @@index([difficulty])
+  @@index([userId])
 }
 
 
@@ -134,6 +137,7 @@ model ProblemSolved {
   problem Problem @relation(fields: [problemId], references: [id], onDelete: Cascade)
 
   @@unique([userId, problemId])
+  @@index([userId])
 }
 
 model Playlist {
@@ -150,6 +154,7 @@ model Playlist {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([name, userId]) 
+  @@index([userId])
 }
 
 model ProblemInPlaylist {
@@ -163,4 +168,6 @@ model ProblemInPlaylist {
   problem  Problem  @relation(fields: [problemId], references: [id], onDelete: Cascade)
 
   @@unique([playListId, problemId])
+  @@index([playListId])
+  @@index([problemId])
 }
