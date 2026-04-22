@@ -70,9 +70,6 @@ const Navbar = () => {
                   <p className="text-sm font-medium text-white leading-none">
                     {authUser.name}
                   </p>
-                  <p className="text-xs text-zinc-500 mt-1">
-                    {authUser.role.toLowerCase()}
-                  </p>
                 </div>
                 <div className="size-9 rounded-sm overflow-hidden border border-zinc-800 group-hover:border-zinc-700 transition-colors">
                   <img

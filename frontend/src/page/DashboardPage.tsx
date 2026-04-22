@@ -143,15 +143,6 @@ const DashboardPage = () => {
                 <h1 className="text-4xl font-bold tracking-tight text-white">
                   {authUser.name}
                 </h1>
-                <span
-                  className={`px-2 py-0.5 rounded-sm text-[10px] font-bold uppercase tracking-widest ${
-                    authUser.role === "ADMIN"
-                      ? "bg-rose-500/10 text-rose-500 border border-rose-500/20"
-                      : "bg-emerald-500/10 text-emerald-500 border border-emerald-500/20"
-                  }`}
-                >
-                  {authUser.role}
-                </span>
                 <span className="px-2 py-0.5 rounded-sm text-[10px] font-bold uppercase tracking-widest bg-amber-500/10 text-amber-500 border border-amber-500/20 flex items-center gap-1">
                   <Award className="size-3" /> Top 5% Rank
                 </span>

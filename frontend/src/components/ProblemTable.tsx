@@ -36,7 +36,6 @@ const ProblemsTable: React.FC<ProblemsTableProps> = ({
   const { createPlaylist } = usePlaylistStore();
   const [search, setSearch] = useState("");
   const [difficulty, setDifficulty] = useState("ALL");
-  const [selectedTag, setSelectedTag] = useState("ALL");
   const [currentPage, setCurrentPage] = useState(1);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isAddToPlaylistModalOpen, setIsAddToPlaylistModalOpen] =
@@ -45,12 +44,6 @@ const ProblemsTable: React.FC<ProblemsTableProps> = ({
     null,
   );
 
-  const uniqueTags = useMemo(() => {
-    if (!Array.isArray(problems)) return [];
-    const tagsSet = new Set<string>();
-    problems.forEach((p) => p.tags?.forEach((t) => tagsSet.add(t)));
-    return Array.from(tagsSet).sort();
-  }, [problems]);
 
   const filteredProblems = useMemo(() => {
     return (problems || [])
@@ -59,11 +52,8 @@ const ProblemsTable: React.FC<ProblemsTableProps> = ({
       )
       .filter((problem) =>
         difficulty === "ALL" ? true : problem.difficulty === difficulty,
-      )
-      .filter((problem) =>
-        selectedTag === "ALL" ? true : problem.tags?.includes(selectedTag),
       );
-  }, [problems, search, difficulty, selectedTag]);
+  }, [problems, search, difficulty]);
 
   const itemsPerPage = 10;
   const totalPages = Math.ceil(filteredProblems.length / itemsPerPage);
@@ -90,16 +80,6 @@ const ProblemsTable: React.FC<ProblemsTableProps> = ({
             />
           </div>
 
-          <BrutalistSelect
-            className="flex-1 md:flex-none md:min-w-45"
-            icon={SlidersHorizontal}
-            options={[
-              { value: "ALL", label: "All Categories" },
-              ...uniqueTags.map((tag) => ({ value: tag, label: tag })),
-            ]}
-            value={selectedTag}
-            onChange={setSelectedTag}
-          />
 
           <BrutalistSelect
             className="flex-1 md:flex-none md:min-w-40"
@@ -139,9 +119,6 @@ const ProblemsTable: React.FC<ProblemsTableProps> = ({
               <th className="px-6 py-4 text-xs font-bold uppercase tracking-widest text-zinc-500 w-32">
                 Difficulty
               </th>
-              <th className="px-6 py-4 text-xs font-bold uppercase tracking-widest text-zinc-500">
-                Categories
-              </th>
               <th className="px-6 py-4 text-xs font-bold uppercase tracking-widest text-zinc-500 text-right">
                 Actions
               </th>
@@ -152,10 +129,10 @@ const ProblemsTable: React.FC<ProblemsTableProps> = ({
               paginatedProblems.map((problem) => {
                 const difficultyClass =
                   problem.difficulty === "Easy"
-                    ? "badge-easy"
+                    ? "bg-emerald-500/10 text-emerald-400"
                     : problem.difficulty === "Medium"
-                      ? "badge-medium"
-                      : "badge-hard";
+                      ? "bg-amber-500/10 text-amber-400"
+                      : "bg-rose-500/10 text-rose-400";
                 const isSolved = problem.solvedBy?.some(
                   (u) => u.userId === authUser?.id,
                 );
@@ -181,21 +158,9 @@ const ProblemsTable: React.FC<ProblemsTableProps> = ({
                       </Link>
                     </td>
                     <td className="px-6 py-5">
-                      <span className={`badge ${difficultyClass} rounded-sm italic lg:not-italic`}>
+                      <span className={`px-3 py-1 text-[10px] font-bold uppercase tracking-widest rounded-sm ${difficultyClass}`}>
                         {problem.difficulty}
                       </span>
-                    </td>
-                    <td className="px-6 py-5">
-                      <div className="flex flex-wrap gap-1.5">
-                        {problem.tags?.slice(0, 3).map((tag, i) => (
-                          <span
-                            key={i}
-                            className="px-2 py-0.5 rounded-sm bg-zinc-900 text-[11px] font-medium text-zinc-500 uppercase border border-zinc-800"
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
                     </td>
                     <td className="px-6 py-5 text-right">
                       <div className="flex items-center justify-end gap-1">
@@ -232,7 +197,7 @@ const ProblemsTable: React.FC<ProblemsTableProps> = ({
             ) : (
               <tr>
                 <td
-                  colSpan={5}
+                  colSpan={4}
                   className="px-6 py-20 text-center text-zinc-600 italic"
                 >
                   No matching challenges found.
