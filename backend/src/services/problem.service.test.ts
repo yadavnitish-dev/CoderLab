@@ -135,4 +135,34 @@ describe("ProblemService", () => {
           .rejects.toThrow(ValidationError);
     });
   });
+
+  describe("getAllProblems", () => {
+    it("should return problems and pagination metadata", async () => {
+      (db.problem.findMany as any).mockResolvedValue([{ id: "p-1" }]);
+      (db.problem.count as any).mockResolvedValue(1);
+
+      const result = await problemService.getAllProblems(1, 10);
+
+      expect(result.problems).toHaveLength(1);
+      expect(result.total).toBe(1);
+    });
+  });
+
+  describe("updateProblem", () => {
+    it("should update problem successfully", async () => {
+      (db.problem.findUnique as any).mockResolvedValue({ id: "p-1", userId: "user-1" });
+      (db.problem.update as any).mockResolvedValue({ id: "p-1", title: "New Title" });
+
+      const result = await problemService.updateProblem("p-1", "user-1", { title: "New Title" });
+
+      expect(result.title).toBe("New Title");
+      expect(db.problem.update).toHaveBeenCalled();
+    });
+
+    it("should throw ForbiddenError if not owner", async () => {
+      (db.problem.findUnique as any).mockResolvedValue({ id: "p-1", userId: "owner" });
+      await expect(problemService.updateProblem("p-1", "stranger", { title: "Title" }))
+        .rejects.toThrow(ForbiddenError);
+    });
+  });
 });

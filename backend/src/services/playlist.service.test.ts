@@ -94,4 +94,55 @@ describe("PlaylistService", () => {
         .rejects.toThrow(ValidationError);
     });
   });
+
+  describe("getAllPlaylists", () => {
+    it("should return all playlists for a user", async () => {
+      const mockPlaylists = [{ id: "pl-1", name: "List 1" }, { id: "pl-2", name: "List 2" }];
+      (db.playlist.findMany as any).mockResolvedValue(mockPlaylists);
+
+      const result = await playlistService.getAllPlaylists("user-1");
+
+      expect(result).toHaveLength(2);
+      expect(db.playlist.findMany).toHaveBeenCalledWith(expect.objectContaining({
+        where: { userId: "user-1" }
+      }));
+    });
+
+    it("should throw UnauthorizedError if no userId provided", async () => {
+      await expect(playlistService.getAllPlaylists(""))
+        .rejects.toThrow(UnauthorizedError);
+    });
+  });
+
+  describe("removeProblemFromPlaylist", () => {
+    it("should remove problem from playlist successfully", async () => {
+      (db.playlist.findFirst as any).mockResolvedValue({ id: "pl-1", userId: "user-1" });
+
+      await playlistService.removeProblemFromPlaylist("pl-1", "p-1", "user-1");
+
+      expect(db.problemInPlaylist.deleteMany).toHaveBeenCalled();
+    });
+
+    it("should throw NotFoundError if playlist not found", async () => {
+      (db.playlist.findFirst as any).mockResolvedValue(null);
+      await expect(playlistService.removeProblemFromPlaylist("pl-1", "p-1", "user-1"))
+        .rejects.toThrow(NotFoundError);
+    });
+  });
+
+  describe("deletePlaylist", () => {
+    it("should delete playlist successfully", async () => {
+      (db.playlist.findFirst as any).mockResolvedValue({ id: "pl-1", userId: "user-1" });
+
+      await playlistService.deletePlaylist("pl-1", "user-1");
+
+      expect(db.playlist.delete).toHaveBeenCalled();
+    });
+
+    it("should throw NotFoundError if playlist not found", async () => {
+      (db.playlist.findFirst as any).mockResolvedValue(null);
+      await expect(playlistService.deletePlaylist("pl-1", "user-1"))
+        .rejects.toThrow(NotFoundError);
+    });
+  });
 });

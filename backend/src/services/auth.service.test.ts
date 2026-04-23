@@ -158,4 +158,106 @@ describe("AuthService", () => {
           .rejects.toThrow(ValidationError);
     });
   });
+
+  describe("updateProfile", () => {
+    it("should update profile successfully", async () => {
+      const updateData = { name: "Updated Name" };
+      (db.user.findUnique as any).mockResolvedValue({ id: "user-1" });
+      (db.user.update as any).mockResolvedValue({ id: "user-1", name: updateData.name, email: "test@example.com" });
+
+      const result = await authService.updateProfile("user-1", updateData);
+
+      expect(result.name).toBe(updateData.name);
+      expect(db.user.update).toHaveBeenCalled();
+    });
+
+    it("should throw NotFoundError if user not found", async () => {
+      (db.user.findUnique as any).mockResolvedValue(null);
+      await expect(authService.updateProfile("user-1", { name: "Name" }))
+        .rejects.toThrow();
+    });
+  });
+
+  describe("verifyEmail", () => {
+    it("should verify email successfully with valid token", async () => {
+      (db.user.findFirst as any).mockResolvedValue({ id: "user-1", email: "test@example.com" });
+      (db.user.update as any).mockResolvedValue({ id: "user-1", isVerified: true, email: "test@example.com" });
+
+      const result = await authService.verifyEmail("valid-token");
+
+      expect(result.user.isVerified).toBe(true);
+      expect(db.user.update).toHaveBeenCalledWith(expect.objectContaining({
+        data: expect.objectContaining({ isVerified: true })
+      }));
+    });
+
+    it("should throw ValidationError with invalid token", async () => {
+      (db.user.findFirst as any).mockResolvedValue(null);
+      await expect(authService.verifyEmail("invalid-token"))
+        .rejects.toThrow(ValidationError);
+    });
+  });
+
+  describe("resendVerification", () => {
+    it("should resend verification email", async () => {
+      (db.user.findUnique as any).mockResolvedValue({ id: "user-1", isVerified: false, email: "test@example.com" });
+
+      await authService.resendVerification("user-1");
+
+      expect(db.user.update).toHaveBeenCalled();
+    });
+
+    it("should throw ValidationError if already verified", async () => {
+      (db.user.findUnique as any).mockResolvedValue({ id: "user-1", isVerified: true });
+      await expect(authService.resendVerification("user-1"))
+        .rejects.toThrow(ValidationError);
+    });
+  });
+
+  describe("forgotPassword", () => {
+    it("should process forgot password request", async () => {
+      (db.user.findUnique as any).mockResolvedValue({ id: "user-1", email: "test@example.com", password: "hashed" });
+
+      await authService.forgotPassword("test@example.com");
+
+      expect(db.user.update).toHaveBeenCalled();
+    });
+
+    it("should return silently if user not found (security)", async () => {
+      (db.user.findUnique as any).mockResolvedValue(null);
+      await authService.forgotPassword("nonexistent@example.com");
+      expect(db.user.update).not.toHaveBeenCalled();
+    });
+  });
+
+  describe("resetPassword", () => {
+    it("should reset password with valid token", async () => {
+      (db.user.findFirst as any).mockResolvedValue({ id: "user-1" });
+
+      await authService.resetPassword({ token: "token", password: "NewPassword123!" });
+
+      expect(db.user.update).toHaveBeenCalled();
+    });
+
+    it("should throw ValidationError with invalid token", async () => {
+      (db.user.findFirst as any).mockResolvedValue(null);
+      await expect(authService.resetPassword({ token: "token", password: "NewPassword123!" }))
+        .rejects.toThrow(ValidationError);
+    });
+  });
+
+  describe("deleteAccount", () => {
+    it("should delete account successfully", async () => {
+      (db.user.findUnique as any).mockResolvedValue({ id: "user-1" });
+
+      await authService.deleteAccount("user-1");
+
+      expect(db.user.delete).toHaveBeenCalledWith({ where: { id: "user-1" } });
+    });
+
+    it("should throw NotFoundError if user not found", async () => {
+      (db.user.findUnique as any).mockResolvedValue(null);
+      await expect(authService.deleteAccount("user-1")).rejects.toThrow();
+    });
+  });
 });

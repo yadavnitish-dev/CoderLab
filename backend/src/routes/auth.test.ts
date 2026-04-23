@@ -56,4 +56,48 @@ describe("Auth Endpoints", () => {
       expect(res.status).toBe(401);
     });
   });
+
+  describe("POST /api/v1/auth/register", () => {
+    it("should register a new user", async () => {
+      (db.user.findUnique as any).mockResolvedValue(null);
+      (db.user.create as any).mockResolvedValue({ id: "1", email: "new@example.com", name: "New" });
+
+      const res = await request(app)
+        .post("/api/v1/auth/register")
+        .send({ email: "new@example.com", password: "Password123!", name: "New" });
+
+      expect(res.status).toBe(201);
+      expect(res.body.success).toBe(true);
+    });
+  });
+
+  describe("POST /api/v1/auth/login", () => {
+    it("should login a user", async () => {
+      (db.user.findUnique as any).mockResolvedValue({ id: "1", email: "test@example.com", password: "hashed" });
+      const bcrypt = await import("bcryptjs");
+      // @ts-ignore
+      vi.spyOn(bcrypt.default, "compare").mockResolvedValue(true);
+
+      const res = await request(app)
+        .post("/api/v1/auth/login")
+        .send({ email: "test@example.com", password: "password" });
+
+      expect(res.status).toBe(200);
+      expect(res.body.success).toBe(true);
+    });
+  });
+
+  describe("POST /api/v1/auth/logout", () => {
+    it("should logout a user", async () => {
+      (jwt.verify as any).mockReturnValue({ id: "user-123" });
+      (db.user.findUnique as any).mockResolvedValue({ id: "user-123" });
+
+      const res = await request(app)
+        .post("/api/v1/auth/logout")
+        .set("Cookie", ["jwt=valid-token"]);
+
+      expect(res.status).toBe(200);
+      expect(res.body.success).toBe(true);
+    });
+  });
 });

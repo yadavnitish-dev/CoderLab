@@ -51,7 +51,9 @@ app.use(express.urlencoded({ extended: true, limit: "1mb" }));
 app.use(cookieParser());
 
 // Apply global rate limiter
-app.use(globalRateLimiter);
+if (process.env.NODE_ENV !== "test") {
+  app.use(globalRateLimiter);
+}
 
 app.get("/", (req, res) => {
   res.send("Hello Guys Welcome to AlgoPrep🔥");

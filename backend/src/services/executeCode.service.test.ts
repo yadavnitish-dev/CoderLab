@@ -79,6 +79,26 @@ describe("CodeExecutionService", () => {
     it("should throw ValidationError for invalid inputs", async () => {
       await expect(codeExecutionService.executeCode(validUser, { ...validInput, source_code: "" }))
         .rejects.toThrow(ValidationError);
+      await expect(codeExecutionService.executeCode(validUser, { ...validInput, language_id: 0 }))
+        .rejects.toThrow(ValidationError);
+      await expect(codeExecutionService.executeCode(validUser, { ...validInput, stdin: [] }))
+        .rejects.toThrow(ValidationError);
+      await expect(codeExecutionService.executeCode(validUser, { ...validInput, expected_outputs: ["3", "4"] }))
+        .rejects.toThrow(ValidationError);
+    });
+
+    it("should return Runtime Error if Judge0 status is not Accepted", async () => {
+      const { executeSubmission } = await import("../libs/judge0.lib.js");
+      (executeSubmission as any).mockResolvedValue({
+        stdout: "",
+        stderr: "Memory limit exceeded",
+        status: { id: 6, description: "Runtime Error (SIGSEGV)" },
+      });
+
+      const result = await codeExecutionService.executeCode(validUser, validInput);
+
+      expect(result.status).toBe("Runtime Error (SIGSEGV)");
+      expect(result.testCases[0].passed).toBe(false);
     });
   });
 

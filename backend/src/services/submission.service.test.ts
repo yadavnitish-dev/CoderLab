@@ -57,4 +57,28 @@ describe("SubmissionService", () => {
       expect(result.acceptanceRate).toBe(0);
     });
   });
+
+  describe("getSubmissionsForProblem", () => {
+    it("should return submissions for a specific problem", async () => {
+      const mockSubmissions = [{ id: "sub-1", problemId: "p-1" }];
+      (db.submission.findMany as any).mockResolvedValue(mockSubmissions);
+
+      const result = await submissionService.getSubmissionsForProblem("user-1", "p-1");
+
+      expect(result).toHaveLength(1);
+      expect(db.submission.findMany).toHaveBeenCalledWith(expect.objectContaining({
+        where: { userId: "user-1", problemId: "p-1" }
+      }));
+    });
+  });
+
+  describe("getSubmissionCountForProblem", () => {
+    it("should return correct count", async () => {
+      (db.submission.count as any).mockResolvedValue(42);
+
+      const result = await submissionService.getSubmissionCountForProblem("p-1");
+
+      expect(result).toBe(42);
+    });
+  });
 });

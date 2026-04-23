@@ -1,5 +1,5 @@
 /// <reference types="vitest" />
-import { defineConfig } from "vite";
+import { defineConfig } from "vitest/config";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 
@@ -14,6 +14,13 @@ export default defineConfig({
       provider: "v8",
       reporter: ["text", "json", "html"],
       exclude: ["node_modules/", "src/setupTests.ts"],
+      // Minimal thresholds for maximum UI flexibility
+      thresholds: {
+        lines: 20,
+        functions: 20,
+        branches: 20,
+        statements: 20,
+      },
     },
   },
 });

@@ -34,7 +34,7 @@ const Navbar = () => {
             </Link>
             <Link
               to="/playlists"
-              className={`px-4 py-2 text-[10px] font-bold uppercase tracking-[0.2em] transition-all ${isActive("/dashboard") ? "text-white" : "text-zinc-500 hover:text-zinc-300"}`}
+              className={`px-4 py-2 text-[10px] font-bold uppercase tracking-[0.2em] transition-all ${isActive("/playlists") ? "text-white" : "text-zinc-500 hover:text-zinc-300"}`}
             >
               Playlists
             </Link>
