@@ -1,4 +1,4 @@
-import { User, LogOut, Code2, LayoutDashboard, Settings } from "lucide-react";
+import { LogOut, Code2, LayoutDashboard, Settings } from "lucide-react";
 import { useAuthStore } from "../store/useAuthStore";
 import { Link, useLocation } from "react-router-dom";
 import LogoutButton from "./LogoutButton";
@@ -11,10 +11,10 @@ const Navbar = () => {
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <nav className="sticky top-0 z-50 w-full border-b border-zinc-800 bg-[#0a0a0a]">
-      <div className="max-w-350 mx-auto px-6 h-16 flex items-center justify-between">
+    <nav className="sticky top-0 z-50 w-full border-b border-zinc-900 bg-[#0a0a0a]/80 backdrop-blur-md">
+      <div className="max-w-[1400px] mx-auto px-6 h-16 flex items-center justify-between">
         {/* Brand */}
-        <div className="flex items-center gap-8">
+        <div className="flex items-center gap-12">
           <Link to="/" className="flex items-center gap-2 group">
             <div className="bg-zinc-900 border border-zinc-800 p-1.5 rounded-sm group-hover:border-zinc-500 transition-all duration-300">
               <Code2 className="size-5 text-white" />
@@ -25,16 +25,16 @@ const Navbar = () => {
           </Link>
 
           {/* Main Nav */}
-          <div className="hidden md:flex items-center">
+          <div className="hidden md:flex items-center gap-1">
             <Link
               to="/roadmap"
-              className={`px-4 py-2 text-xs font-bold uppercase tracking-widest transition-all border ${isActive("/roadmap") ? "text-white bg-zinc-900 border-zinc-700" : "text-zinc-500 border-transparent hover:text-zinc-300 hover:bg-zinc-800"}`}
+              className={`px-4 py-2 text-[10px] font-bold uppercase tracking-[0.2em] transition-all ${isActive("/roadmap") ? "text-white" : "text-zinc-500 hover:text-zinc-300"}`}
             >
               Roadmap
             </Link>
             <Link
               to="/playlists"
-              className={`px-4 py-2 text-xs font-bold uppercase tracking-widest transition-all border ${isActive("/playlists") ? "text-white bg-zinc-900 border-zinc-700" : "text-zinc-500 border-transparent hover:text-zinc-300 hover:bg-zinc-800"}`}
+              className={`px-4 py-2 text-[10px] font-bold uppercase tracking-[0.2em] transition-all ${isActive("/dashboard") ? "text-white" : "text-zinc-500 hover:text-zinc-300"}`}
             >
               Playlists
             </Link>
@@ -42,7 +42,7 @@ const Navbar = () => {
         </div>
 
         {/* User Section */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-6">
           {!authUser ? (
             <div className="flex items-center gap-4">
               <BrutalistButton 
@@ -50,14 +50,15 @@ const Navbar = () => {
                 variant="outline" 
                 size="sm"
               >
-                Sign In
+                Login
               </BrutalistButton>
               <BrutalistButton 
                 to="/signup" 
                 variant="primary" 
                 size="sm"
+                className="h-9 px-6"
               >
-                Get Started
+                Start Solving
               </BrutalistButton>
             </div>
           ) : (
@@ -67,11 +68,11 @@ const Navbar = () => {
                 className="flex items-center gap-3 cursor-pointer group"
               >
                 <div className="text-right hidden sm:block">
-                  <p className="text-sm font-medium text-white leading-none">
+                  <p className="text-[10px] font-bold text-white uppercase tracking-wider">
                     {authUser.name}
                   </p>
                 </div>
-                <div className="size-9 rounded-sm overflow-hidden border border-zinc-800 group-hover:border-zinc-700 transition-colors">
+                <div className="size-8 rounded-sm overflow-hidden border border-zinc-800 group-hover:border-zinc-700 transition-colors">
                   <img
                     src={
                       authUser?.image ||
@@ -90,10 +91,10 @@ const Navbar = () => {
                 className="dropdown-content mt-4 z-1 p-2 shadow-2xl bg-[#0d0d0d] border border-zinc-800 rounded-sm w-64"
               >
                 <div className="px-4 py-3 border-b border-zinc-800 mb-2">
-                  <p className="text-sm font-medium text-white">
+                  <p className="text-sm font-bold text-white">
                     {authUser.name}
                   </p>
-                  <p className="text-xs text-zinc-500 truncate">
+                  <p className="text-[10px] text-zinc-500 truncate uppercase tracking-widest mt-1">
                     {authUser.email}
                   </p>
                 </div>
@@ -103,8 +104,8 @@ const Navbar = () => {
                     to="/dashboard"
                     className="flex items-center gap-3 p-3 hover:bg-zinc-800 rounded-sm transition-all text-zinc-300 hover:text-white"
                   >
-                    <User className="size-4" />
-                    <span className="text-sm font-medium">Dashboard</span>
+                    <LayoutDashboard className="size-4" />
+                    <span className="text-xs font-bold uppercase tracking-widest">Dashboard</span>
                   </Link>
                 </li>
 
@@ -114,7 +115,7 @@ const Navbar = () => {
                     className="flex items-center gap-3 p-3 hover:bg-zinc-800 rounded-sm transition-all text-zinc-300 hover:text-white"
                   >
                     <Settings className="size-4" />
-                    <span className="text-sm font-medium">Settings</span>
+                    <span className="text-xs font-bold uppercase tracking-widest">Settings</span>
                   </Link>
                 </li>
 
@@ -125,7 +126,7 @@ const Navbar = () => {
                       className="flex items-center gap-3 p-3 hover:bg-zinc-800 rounded-sm transition-all text-zinc-300 hover:text-white"
                     >
                       <LayoutDashboard className="size-4" />
-                      <span className="text-sm font-medium">
+                      <span className="text-xs font-bold uppercase tracking-widest">
                         Create Problem
                       </span>
                     </Link>
@@ -137,7 +138,7 @@ const Navbar = () => {
                 <li>
                   <LogoutButton className="flex w-full items-center gap-3 p-3 hover:bg-red-500/10 rounded-sm transition-colors text-red-400 hover:text-red-300 group">
                     <LogOut className="size-4" />
-                    <span className="text-sm font-medium">Sign Out</span>
+                    <span className="text-xs font-bold uppercase tracking-widest">Sign Out</span>
                   </LogoutButton>
                 </li>
               </ul>
