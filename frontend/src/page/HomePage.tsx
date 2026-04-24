@@ -1,15 +1,14 @@
-import { 
-  ArrowRight,  
-  Activity, 
-  Target, 
-  Zap, 
-  BarChart3, 
-  ChevronRight, 
+import {
+  ArrowRight,
+  Activity,
+  Target,
+  Zap,
+  BarChart3,
+  ChevronRight,
   Terminal,
-  Lock,
   Cpu,
   Trophy,
-  History
+  Shield,
 } from "lucide-react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import BrutalistButton from "../components/BrutalistButton";
@@ -18,7 +17,7 @@ import { useRef } from "react";
 const stats = [
   { value: "12,000+", label: "Engineers training daily" },
   { value: "2.1M+", label: "Submissions executed" },
-  { value: "Top 3%", label: "Average consistency score" },
+  { value: "150+", label: "Curated FAANG-level problems" }
 ];
 
 const advantages = [
@@ -43,15 +42,18 @@ export default function HomePage() {
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start start", "end end"]
+    offset: ["start start", "end end"],
   });
 
   const gridY = useTransform(scrollYProgress, [0, 1], ["0%", "10%"]);
 
   return (
-    <div ref={containerRef} className="min-h-screen bg-[#070707] text-zinc-300 overflow-x-hidden selection:bg-emerald-500/30">
+    <div
+      ref={containerRef}
+      className="min-h-screen bg-[#070707] text-zinc-300 overflow-x-hidden selection:bg-emerald-500/30"
+    >
       {/* Dynamic Background */}
-      <motion.div 
+      <motion.div
         style={{ y: gridY }}
         className="fixed inset-0 pointer-events-none opacity-[0.03] animate-grid-drift"
       >
@@ -68,15 +70,9 @@ export default function HomePage() {
               viewport={{ once: true }}
               transition={{ duration: 0.8, ease: "circOut" }}
             >
-              <div className="inline-flex items-center gap-3 border border-zinc-800 bg-zinc-900/50 px-4 py-1.5 mb-10 group cursor-default">
-                <span className="h-2 w-2 bg-emerald-500 animate-pulse shadow-[0_0_8px_#10b981]" />
-                <span className="font-mono text-[10px] tracking-[0.3em] uppercase text-zinc-500 group-hover:text-zinc-300 transition-colors">
-                  SYSTEM ONLINE / EXECUTION READY
-                </span>
-              </div>
-
               <h1 className="text-[clamp(3.5rem,10vw,7rem)] font-bold uppercase tracking-tighter leading-[0.85] text-white mb-10">
-                Master DSA.<br />
+                Master DSA.
+                <br />
                 <span className="text-zinc-700 italic">No excuses.</span>
               </h1>
 
@@ -100,84 +96,123 @@ export default function HomePage() {
               </div>
 
               <div className="mt-16 flex flex-wrap gap-8 font-mono text-[10px] uppercase tracking-[0.2em] text-zinc-600">
-                <span className="flex items-center gap-2.5 hover:text-zinc-400 transition-colors">
-                  <Lock className="size-3.5" /> Secure Environment
+                <span className="flex items-center gap-2">
+                  <Shield className="size-4" /> Secure environment
                 </span>
                 <span className="flex items-center gap-2.5 hover:text-zinc-400 transition-colors">
                   <Cpu className="size-3.5" /> Judge0 Runtime
                 </span>
-                <span className="flex items-center gap-2.5 hover:text-zinc-400 transition-colors">
-                  <History className="size-3.5" /> Vercel Optimized
+                <span className="flex items-center gap-2">
+                  <Activity className="size-4" /> Real-time execution
                 </span>
               </div>
             </motion.div>
 
             {/* RIGHT SIDE: SYSTEM INTERFACE PANEL */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1, ease: "circOut", delay: 0.2 }}
+              initial={{ opacity: 0, scale: 0.98 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8 }}
               className="relative"
             >
-              <div className="terminal-window p-px bg-gradient-to-br from-zinc-800 to-transparent">
-                <div className="bg-[#0b0b0b] p-8 md:p-12 relative">
-                  {/* Scan line effect */}
-                  <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-[0.03]">
-                    <div className="w-full h-20 bg-white animate-scanline shadow-[0_0_100px_white]" />
-                  </div>
-
-                  <div className="flex items-center justify-between border-b border-zinc-900 pb-6 mb-10">
-                    <div>
-                      <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-zinc-500 mb-1">
-                        System Status
-                      </p>
-                      <div className="h-0.5 w-32 bg-emerald-500/50" />
+                <div className="border border-zinc-800 bg-[#080808] overflow-hidden">
+                  <div className="flex items-center justify-between px-4 py-3 border-b border-zinc-900 bg-zinc-900/30">
+                    <div className="flex gap-2">
+                      <div className="size-2 rounded-full bg-zinc-800" />
+                      <div className="size-2 rounded-full bg-zinc-800" />
+                      <div className="size-2 rounded-full bg-zinc-800" />
                     </div>
-                    <div className="text-right">
-                      <p className="font-mono text-[10px] text-zinc-600 uppercase tracking-widest mb-1">Authorization</p>
-                      <p className="font-mono text-xs font-bold text-emerald-500">LEVEL: ALPHA</p>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-10 gap-x-12 mb-12">
-                    {[
-                      { label: "Candidate Status", value: "ACTIVE", color: "text-white" },
-                      { label: "Focus Mode", value: "ENABLED", color: "text-emerald-500" },
-                      { label: "Problems Solved", value: "347", color: "text-white" },
-                      { label: "Runtime Rank", value: "TOP 3%", color: "text-white" },
-                      { label: "Discipline Score", value: "98/100", color: "text-white" },
-                      { label: "Execution Delta", value: "+12.4ms", color: "text-zinc-500" },
-                    ].map((item) => (
-                      <div key={item.label} className="group cursor-default">
-                        <p className="font-mono text-[9px] uppercase tracking-[0.25em] text-zinc-600 group-hover:text-zinc-400 transition-colors mb-2">{item.label}</p>
-                        <p className={`font-mono text-2xl font-bold tracking-tight ${item.color}`}>{item.value}</p>
-                      </div>
-                    ))}
-                  </div>
-
-                  <div className="border border-zinc-800 bg-zinc-900/30 p-6 relative group overflow-hidden">
-                    <div className="absolute inset-0 bg-emerald-500/5 translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-500" />
-                    <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-zinc-500 mb-3 relative z-10">
-                      &gt; Next Target
+                    <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-emerald-500/80">
+                      mastery_engine.cpp
                     </p>
-                    <div className="flex items-center justify-between relative z-10">
-                      <p className="font-mono text-xl font-bold text-white group-hover:text-emerald-400 transition-colors">
-                        Advanced Graphs
-                      </p>
-                      <div className="flex gap-1">
-                        <span className="h-1 w-1 bg-emerald-500 rounded-full animate-ping" />
-                        <span className="h-1 w-1 bg-emerald-500 rounded-full" />
-                      </div>
+                    <p className="font-mono text-[10px] text-zinc-600">UTF-8</p>
+                  </div>
+
+                  <div className="p-6 font-mono text-sm leading-8 text-zinc-300">
+                    <div className="flex opacity-50">
+                      <span className="w-8 text-right pr-4 text-zinc-600">
+                        1
+                      </span>
+                      <span className="text-zinc-500">
+                        #include &lt;iostream&gt;
+                      </span>
+                    </div>
+
+                    <div className="flex opacity-50">
+                      <span className="w-8 text-right pr-4 text-zinc-600">
+                        2
+                      </span>
+                      <span className="text-zinc-500">
+                        using namespace std;
+                      </span>
+                    </div>
+
+                    <div className="flex mt-4">
+                      <span className="w-8 text-right pr-4 text-zinc-600">
+                        3
+                      </span>
+                      <span>
+                        <span className="text-blue-400">string</span> goal ={" "}
+                        <span className="text-amber-300">"FAANG"</span>;
+                      </span>
+                    </div>
+
+                    <div className="flex">
+                      <span className="w-8 text-right pr-4 text-zinc-600">
+                        4
+                      </span>
+                      <span>
+                        <span className="text-blue-400">string</span> system ={" "}
+                        <span className="text-amber-300">"AlgoPrep"</span>;
+                      </span>
+                    </div>
+
+                    <div className="flex mt-4 bg-emerald-500/5 border-l-2 border-emerald-500 px-2">
+                      <span className="w-8 text-right pr-4 text-zinc-600">
+                        5
+                      </span>
+                      <span className="text-emerald-400">
+                        // discipline &gt; motivation
+                      </span>
+                    </div>
+
+                    <div className="flex mt-4">
+                      <span className="w-8 text-right pr-4 text-zinc-600">
+                        6
+                      </span>
+                      <span>
+                        <span className="text-rose-400">while</span>{" "}
+                        (notHired()) {"{"}
+                      </span>
+                    </div>
+
+                    <div className="flex">
+                      <span className="w-8 text-right pr-4 text-zinc-600">
+                        7
+                      </span>
+                      <span className="ml-8">
+                        <span className="text-emerald-400">solve</span>(goal,
+                        system);
+                      </span>
+                    </div>
+
+                    <div className="flex">
+                      <span className="w-8 text-right pr-4 text-zinc-600">
+                        8
+                      </span>
+                      <span className="ml-8">
+                        <span className="text-emerald-400">measure</span>();
+                      </span>
+                    </div>
+
+                    <div className="flex">
+                      <span className="w-8 text-right pr-4 text-zinc-600">
+                        9
+                      </span>
+                      <span>{"}"}</span>
                     </div>
                   </div>
                 </div>
-              </div>
-
-              {/* Decorative terminal cursor in corner */}
-              <div className="absolute -bottom-6 -right-6 font-mono text-[10px] text-zinc-800 pointer-events-none select-none hidden xl:block">
-                0x42_ESTABLISHED_CONNECTION
-              </div>
             </motion.div>
           </div>
         </div>
@@ -188,7 +223,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-24">
             {stats.map((item, idx) => (
-              <motion.div 
+              <motion.div
                 key={item.label}
                 initial={{ opacity: 0, y: 10 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -196,7 +231,9 @@ export default function HomePage() {
                 transition={{ delay: idx * 0.1 }}
                 className="flex flex-col gap-2 border-l border-zinc-800 pl-8"
               >
-                <p className="text-4xl font-bold font-mono text-white tracking-tighter">{item.value}</p>
+                <p className="text-4xl font-bold font-mono text-white tracking-tighter">
+                  {item.value}
+                </p>
                 <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-zinc-600 font-bold">
                   {item.label}
                 </p>
@@ -211,7 +248,7 @@ export default function HomePage() {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[20vw] font-bold text-white/[0.01] pointer-events-none select-none uppercase tracking-tighter whitespace-nowrap">
           Discipline Over Motivation
         </div>
-        
+
         <div className="max-w-4xl mx-auto px-6 text-center relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -225,10 +262,15 @@ export default function HomePage() {
               We don’t believe in motivation.
             </h2>
             <div className="space-y-8 text-xl md:text-2xl text-zinc-500 leading-relaxed font-medium">
-              <p>Motivation fades. <span className="text-white px-2 bg-zinc-900 border border-zinc-800">Systems don’t.</span></p>
               <p>
-                AlgoPrep is built around deliberate repetition, 
-                measurable progress, and brutal honesty.
+                Motivation fades.{" "}
+                <span className="text-white px-2 bg-zinc-900 border border-zinc-800">
+                  Systems don’t.
+                </span>
+              </p>
+              <p>
+                AlgoPrep is built around deliberate repetition, measurable
+                progress, and brutal honesty.
               </p>
               <p className="text-zinc-600 italic">
                 "You either improve, or the data shows you didn’t."
@@ -252,8 +294,8 @@ export default function HomePage() {
 
           <div className="grid md:grid-cols-3 gap-px bg-zinc-900 border border-zinc-900">
             {advantages.map((item, idx) => (
-              <motion.div 
-                key={item.title} 
+              <motion.div
+                key={item.title}
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
@@ -298,7 +340,7 @@ export default function HomePage() {
 
           <div className="grid lg:grid-cols-12 gap-8 h-full">
             {/* Main Showcase: Dashboard Mock */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -317,8 +359,12 @@ export default function HomePage() {
                 </div>
                 <div className="p-8 flex-1 flex flex-col overflow-hidden">
                   <div className="grid grid-cols-3 gap-6 mb-8">
-                    {[1, 2, 3].map(i => (
-                      <div key={i} className="h-20 bg-zinc-900/50 border border-zinc-800 animate-pulse" style={{ animationDelay: `${i * 0.2}s` }} />
+                    {[1, 2, 3].map((i) => (
+                      <div
+                        key={i}
+                        className="h-20 bg-zinc-900/50 border border-zinc-800 animate-pulse"
+                        style={{ animationDelay: `${i * 0.2}s` }}
+                      />
                     ))}
                   </div>
                   <div className="flex-1 bg-zinc-900/30 border border-zinc-800 p-6 relative overflow-hidden">
@@ -334,8 +380,8 @@ export default function HomePage() {
                     {/* Simulated Heatmap */}
                     <div className="grid grid-cols-[repeat(24,1fr)] gap-1">
                       {Array.from({ length: 120 }).map((_, i) => (
-                        <div 
-                          key={i} 
+                        <div
+                          key={i}
                           className={`aspect-square ${Math.random() > 0.7 ? "bg-emerald-500/40" : "bg-zinc-900"} border border-zinc-800/50`}
                         />
                       ))}
@@ -347,7 +393,7 @@ export default function HomePage() {
 
             {/* Side Showcase: Radar/Stats */}
             <div className="lg:col-span-4 flex flex-col gap-8">
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0, x: 20 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
@@ -355,18 +401,28 @@ export default function HomePage() {
               >
                 <div className="flex items-center gap-3 mb-8">
                   <Activity className="size-4 text-emerald-500" />
-                  <p className="font-mono text-[10px] uppercase tracking-widest text-zinc-500">Execution Console</p>
+                  <p className="font-mono text-[10px] uppercase tracking-widest text-zinc-500">
+                    Execution Console
+                  </p>
                 </div>
                 <div className="space-y-4 font-mono text-[11px]">
-                  <p className="text-zinc-600 line-clamp-1">&gt; Compiling solution.cpp...</p>
-                  <p className="text-emerald-500/80">&gt; Test Case 01: PASSED [1.2ms]</p>
-                  <p className="text-emerald-500/80">&gt; Test Case 02: PASSED [0.8ms]</p>
-                  <p className="text-rose-500/80">&gt; Test Case 03: FAILED [LOGIC_ERR]</p>
+                  <p className="text-zinc-600 line-clamp-1">
+                    &gt; Compiling solution.cpp...
+                  </p>
+                  <p className="text-emerald-500/80">
+                    &gt; Test Case 01: PASSED [1.2ms]
+                  </p>
+                  <p className="text-emerald-500/80">
+                    &gt; Test Case 02: PASSED [0.8ms]
+                  </p>
+                  <p className="text-rose-500/80">
+                    &gt; Test Case 03: FAILED [LOGIC_ERR]
+                  </p>
                   <p className="text-zinc-400 animate-blink">&gt; _</p>
                 </div>
               </motion.div>
 
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0, x: 20 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
@@ -375,25 +431,31 @@ export default function HomePage() {
               >
                 <div className="flex items-center gap-3 mb-6">
                   <Terminal className="size-4 text-zinc-500" />
-                  <p className="font-mono text-[10px] uppercase tracking-widest text-zinc-500">System Metrics</p>
+                  <p className="font-mono text-[10px] uppercase tracking-widest text-zinc-500">
+                    System Metrics
+                  </p>
                 </div>
                 <div className="space-y-6">
                   <div className="h-1.5 w-full bg-zinc-900 rounded-full overflow-hidden">
-                    <motion.div 
+                    <motion.div
                       initial={{ width: 0 }}
                       whileInView={{ width: "65%" }}
                       viewport={{ once: true }}
                       transition={{ duration: 1.5, ease: "circOut" }}
-                      className="h-full bg-emerald-500" 
+                      className="h-full bg-emerald-500"
                     />
                   </div>
                   <div className="h-1.5 w-full bg-zinc-900 rounded-full overflow-hidden">
-                    <motion.div 
+                    <motion.div
                       initial={{ width: 0 }}
                       whileInView={{ width: "42%" }}
                       viewport={{ once: true }}
-                      transition={{ duration: 1.5, ease: "circOut", delay: 0.2 }}
-                      className="h-full bg-zinc-600" 
+                      transition={{
+                        duration: 1.5,
+                        ease: "circOut",
+                        delay: 0.2,
+                      }}
+                      className="h-full bg-zinc-600"
                     />
                   </div>
                 </div>
@@ -416,7 +478,8 @@ export default function HomePage() {
             viewport={{ once: true }}
           >
             <h2 className="text-5xl md:text-7xl font-bold text-white tracking-tighter uppercase mb-12 leading-[0.9]">
-              Six months from now,<br />
+              Six months from now,
+              <br />
               you’ll wish you started today.
             </h2>
             <div className="flex flex-col items-center gap-8">
