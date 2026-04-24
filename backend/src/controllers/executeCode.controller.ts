@@ -6,6 +6,7 @@ import {
   executeCodeSchemaWithValidation,
   ExecuteCodeInput,
 } from "../middleware/validation.schema.js";
+import { submissionService } from "../services/submission.service.js";
 
 /**
  * Execute code against test cases (run mode only)
@@ -26,17 +27,17 @@ export const executeCode = async (
     );
 
     if (validatedData.mode === "submit") {
-      // Submit mode: save to database and mark problem as solved
-      const { submission, execution } = await codeExecutionService.submitCode(
+      // Submit mode: save to database with 'Processing' status and return immediately
+      const { submission } = await codeExecutionService.submitCode(
         req.user.id,
         validatedData,
       );
 
       res.status(200).json({
         success: true,
-        message: "Code submitted successfully",
-        submission,
-        execution,
+        message: "Code submission received and is being processed",
+        submissionId: submission.id,
+        status: submission.status,
       });
       return;
     }
@@ -51,6 +52,31 @@ export const executeCode = async (
       success: true,
       message: "Code executed successfully",
       execution,
+    });
+  } catch (error) {
+    handleExecutionError(error, res);
+  }
+};
+
+/**
+ * Get status of a specific submission
+ */
+export const getSubmissionStatus = async (
+  req: AuthenticatedRequest,
+  res: Response,
+): Promise<void> => {
+  try {
+    if (!req.user) {
+      res.status(401).json({ error: "Unauthorized" });
+      return;
+    }
+
+    const { id } = req.params;
+    const submission = await submissionService.getSubmissionStatus(req.user.id, id);
+
+    res.status(200).json({
+      success: true,
+      submission,
     });
   } catch (error) {
     handleExecutionError(error, res);

@@ -7,6 +7,25 @@ import jwt from "jsonwebtoken";
 // Mock dependencies
 vi.mock("../libs/db.js");
 vi.mock("jsonwebtoken");
+vi.mock("../middleware/rateLimiter.middleware.js", () => ({
+  authLimiter: vi.fn((req, res, next) => next()),
+  generalLimiter: vi.fn((req, res, next) => next()),
+  passwordChangeLimiter: vi.fn((req, res, next) => next()),
+  codeExecutionLimiter: vi.fn((req, res, next) => next()),
+  globalRateLimiter: vi.fn((req, res, next) => next()),
+}));
+vi.mock("../libs/redis.lib.js", () => ({
+  cacheManager: {
+    getOrSet: vi.fn((key, cb) => cb()),
+    invalidate: vi.fn(),
+  },
+  redis: {
+    get: vi.fn(),
+    set: vi.fn(),
+    del: vi.fn(),
+    incr: vi.fn(),
+  },
+}));
 
 describe("Auth Endpoints", () => {
   beforeEach(() => {

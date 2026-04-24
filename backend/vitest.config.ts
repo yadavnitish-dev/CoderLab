@@ -6,6 +6,10 @@ export default defineConfig({
     environment: "node",
     testTimeout: 15000,
     include: ["src/**/*.test.ts"],
+    env: {
+      UPSTASH_REDIS_REST_URL: "",
+      UPSTASH_REDIS_REST_TOKEN: "",
+    },
     coverage: {
       provider: "v8",
       reporter: ["text", "json", "html"],

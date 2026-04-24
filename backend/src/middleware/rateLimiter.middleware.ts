@@ -52,7 +52,7 @@ const createLimiter = (
   fallbackLimiter: any
 ) => {
   return async (req: Request, res: Response, next: NextFunction) => {
-    if (!isRedisEnabled || !upstashRatelimit) {
+    if (process.env.NODE_ENV === "test" || !isRedisEnabled || !upstashRatelimit) {
       return fallbackLimiter(req, res, next);
     }
 
@@ -111,7 +111,7 @@ const memoryPasswordLimiter = rateLimit({
 });
 
 // ============ EXPORTED MIDDLEWARES ============
-
+ 
 export const authLimiter = createLimiter("auth", memoryAuthLimiter);
 export const generalLimiter = createLimiter("general", memoryGeneralLimiter);
 export const codeExecutionLimiter = createLimiter("execution", memoryExecutionLimiter);

@@ -52,11 +52,14 @@ AlgoPrep is a full-stack competitive programming platform where users solve codi
 - **Prisma 6** (ORM)
 - **JDoodle Compiler API**
 
-## Execution Flow
+## Execution Flow (Asynchronous)
 
-1. The frontend sends source code, language, and all testcase inputs to the backend.
-2. The backend batches all testcases into a single payload and calls JDoodle’s `POST https://api.jdoodle.com/v1/execute` endpoint exactly once.
-3. The backend parses the batched output from JDoodle, compares each result to the expected output, and stores the submission plus testcase-level results.
+1. The frontend sends source code, language, and testcase inputs to the backend.
+2. The backend creates a **Processing** submission record in the database and returns a `submissionId` immediately.
+3. The frontend begins **Polling** the `/api/v1/execute-code/status/:id` endpoint.
+4. A **Background Worker** on the backend batches all testcases and executes them via the JDoodle API.
+5. Once JDoodle returns the results, the backend updates the submission record and testcase results.
+6. The frontend receives the completed results on its next poll and updates the UI.
 
 ## Local Setup
 
@@ -157,7 +160,7 @@ Tests are automatically executed in GitHub Actions via `.github/workflows/deploy
 
 | Category | Rating | Status |
 |----------|---------|--------|
-| **Architecture** | 7.5/10 | Monolithic / **Improved**: Health Monitoring & Testable Structure |
+| **Architecture** | 8.5/10 | **Modular / Async**: Decoupled Submission Pipeline & Modular Frontend |
 | **Code Quality** | 7.5/10 | **Improved**: Hardened Service Types / Zero `any` in core logic |
 | **UI Aesthetic** | 9.0/10 | High-fidelity niche aesthetic / Accessibility needs work |
 | **Functionality** | 8.5/10 | Solid core DSA flow / **New**: Streak & Difficulty tracking |

@@ -3,7 +3,7 @@ import { authMiddleware } from "../middleware/auth.middleware.js";
 import { isVerified } from "../middleware/verified.middleware.js";
 import { sanitizeInputs } from "../middleware/validation.middleware.js";
 import { codeExecutionLimiter } from "../middleware/rateLimiter.middleware.js";
-import { executeCode } from "../controllers/executeCode.controller.js";
+import { executeCode, getSubmissionStatus } from "../controllers/executeCode.controller.js";
 
 // Middleware to allow larger payloads for code execution (200KB limit)
 const largePayloadMiddleware = express.json({ limit: "200kb" });
@@ -18,6 +18,12 @@ executionRoutes.post(
   codeExecutionLimiter,
   sanitizeInputs,
   executeCode,
+);
+
+executionRoutes.get(
+  "/status/:id",
+  authMiddleware,
+  getSubmissionStatus,
 );
 
 export default executionRoutes;

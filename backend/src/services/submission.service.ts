@@ -127,6 +127,30 @@ export class SubmissionService {
       acceptanceRate,
     };
   }
+
+  /**
+   * Get specific submission status and results
+   */
+  async getSubmissionStatus(userId: string, submissionId: string): Promise<SubmissionWithTestCases> {
+    if (!userId) {
+      throw new UnauthorizedError();
+    }
+
+    const submission = await db.submission.findUnique({
+      where: { id: submissionId },
+      include: { testCases: true },
+    });
+
+    if (!submission) {
+      throw new NotFoundError("Submission");
+    }
+
+    if (submission.userId !== userId) {
+      throw new UnauthorizedError("You do not have access to this submission");
+    }
+
+    return submission as unknown as SubmissionWithTestCases;
+  }
 }
 
 // Export singleton instance

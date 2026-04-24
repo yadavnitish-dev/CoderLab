@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -46,6 +46,7 @@ const SettingsPage: FC = () => {
   const {
     register: registerProfile,
     handleSubmit: handleSubmitProfile,
+    reset: resetProfile,
     formState: { errors: profileErrors },
   } = useForm<ProfileFormData>({
     resolver: zodResolver(ProfileSchema),
@@ -53,6 +54,15 @@ const SettingsPage: FC = () => {
       name: authUser?.name || "",
     },
   });
+
+  // Sync form with authUser when it loads to avoid controlled/uncontrolled warnings
+  useEffect(() => {
+    if (authUser) {
+      resetProfile({
+        name: authUser.name || "",
+      });
+    }
+  }, [authUser, resetProfile]);
 
   const {
     register: registerPassword,
@@ -87,11 +97,6 @@ const SettingsPage: FC = () => {
 
   return (
     <div className="min-h-screen relative overflow-hidden pb-20">
-      {/* Subtle Decorative Grid */}
-      <div className="absolute inset-0 opacity-[0.03] pointer-events-none">
-        <div className="absolute inset-0" style={{ backgroundImage: 'radial-gradient(#fff 1px, transparent 1px)', backgroundSize: '40px 40px' }}></div>
-      </div>
-
       <div className="workspace-container relative z-10 pt-12">
         <div className="flex items-center gap-4 mb-12">
           <div className="bg-zinc-900 border border-zinc-800 p-3 rounded-sm">

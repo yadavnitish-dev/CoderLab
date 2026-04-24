@@ -11,6 +11,13 @@ vi.mock("../libs/db.js", () => ({
   },
 }));
 
+vi.mock("../libs/redis.lib.js", () => ({
+  cacheManager: {
+    getOrSet: vi.fn((key, cb) => cb()),
+    invalidate: vi.fn(),
+  },
+}));
+
 vi.mock("jsonwebtoken", () => ({
   default: {
     verify: vi.fn(),
@@ -71,8 +78,7 @@ describe("Auth Middleware", () => {
 
   describe("checkAdmin", () => {
     it("should return 403 if user is not an admin", async () => {
-      req.user = { id: "user-1" };
-      (db.user.findUnique as any).mockResolvedValue({ role: "USER" });
+      req.user = { id: "user-1", role: "USER" };
 
       await checkAdmin(req, res, next);
 
@@ -80,8 +86,7 @@ describe("Auth Middleware", () => {
     });
 
     it("should call next() if user is an admin", async () => {
-      req.user = { id: "user-1" };
-      (db.user.findUnique as any).mockResolvedValue({ role: "ADMIN" });
+      req.user = { id: "user-1", role: "ADMIN" };
 
       await checkAdmin(req, res, next);
 

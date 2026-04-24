@@ -16,12 +16,52 @@ interface ExecutionState {
     problemId: string,
     mode?: "run" | "submit"
   ) => Promise<void>;
+  pollSubmissionStatus: (submissionId: string) => Promise<void>;
 }
 
-export const useExecutionStore = create<ExecutionState>((set) => ({
+const POLL_INTERVAL = 1000; // 1 second
+const MAX_POLLS = 30; // 30 seconds timeout
+
+export const useExecutionStore = create<ExecutionState>((set, get) => ({
   isRunning: false,
   isSubmitting: false,
   submission: null,
+
+  pollSubmissionStatus: async (submissionId: string) => {
+    let polls = 0;
+    
+    const poll = async () => {
+      try {
+        const res = await axiosInstance.get(`/execute-code/status/${submissionId}`);
+        const submission = res.data.submission;
+        
+        if (submission.status !== "Processing") {
+          set({ submission, isSubmitting: false });
+          if (submission.status === "Accepted") {
+            toast.success("Accepted");
+          } else {
+            toast.error(submission.status);
+          }
+          return;
+        }
+
+        if (polls >= MAX_POLLS) {
+          set({ isSubmitting: false });
+          toast.error("Execution timed out");
+          return;
+        }
+
+        polls++;
+        setTimeout(poll, POLL_INTERVAL);
+      } catch (error) {
+        console.error("Error polling submission status", error);
+        set({ isSubmitting: false });
+        toast.error("Failed to fetch execution status");
+      }
+    };
+
+    setTimeout(poll, POLL_INTERVAL);
+  },
 
   executeCode: async (
     source_code: string,
@@ -37,16 +77,7 @@ export const useExecutionStore = create<ExecutionState>((set) => ({
       } else {
         set({ isSubmitting: true, submission: null });
       }
-      console.log(
-        "Submission:",
-        JSON.stringify({
-          source_code,
-          language_id,
-          stdin,
-          expected_outputs,
-          problemId,
-        })
-      );
+
       const res = await axiosInstance.post("/execute-code", {
         source_code,
         language_id,
@@ -56,18 +87,24 @@ export const useExecutionStore = create<ExecutionState>((set) => ({
         mode,
       });
 
-      set({ submission: res.data.submission });
-
-      toast.success(res.data.message);
+      if (mode === "submit") {
+        const { submissionId } = res.data;
+        // Start polling for results
+        get().pollSubmissionStatus(submissionId);
+      } else {
+        // Run mode returns execution results immediately
+        set({ submission: res.data.execution });
+        toast.success(res.data.message);
+      }
     } catch (error) {
-      console.log("Error executing code", error);
+      console.error("Error executing code", error);
       toast.error("Execution failed");
+      set({ isRunning: false, isSubmitting: false });
     } finally {
       if (mode === "run") {
         set({ isRunning: false });
-      } else {
-        set({ isSubmitting: false });
       }
+      // Note: isSubmitting is set to false in pollSubmissionStatus for submit mode
     }
   },
 }));

@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { problemService } from "./problem.service.js";
 import { db } from "../libs/db.js";
-import { cacheManager } from "../libs/redis.lib.js";
+import { cacheManager, redis } from "../libs/redis.lib.js";
 import { 
   ValidationError, 
   NotFoundError, 
@@ -26,6 +26,12 @@ vi.mock("../libs/redis.lib.js", () => ({
   cacheManager: {
     getOrSet: vi.fn((key, cb) => cb()),
     invalidate: vi.fn(),
+  },
+  redis: {
+    get: vi.fn(),
+    set: vi.fn(),
+    del: vi.fn(),
+    incr: vi.fn(),
   },
 }));
 
@@ -76,7 +82,7 @@ describe("ProblemService", () => {
       await problemService.deleteProblem("p-1", "user-1");
 
       expect(db.problem.delete).toHaveBeenCalled();
-      expect(cacheManager.invalidate).toHaveBeenCalled();
+      expect(redis.incr).toHaveBeenCalledWith("problems:list:version");
     });
 
     it("should throw ForbiddenError if user is not the owner", async () => {
@@ -112,6 +118,7 @@ describe("ProblemService", () => {
 
       expect(result.id).toBe("p-new");
       expect(db.problem.create).toHaveBeenCalled();
+      expect(redis.incr).toHaveBeenCalledWith("problems:list:version");
     });
 
     it("should throw ValidationError if reference solution fails testcase", async () => {
@@ -157,6 +164,7 @@ describe("ProblemService", () => {
 
       expect(result.title).toBe("New Title");
       expect(db.problem.update).toHaveBeenCalled();
+      expect(redis.incr).toHaveBeenCalledWith("problems:list:version");
     });
 
     it("should throw ForbiddenError if not owner", async () => {

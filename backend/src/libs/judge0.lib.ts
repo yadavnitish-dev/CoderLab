@@ -39,10 +39,6 @@ export interface Judge0Submission {
   expected_output: string;
 }
 
-interface Judge0Response {
-  token: string;
-}
-
 interface JDoodleResponse {
   output?: string;
   error?: string;
@@ -103,11 +99,6 @@ export const executeSubmission = async (
   const jdoodleResponse = await executeJDoodle(submission);
   return mapJDoodleToJudge0(jdoodleResponse, token);
 };
-
-const submissionStore = new Map<
-  string,
-  { submission: Judge0Submission; token: string }
->();
 
 export const getJudge0LanguageId = (language: string) =>
   LANGUAGE_ID_BY_NAME[language.toUpperCase()];
@@ -234,43 +225,6 @@ const mapJDoodleToJudge0 = (
     message: null,
     status,
   };
-};
-
-export const submitBatch = async (
-  submissions: Judge0Submission[]
-): Promise<Judge0Response[]> => {
-  ensureJDoodleCredentials();
-
-  return submissions.map((submission) => {
-    const token = crypto.randomUUID();
-    submissionStore.set(token, { submission, token });
-    return { token };
-  });
-};
-
-export const pollBatchResults = async (
-  tokens: string[]
-): Promise<Judge0SubmissionResult[]> => {
-  const results = await Promise.all(
-    tokens.map(async (token) => {
-      const stored = submissionStore.get(token);
-
-      if (!stored) {
-        return null;
-      }
-
-      try {
-        const jdoodleResponse = await executeJDoodle(stored.submission);
-        return mapJDoodleToJudge0(jdoodleResponse, token);
-      } finally {
-        submissionStore.delete(token);
-      }
-    })
-  );
-
-  return results.filter(
-    (result): result is Judge0SubmissionResult => result !== null
-  );
 };
 
 export function getLanguageName(languageId: number) {

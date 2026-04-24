@@ -1,6 +1,7 @@
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
 import { db } from "../libs/db.js";
+import { cacheManager } from "../libs/redis.lib.js";
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -55,21 +56,28 @@ export const authMiddleware = async (
       });
     }
 
-    const user = await db.user.findUnique({
-      where: {
-        id: (decoded as JwtPayload).id,
+    const userId = (decoded as JwtPayload).id;
+    
+    // Cache user profile for 5 minutes to avoid DB hit on every request
+    const user = await cacheManager.getOrSet(
+      `user:profile:${userId}`,
+      async () => {
+        return db.user.findUnique({
+          where: { id: userId },
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            image: true,
+            role: true,
+            isVerified: true,
+            createdAt: true,
+            updatedAt: true,
+          },
+        });
       },
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        image: true,
-        role: true,
-        isVerified: true,
-        createdAt: true,
-        updatedAt: true,
-      },
-    });
+      300 // 5 minutes TTL
+    );
 
     if (!user) {
       return res.status(404).json({
@@ -92,22 +100,9 @@ export const checkAdmin = async (
   next: NextFunction,
 ): Promise<any> => {
   try {
-    if (!req.user || !req.user.id) {
-      return res.status(401).json({ message: "Unauthorized" });
-    }
-    const userId = req.user.id;
-    const user = await db.user.findUnique({
-      where: {
-        id: userId,
-      },
-      select: {
-        role: true,
-      },
-    });
-
-    if (!user || user.role !== "ADMIN") {
+    if (!req.user || req.user.role !== "ADMIN") {
       return res.status(403).json({
-        message: "Acess Denied : Admins only",
+        message: "Access Denied: Admins only",
       });
     }
 

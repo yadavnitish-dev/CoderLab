@@ -9,6 +9,7 @@ vi.mock("../libs/db.js", () => ({
     submission: {
       create: vi.fn(),
       findUnique: vi.fn(),
+      update: vi.fn(),
     },
     problemSolved: {
       upsert: vi.fn(),
@@ -109,12 +110,19 @@ describe("CodeExecutionService", () => {
         stdout: "3",
         status: { id: 3, description: "Accepted" },
       });
-      (db.submission.create as any).mockResolvedValue({ id: "sub-1" });
-      (db.submission.findUnique as any).mockResolvedValue({ id: "sub-1", testCases: [] });
+      (db.submission.create as any).mockResolvedValue({ id: "sub-1", status: "Processing" });
+      (db.submission.update as any).mockResolvedValue({ id: "sub-1", status: "Accepted" });
 
       const result = await codeExecutionService.submitCode(validUser, validInput);
 
+      // In async mode, it returns immediately with 'Processing'
       expect(result.submission.id).toBe("sub-1");
+      
+      // Wait for background task to complete
+      // We need to wait for all the awaits in processSubmission to finish
+      // Using multiple setImmediate flushes or a small delay
+      await new Promise(resolve => setTimeout(resolve, 10));
+
       expect(db.problemSolved.upsert).toHaveBeenCalled();
       expect(cacheManager.invalidate).toHaveBeenCalledWith(`user:${validUser}:solved`);
     });
@@ -125,10 +133,12 @@ describe("CodeExecutionService", () => {
           stdout: "Wrong",
           status: { id: 3, description: "Accepted" },
         });
-        (db.submission.create as any).mockResolvedValue({ id: "sub-1" });
-        (db.submission.findUnique as any).mockResolvedValue({ id: "sub-1", testCases: [] });
+        (db.submission.create as any).mockResolvedValue({ id: "sub-1", status: "Processing" });
+        (db.submission.update as any).mockResolvedValue({ id: "sub-1", status: "Wrong Answer" });
   
         await codeExecutionService.submitCode(validUser, validInput);
+        
+        await new Promise(resolve => setTimeout(resolve, 10));
   
         expect(db.problemSolved.upsert).not.toHaveBeenCalled();
       });

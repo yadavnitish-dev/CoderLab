@@ -1,5 +1,5 @@
 import { db } from "../libs/db.js";
-import { cacheManager } from "../libs/redis.lib.js";
+import { cacheManager, redis } from "../libs/redis.lib.js";
 import {
   buildBatchedStdin,
   executeSubmission,
@@ -21,12 +21,16 @@ export interface ProblemTestcase {
 export interface ProblemResponse {
   id: string;
   title: string;
-  description?: string;
+  description: string;
   difficulty: "EASY" | "MEDIUM" | "HARD";
   tags: string[];
-  examples?: any;
-  constraints?: string;
+  examples: any;
+  constraints: string;
+  hints?: string | null;
+  editorial?: string | null;
+  codeSnippets: any;
   createdAt: Date;
+  updatedAt: Date;
   _count?: {
     solvedBy?: number;
     submission?: number;
@@ -109,7 +113,9 @@ export class ProblemService {
     total: number;
     pages: number;
   }> {
-    const cacheKey = `problems:all:page_${page}_limit_${limit}`;
+    // Get current version for problem list to handle invalidation scalably
+    const version = (await redis.get<number>("problems:list:version")) || 1;
+    const cacheKey = `problems:all:v${version}:page_${page}_limit_${limit}`;
 
     return cacheManager.getOrSet(
       cacheKey,
@@ -260,13 +266,15 @@ export class ProblemService {
   }
 
   /**
-   * Helper to invalidate all paginated problem list caches
+   * Helper to invalidate all paginated problem list caches by incrementing version
    */
   private async invalidateProblemListCache(): Promise<void> {
-    // In a real production app with many pages, we might use Redis SCAN or a versioning strategy.
-    // For now, we'll clear the most common first page and a few others.
-    for (let i = 1; i <= 5; i++) {
-      await cacheManager.invalidate(`problems:all:page_${i}_limit_20`);
+    try {
+      await redis.incr("problems:list:version");
+    } catch (error) {
+      console.error("Failed to increment problem list version:", error);
+      // Fallback: manually clear first page as a safety measure
+      await cacheManager.invalidate("problems:all:v1:page_1_limit_20");
     }
   }
 

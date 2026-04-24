@@ -72,7 +72,6 @@ export class CodeExecutionService {
     input: ExecuteCodeInput
   ): Promise<{
     submission: any;
-    execution: ExecutionResponse;
   }> {
     if (!userId) {
       throw new UnauthorizedError();
@@ -81,74 +80,102 @@ export class CodeExecutionService {
     // Validate input
     this.validateExecutionInput(input);
 
-    // Execute code
-    const execution = await this.runExecution(input);
-
-    // Save submission
+    // Create submission with 'Processing' status
     const submission = await db.submission.create({
       data: {
         userId,
         problemId: input.problemId,
-        sourceCode: execution.sourceCode,
-        language: execution.language,
-        stdin: execution.stdin,
-        stdout: execution.stdout,
-        stderr: execution.stderr,
-        compileOutput: execution.compileOutput,
-        status: execution.status,
-        memory: execution.memory,
-        time: execution.time,
+        sourceCode: input.source_code,
+        language: getLanguageName(input.language_id),
+        status: "Processing",
       },
     });
 
-    // Mark problem as solved if all tests passed
-    if (execution.status === "Accepted") {
-      await db.problemSolved.upsert({
-        where: {
-          userId_problemId: {
-            userId,
-            problemId: input.problemId,
-          },
-        },
-        update: {},
-        create: {
-          userId,
-          problemId: input.problemId,
-        },
+    // Trigger background execution
+    setImmediate(() => {
+      this.processSubmission(submission.id, userId, input).catch((err) => {
+        console.error(`[CRITICAL] Background execution failed for submission ${submission.id}:`, err);
       });
-
-      // Invalidate user solved problems cache
-      await cacheManager.invalidate(`user:${userId}:solved`);
-    }
-
-    // Save test case results
-    const testCaseResults = execution.testCases.map((result) => ({
-      submissionId: submission.id,
-      testCase: result.testCase,
-      passed: result.passed,
-      stdout: result.stdout,
-      expected: result.expected,
-      stderr: result.stderr,
-      compileOutput: result.compileOutput,
-      status: result.status,
-      memory: result.memory,
-      time: result.time,
-    }));
-
-    await db.testCaseResult.createMany({
-      data: testCaseResults,
-    });
-
-    // Fetch submission with test cases
-    const submissionWithTestCases = await db.submission.findUnique({
-      where: { id: submission.id },
-      include: { testCases: true },
     });
 
     return {
-      submission: submissionWithTestCases,
-      execution,
+      submission,
     };
+  }
+
+  /**
+   * Background task to process a submission
+   */
+  private async processSubmission(
+    submissionId: string,
+    userId: string,
+    input: ExecuteCodeInput
+  ): Promise<void> {
+    try {
+      // Execute code
+      const execution = await this.runExecution(input);
+
+      // Update submission with results
+      await db.submission.update({
+        where: { id: submissionId },
+        data: {
+          stdin: execution.stdin,
+          stdout: execution.stdout,
+          stderr: execution.stderr,
+          compileOutput: execution.compileOutput,
+          status: execution.status,
+          memory: execution.memory,
+          time: execution.time,
+        },
+      });
+
+      // Mark problem as solved if all tests passed
+      if (execution.status === "Accepted") {
+        await db.problemSolved.upsert({
+          where: {
+            userId_problemId: {
+              userId,
+              problemId: input.problemId,
+            },
+          },
+          update: {},
+          create: {
+            userId,
+            problemId: input.problemId,
+          },
+        });
+
+        // Invalidate user solved problems cache
+        await cacheManager.invalidate(`user:${userId}:solved`);
+      }
+
+      // Save test case results
+      const testCaseResults = execution.testCases.map((result) => ({
+        submissionId: submissionId,
+        testCase: result.testCase,
+        passed: result.passed,
+        stdout: result.stdout,
+        expected: result.expected,
+        stderr: result.stderr,
+        compileOutput: result.compileOutput,
+        status: result.status,
+        memory: result.memory,
+        time: result.time,
+      }));
+
+      await db.testCaseResult.createMany({
+        data: testCaseResults,
+      });
+    } catch (error: any) {
+      console.error(`Error processing submission ${submissionId}:`, error);
+      await db.submission.update({
+        where: { id: submissionId },
+        data: {
+          status: "Internal Error",
+          stderr: error.message || "Unknown error occurred during processing",
+        },
+      });
+    }
   }
 
   /**
@@ -158,7 +185,7 @@ export class CodeExecutionService {
     // Batch execution inputs
     const batchedStdin = buildBatchedStdin(input.stdin);
 
-    // Execute on Judge0
+    // Execute on Judge0 bridge (JDoodle)
     const result = await executeSubmission({
       source_code: input.source_code,
       language_id: input.language_id,
@@ -172,7 +199,7 @@ export class CodeExecutionService {
     // Evaluate test cases
     let allPassed = true;
     const testResults: TestResult[] = input.stdin.map((_: string, i: number) => {
-      const rawStdout = actualOutputs[i];
+      const rawStdout = actualOutputs ? actualOutputs[i] : "";
       const rawExpected = input.expected_outputs[i];
 
       const stdout = typeof rawStdout === "string" ? rawStdout.trim() : "";
