@@ -9,7 +9,7 @@ const Footer = () => {
           {/* Copyright & Identity */}
           <div className="flex flex-col gap-2 text-center md:text-left">
             <p className="text-[10px] font-mono font-bold text-zinc-600 uppercase tracking-[0.3em]">
-              AlgoPrep © 2026 — [ System Architecture ]
+              AlgoPrep © 2026 — [ Nitish Kumar Yadav ]
             </p>
             <p className="text-[10px] font-mono text-zinc-800 uppercase tracking-[0.1em]">
               Engineered for discipline over motivation.
@@ -27,7 +27,7 @@ const Footer = () => {
             <a href="#" className="text-[10px] font-mono font-bold text-zinc-600 hover:text-white transition-colors uppercase tracking-[0.2em]">
               Contact
             </a>
-            <a href="https://github.com" className="flex items-center gap-2 text-[10px] font-mono font-bold text-zinc-600 hover:text-white transition-colors uppercase tracking-[0.2em]">
+            <a href="https://github.com/yadavnitish-dev" className="flex items-center gap-2 text-[10px] font-mono font-bold text-zinc-600 hover:text-white transition-colors uppercase tracking-[0.2em]">
               <Github className="size-3" />
               GitHub
             </a>

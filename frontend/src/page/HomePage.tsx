@@ -1,13 +1,8 @@
 import {
   ArrowRight,
   Activity,
-  Target,
-  Zap,
-  BarChart3,
-  ChevronRight,
   Terminal,
   Cpu,
-  Trophy,
   Shield,
 } from "lucide-react";
 import { motion, useScroll, useTransform } from "framer-motion";
@@ -18,24 +13,6 @@ const stats = [
   { value: "12,000+", label: "Engineers training daily" },
   { value: "2.1M+", label: "Submissions executed" },
   { value: "150+", label: "Curated FAANG-level problems" }
-];
-
-const advantages = [
-  {
-    title: "Eliminate decision fatigue",
-    desc: "A rigid progression path from Arrays to Graphs. No guessing what to solve next.",
-    icon: Target,
-  },
-  {
-    title: "Instant feedback loops",
-    desc: "Run code, validate logic, and identify mistakes immediately with high-signal execution feedback.",
-    icon: Zap,
-  },
-  {
-    title: "Track what actually matters",
-    desc: "Consistency, weak areas, runtime patterns, and problem-solving depth—measured, not guessed.",
-    icon: BarChart3,
-  },
 ];
 
 export default function HomePage() {
@@ -292,31 +269,138 @@ export default function HomePage() {
             </h2>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-px bg-zinc-900 border border-zinc-900">
-            {advantages.map((item, idx) => (
-              <motion.div
-                key={item.title}
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.1 }}
-                className="bg-[#0a0a0a] p-12 hover:bg-[#0d0d0d] transition-colors group relative overflow-hidden"
-              >
-                <div className="absolute top-0 right-0 p-8 opacity-[0.03] group-hover:opacity-[0.07] transition-opacity">
-                  <item.icon className="size-32" />
-                </div>
-                <item.icon className="size-8 text-emerald-500 mb-8" />
-                <h3 className="text-white text-2xl font-bold uppercase tracking-tighter mb-6">
-                  {item.title}
+          <div className="grid lg:grid-cols-3 gap-px bg-zinc-900 border border-zinc-900">
+            {/* Advantage 1: Decision Fatigue */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="bg-[#0a0a0a] p-10 group relative overflow-hidden"
+            >
+              <div className="relative z-10">
+                <p className="font-mono text-[9px] text-emerald-500 uppercase tracking-widest mb-6">[ 0x01_ELIMINATE_FATIGUE ]</p>
+                <h3 className="text-white text-2xl font-bold uppercase tracking-tighter mb-4">
+                  Decision-Free <br />Progression
                 </h3>
-                <p className="text-zinc-500 leading-relaxed font-medium">
-                  {item.desc}
+                <p className="text-zinc-500 leading-relaxed text-sm mb-12">
+                  A rigid, non-negotiable path from Arrays to Graphs. No guessing what to solve next—just execution.
                 </p>
-                <div className="mt-10 flex items-center gap-2 text-[10px] font-mono text-zinc-700 uppercase tracking-widest group-hover:text-emerald-500 transition-colors">
-                  Learn more <ChevronRight className="size-3" />
+                
+                {/* Visual: Roadmap Schematic */}
+                <div className="mt-12 border border-zinc-900 bg-zinc-900/20 p-4 font-mono text-[9px] space-y-3 opacity-60 group-hover:opacity-100 transition-opacity">
+                  <div className="flex items-center gap-3">
+                    <div className="size-1.5 rounded-full bg-emerald-500" />
+                    <span className="text-zinc-400">01_ARRAYS_AND_HASHING</span>
+                    <span className="text-emerald-500 ml-auto">COMPLETED</span>
+                  </div>
+                  <div className="flex items-center gap-3 border-l-2 border-zinc-800 ml-[2.5px] pl-3 py-1">
+                    <div className="size-1.5 rounded-full bg-amber-500 animate-pulse" />
+                    <span className="text-white font-bold">02_TWO_POINTERS</span>
+                    <span className="text-amber-500 ml-auto">ACTIVE</span>
+                  </div>
+                  <div className="flex items-center gap-3 opacity-40">
+                    <div className="size-1.5 rounded-full bg-zinc-800" />
+                    <span className="text-zinc-600">03_SLIDING_WINDOW</span>
+                    <span className="text-zinc-800 ml-auto">LOCKED</span>
+                  </div>
                 </div>
-              </motion.div>
-            ))}
+              </div>
+            </motion.div>
+
+            {/* Advantage 2: Feedback Loops */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="bg-[#0a0a0a] p-10 group relative overflow-hidden"
+            >
+              <div className="relative z-10">
+                <p className="font-mono text-[9px] text-emerald-500 uppercase tracking-widest mb-6">[ 0x02_REALTIME_VALIDATION ]</p>
+                <h3 className="text-white text-2xl font-bold uppercase tracking-tighter mb-4">
+                  Instant Feedback <br />Loops
+                </h3>
+                <p className="text-zinc-500 leading-relaxed text-sm mb-12">
+                  Run code, validate logic, and identify mistakes immediately with high-signal execution feedback.
+                </p>
+                
+                {/* Visual: Code Execution Logs */}
+                <div className="mt-12 border border-zinc-900 bg-zinc-900/20 p-4 font-mono text-[9px] space-y-2 opacity-60 group-hover:opacity-100 transition-opacity overflow-hidden">
+                  <div className="flex justify-between text-zinc-600">
+                    <span>BUILD_LOG: v1.02</span>
+                    <span>256ms</span>
+                  </div>
+                  <div className="h-[1px] bg-zinc-900 w-full mb-2" />
+                  <p className="text-emerald-500/80">&gt; RUNNING TEST_CASE_01: PASSED</p>
+                  <p className="text-emerald-500/80">&gt; RUNNING TEST_CASE_02: PASSED</p>
+                  <p className="text-rose-500/80">&gt; RUNNING TEST_CASE_03: LOGIC_ERR</p>
+                  <p className="text-zinc-500 animate-blink">&gt; _</p>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Advantage 3: Tracking */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              className="bg-[#0a0a0a] p-10 group relative overflow-hidden"
+            >
+              <div className="relative z-10">
+                <p className="font-mono text-[9px] text-emerald-500 uppercase tracking-widest mb-6">[ 0x03_DISCIPLINE_METRICS ]</p>
+                <h3 className="text-white text-2xl font-bold uppercase tracking-tighter mb-4">
+                  Track what actually matters
+                </h3>
+                <p className="text-zinc-500 leading-relaxed text-sm mb-12">
+                  Consistency, weak areas, and problem-solving depth—measured with architectural precision.
+                </p>
+                
+                {/* Visual: Performance Radar & Metrics */}
+                <div className="mt-12 space-y-6 opacity-60 group-hover:opacity-100 transition-opacity">
+                  <div className="relative h-32 w-full flex items-center justify-center">
+                    {/* Mock Radar Chart SVG */}
+                    <svg className="size-32 overflow-visible" viewBox="0 0 100 100">
+                      {/* Background Polygons */}
+                      <polygon points="50,5 95,35 80,85 20,85 5,35" fill="none" stroke="#18181b" strokeWidth="1" />
+                      <polygon points="50,25 75,45 65,70 35,70 25,45" fill="none" stroke="#18181b" strokeWidth="1" />
+                      {/* Data Polygon */}
+                      <polygon 
+                        points="50,15 85,40 70,80 30,75 15,45" 
+                        fill="rgba(16, 185, 129, 0.1)" 
+                        stroke="#10b981" 
+                        strokeWidth="1.5"
+                        className="animate-pulse"
+                      />
+                      {/* Axis Lines */}
+                      <line x1="50" y1="50" x2="50" y2="5" stroke="#18181b" strokeWidth="1" />
+                      <line x1="50" y1="50" x2="95" y2="35" stroke="#18181b" strokeWidth="1" />
+                      <line x1="50" y1="50" x2="80" y2="85" stroke="#18181b" strokeWidth="1" />
+                      <line x1="50" y1="50" x2="20" y2="85" stroke="#18181b" strokeWidth="1" />
+                      <line x1="50" y1="50" x2="5" y2="35" stroke="#18181b" strokeWidth="1" />
+                    </svg>
+                    
+                    {/* Labels around radar */}
+                    <div className="absolute top-0 font-mono text-[7px] text-zinc-600">RUNTIME</div>
+                    <div className="absolute right-0 top-1/3 font-mono text-[7px] text-zinc-600">SPACE</div>
+                    <div className="absolute right-4 bottom-0 font-mono text-[7px] text-zinc-600">DISCIPLINE</div>
+                    <div className="absolute left-4 bottom-0 font-mono text-[7px] text-zinc-600">LOGIC</div>
+                    <div className="absolute left-0 top-1/3 font-mono text-[7px] text-zinc-600">SPEED</div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3 pt-4 border-t border-zinc-900">
+                    <div className="space-y-1">
+                      <p className="font-mono text-[8px] text-zinc-600 uppercase">Mastery Delta</p>
+                      <p className="font-mono text-xs text-emerald-500 font-bold">+14.2%</p>
+                    </div>
+                    <div className="space-y-1 text-right">
+                      <p className="font-mono text-[8px] text-zinc-600 uppercase">Percentile</p>
+                      <p className="font-mono text-xs text-white font-bold">98.4th</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -339,14 +423,14 @@ export default function HomePage() {
           </div>
 
           <div className="grid lg:grid-cols-12 gap-8 h-full">
-            {/* Main Showcase: Dashboard Mock */}
+            {/* Main Showcase: Integrated Workspace Mock */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               className="lg:col-span-8 group relative"
             >
-              <div className="terminal-window h-[500px] bg-[#0b0b0b] flex flex-col border-zinc-800/50 group-hover:border-zinc-700 transition-colors">
+              <div className="terminal-window h-[580px] bg-[#0b0b0b] flex flex-col border-zinc-800/50 group-hover:border-zinc-700 transition-colors">
                 <div className="terminal-header">
                   <div className="flex gap-1.5">
                     <div className="size-2 rounded-full bg-zinc-800" />
@@ -354,44 +438,92 @@ export default function HomePage() {
                     <div className="size-2 rounded-full bg-zinc-800" />
                   </div>
                   <div className="text-[9px] font-mono text-zinc-600 uppercase tracking-[0.3em]">
-                    dashboard_v2.sys
+                    system_runtime / mastery_roadmap.sys
                   </div>
                 </div>
-                <div className="p-8 flex-1 flex flex-col overflow-hidden">
-                  <div className="grid grid-cols-3 gap-6 mb-8">
-                    {[1, 2, 3].map((i) => (
-                      <div
-                        key={i}
-                        className="h-20 bg-zinc-900/50 border border-zinc-800 animate-pulse"
-                        style={{ animationDelay: `${i * 0.2}s` }}
-                      />
+                
+                <div className="flex-1 flex overflow-hidden">
+                  {/* Sidebar Categories */}
+                  <div className="w-64 border-r border-zinc-900 bg-zinc-900/10 p-6 flex flex-col gap-4">
+                    <p className="font-mono text-[8px] uppercase tracking-[0.2em] text-zinc-600 mb-2">Category Status</p>
+                    {[
+                      { name: "Arrays & Hashing", progress: 100, active: false },
+                      { name: "Two Pointers", progress: 85, active: true },
+                      { name: "Sliding Window", progress: 40, active: false },
+                      { name: "Binary Search", progress: 0, active: false },
+                      { name: "Trees", progress: 0, active: false },
+                    ].map((cat) => (
+                      <div key={cat.name} className={`p-3 border ${cat.active ? 'border-emerald-500/50 bg-emerald-500/5' : 'border-zinc-800 bg-zinc-900/20'} cursor-default`}>
+                        <div className="flex justify-between items-center mb-2">
+                          <span className={`font-mono text-[10px] ${cat.active ? 'text-emerald-400' : 'text-zinc-400'}`}>{cat.name}</span>
+                          <span className="text-[8px] font-mono text-zinc-600">{cat.progress}%</span>
+                        </div>
+                        <div className="h-1 w-full bg-zinc-800 rounded-full overflow-hidden">
+                          <div className={`h-full ${cat.active ? 'bg-emerald-500' : 'bg-zinc-700'}`} style={{ width: `${cat.progress}%` }} />
+                        </div>
+                      </div>
                     ))}
                   </div>
-                  <div className="flex-1 bg-zinc-900/30 border border-zinc-800 p-6 relative overflow-hidden">
-                    <div className="flex justify-between items-start mb-6">
-                      <div className="space-y-2">
-                        <div className="h-4 w-32 bg-zinc-800" />
-                        <div className="h-2 w-20 bg-zinc-900" />
+
+                  {/* Main Content: Problem List */}
+                  <div className="flex-1 p-8 flex flex-col">
+                    <div className="flex justify-between items-end mb-8">
+                      <div>
+                        <h3 className="text-xl font-bold text-white mb-1 uppercase tracking-tight">Two Pointers</h3>
+                        <p className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest">Active Focus Module</p>
                       </div>
-                      <div className="size-16 rounded-full border border-emerald-500/20 flex items-center justify-center">
-                        <Trophy className="size-6 text-emerald-500" />
+                      <div className="text-right">
+                        <p className="text-[10px] font-mono text-zinc-600 uppercase mb-1">Module Reward</p>
+                        <p className="text-sm font-bold text-emerald-500 font-mono">+250 XP</p>
                       </div>
                     </div>
-                    {/* Simulated Heatmap */}
-                    <div className="grid grid-cols-[repeat(24,1fr)] gap-1">
-                      {Array.from({ length: 120 }).map((_, i) => (
-                        <div
-                          key={i}
-                          className={`aspect-square ${Math.random() > 0.7 ? "bg-emerald-500/40" : "bg-zinc-900"} border border-zinc-800/50`}
-                        />
+
+                    <div className="space-y-3">
+                      {[
+                        { title: "Valid Palindrome", difficulty: "Easy", status: "Done" },
+                        { title: "Two Sum II", difficulty: "Medium", status: "Done" },
+                        { title: "3Sum", difficulty: "Medium", status: "Processing" },
+                        { title: "Container With Most Water", difficulty: "Medium", status: "Locked" },
+                        { title: "Trapping Rain Water", difficulty: "Hard", status: "Locked" },
+                      ].map((prob, i) => (
+                        <div key={prob.title} className="flex items-center justify-between p-4 border border-zinc-800 bg-zinc-900/30 group/item hover:bg-zinc-800/50 transition-colors">
+                          <div className="flex items-center gap-4">
+                            <span className="text-[10px] font-mono text-zinc-700">0{i+1}</span>
+                            <span className="text-xs font-medium text-zinc-300">{prob.title}</span>
+                          </div>
+                          <div className="flex items-center gap-6">
+                            <span className={`text-[9px] font-mono uppercase tracking-widest ${
+                              prob.difficulty === 'Easy' ? 'text-emerald-500' : 
+                              prob.difficulty === 'Medium' ? 'text-amber-500' : 'text-rose-500'
+                            }`}>{prob.difficulty}</span>
+                            <div className={`size-1.5 rounded-full ${
+                              prob.status === 'Done' ? 'bg-emerald-500' : 
+                              prob.status === 'Processing' ? 'bg-amber-500 animate-pulse' : 'bg-zinc-800'
+                            }`} />
+                          </div>
+                        </div>
                       ))}
+                    </div>
+
+                    {/* Simulation Overlay */}
+                    <div className="mt-auto pt-8 border-t border-zinc-900">
+                       <div className="flex gap-4">
+                          <div className="flex-1 h-20 border border-zinc-800 bg-zinc-900/20 p-4">
+                            <p className="text-[8px] font-mono text-zinc-600 uppercase mb-2">Complexity Target</p>
+                            <p className="text-xs font-mono text-white">O(n) Time / O(1) Space</p>
+                          </div>
+                          <div className="flex-1 h-20 border border-zinc-800 bg-zinc-900/20 p-4">
+                            <p className="text-[8px] font-mono text-zinc-600 uppercase mb-2">Completion Rate</p>
+                            <p className="text-xs font-mono text-emerald-500">84.2% Success</p>
+                          </div>
+                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             </motion.div>
 
-            {/* Side Showcase: Radar/Stats */}
+            {/* Side Showcase: Consoles */}
             <div className="lg:col-span-4 flex flex-col gap-8">
               <motion.div
                 initial={{ opacity: 0, x: 20 }}
@@ -406,19 +538,23 @@ export default function HomePage() {
                   </p>
                 </div>
                 <div className="space-y-4 font-mono text-[11px]">
+                  <div className="flex justify-between text-zinc-600 mb-6">
+                    <span>Status: RUNNING</span>
+                    <span>v2.4.0</span>
+                  </div>
                   <p className="text-zinc-600 line-clamp-1">
-                    &gt; Compiling solution.cpp...
+                    &gt; Initializing async_pipeline...
                   </p>
                   <p className="text-emerald-500/80">
-                    &gt; Test Case 01: PASSED [1.2ms]
+                    &gt; Submission #8429: SUCCESS
                   </p>
                   <p className="text-emerald-500/80">
-                    &gt; Test Case 02: PASSED [0.8ms]
+                    &gt; Memory: 12.4 MB [PASS]
                   </p>
-                  <p className="text-rose-500/80">
-                    &gt; Test Case 03: FAILED [LOGIC_ERR]
+                  <p className="text-amber-500/80">
+                    &gt; CPU Time: 0.04s [STABLE]
                   </p>
-                  <p className="text-zinc-400 animate-blink">&gt; _</p>
+                  <p className="text-zinc-400 animate-blink">&gt; awaiting next_input_</p>
                 </div>
               </motion.div>
 
@@ -432,31 +568,49 @@ export default function HomePage() {
                 <div className="flex items-center gap-3 mb-6">
                   <Terminal className="size-4 text-zinc-500" />
                   <p className="font-mono text-[10px] uppercase tracking-widest text-zinc-500">
-                    System Metrics
+                    Mastery Metrics
                   </p>
                 </div>
-                <div className="space-y-6">
-                  <div className="h-1.5 w-full bg-zinc-900 rounded-full overflow-hidden">
-                    <motion.div
-                      initial={{ width: 0 }}
-                      whileInView={{ width: "65%" }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 1.5, ease: "circOut" }}
-                      className="h-full bg-emerald-500"
-                    />
+                <div className="space-y-8">
+                  <div className="space-y-3">
+                    <div className="flex justify-between font-mono text-[9px] uppercase tracking-tighter text-zinc-500">
+                      <span>Coverage: NeetCode 150</span>
+                      <span>68%</span>
+                    </div>
+                    <div className="h-1.5 w-full bg-zinc-900 rounded-full overflow-hidden">
+                      <motion.div
+                        initial={{ width: 0 }}
+                        whileInView={{ width: "68%" }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 1.5, ease: "circOut" }}
+                        className="h-full bg-emerald-500"
+                      />
+                    </div>
                   </div>
-                  <div className="h-1.5 w-full bg-zinc-900 rounded-full overflow-hidden">
-                    <motion.div
-                      initial={{ width: 0 }}
-                      whileInView={{ width: "42%" }}
-                      viewport={{ once: true }}
-                      transition={{
-                        duration: 1.5,
-                        ease: "circOut",
-                        delay: 0.2,
-                      }}
-                      className="h-full bg-zinc-600"
-                    />
+                  <div className="space-y-3">
+                    <div className="flex justify-between font-mono text-[9px] uppercase tracking-tighter text-zinc-500">
+                      <span>Daily Consistency</span>
+                      <span>92%</span>
+                    </div>
+                    <div className="h-1.5 w-full bg-zinc-900 rounded-full overflow-hidden">
+                      <motion.div
+                        initial={{ width: 0 }}
+                        whileInView={{ width: "92%" }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 1.5, ease: "circOut", delay: 0.2 }}
+                        className="h-full bg-emerald-500"
+                      />
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4 mt-4">
+                     <div className="p-3 border border-zinc-900 bg-zinc-900/20">
+                        <p className="text-[8px] font-mono text-zinc-600 uppercase mb-1">Rank</p>
+                        <p className="text-sm font-bold text-white font-mono">TOP 3%</p>
+                     </div>
+                     <div className="p-3 border border-zinc-900 bg-zinc-900/20">
+                        <p className="text-[8px] font-mono text-zinc-600 uppercase mb-1">Streak</p>
+                        <p className="text-sm font-bold text-emerald-500 font-mono">14 DAYS</p>
+                     </div>
                   </div>
                 </div>
               </motion.div>
