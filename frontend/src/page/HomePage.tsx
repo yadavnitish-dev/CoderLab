@@ -54,8 +54,8 @@ export default function HomePage() {
               </h1>
 
               <p className="text-lg md:text-xl text-zinc-500 max-w-xl leading-relaxed mb-12">
-                Built for FAANG interview prep and engineers switching jobs.
-                Structured repetition. Measurable progress. Zero distractions.
+                Technical interview prep, engineered for discipline. <br />
+                Structured. Measurable. Non-negotiable.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-6">
@@ -92,104 +92,77 @@ export default function HomePage() {
               transition={{ duration: 0.8 }}
               className="relative"
             >
-                <div className="border border-zinc-800 bg-[#080808] overflow-hidden">
-                  <div className="flex items-center justify-between px-4 py-3 border-b border-zinc-900 bg-zinc-900/30">
-                    <div className="flex gap-2">
-                      <div className="size-2 rounded-full bg-zinc-800" />
-                      <div className="size-2 rounded-full bg-zinc-800" />
-                      <div className="size-2 rounded-full bg-zinc-800" />
+              <div className="border border-zinc-900 bg-[#080808] relative">
+                {/* Minimalist Header */}
+                <div className="flex items-center justify-between border-b border-zinc-900 bg-zinc-900/10 px-6 py-4">
+                  <div className="flex items-center gap-3">
+                    <div className="flex gap-1">
+                      <div className="size-1.5 rounded-full bg-rose-500/30" />
+                      <div className="size-1.5 rounded-full bg-amber-500/30" />
+                      <div className="size-1.5 rounded-full bg-emerald-500/30" />
                     </div>
-                    <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-emerald-500/80">
-                      mastery_engine.cpp
+                    <p className="font-mono text-[9px] uppercase tracking-[0.3em] text-zinc-500">
+                      core_protocol.cpp
                     </p>
-                    <p className="font-mono text-[10px] text-zinc-600">UTF-8</p>
                   </div>
+                  <div className="flex gap-4 font-mono text-[9px] text-zinc-700">
+                    <span>[ CORE_PROTOCOL_v4.2 ]</span>
+                  </div>
+                </div>
 
-                  <div className="p-6 font-mono text-sm leading-8 text-zinc-300">
-                    <div className="flex opacity-50">
-                      <span className="w-8 text-right pr-4 text-zinc-600">
-                        1
-                      </span>
-                      <span className="text-zinc-500">
-                        #include &lt;iostream&gt;
-                      </span>
+                {/* Refined Code Content with Scanline Effect */}
+                <div className="p-10 font-mono text-sm leading-8 text-zinc-400 relative overflow-hidden group">
+                  {/* Subtle Scanline Overlay */}
+                  <div className="absolute inset-0 pointer-events-none opacity-[0.03] bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] z-10 bg-[length:100%_2px,3px_100%]" />
+                  
+                  <div className="relative z-20">
+                    <div className="flex opacity-20 mb-4">
+                      <span className="w-8 text-right pr-6">01</span>
+                      <span>#include &lt;algoprep/system&gt;</span>
                     </div>
 
-                    <div className="flex opacity-50">
-                      <span className="w-8 text-right pr-4 text-zinc-600">
-                        2
-                      </span>
-                      <span className="text-zinc-500">
-                        using namespace std;
-                      </span>
+                    <div className="flex text-zinc-600 mb-6 italic opacity-60">
+                      <span className="w-8 text-right pr-6">02</span>
+                      <span>/** Engineered for discipline over motivation. **/</span>
+                    </div>
+                    
+                    <div className="flex">
+                      <span className="w-8 text-right pr-6 text-zinc-800">03</span>
+                      <span><span className="text-zinc-500">int</span> <span className="text-zinc-300">main</span>() {"{"}</span>
+                    </div>
+                    
+                    <div className="flex ml-6 mt-1">
+                      <span className="w-8 text-right pr-6 text-zinc-800">04</span>
+                      <span><span className="text-emerald-500/80 italic">// protocol_init: NC_150</span></span>
                     </div>
 
-                    <div className="flex mt-4">
-                      <span className="w-8 text-right pr-4 text-zinc-600">
-                        3
-                      </span>
-                      <span>
-                        <span className="text-blue-400">string</span> goal ={" "}
-                        <span className="text-amber-300">"FAANG"</span>;
-                      </span>
+                    <div className="flex ml-6 mt-1 bg-emerald-500/5 border-l border-emerald-500/50 -ml-16 pl-16 pr-4 py-1">
+                      <span className="w-8 text-right pr-6 text-zinc-800">05</span>
+                      <span><span className="text-zinc-200">system</span>.execute_mastery();</span>
+                    </div>
+
+                    <div className="flex ml-6 mt-1">
+                      <span className="w-8 text-right pr-6 text-zinc-800">06</span>
+                      <span><span className="text-zinc-300">return</span> <span className="text-emerald-500/50">SUCCESS</span>;</span>
                     </div>
 
                     <div className="flex">
-                      <span className="w-8 text-right pr-4 text-zinc-600">
-                        4
-                      </span>
-                      <span>
-                        <span className="text-blue-400">string</span> system ={" "}
-                        <span className="text-amber-300">"AlgoPrep"</span>;
-                      </span>
-                    </div>
-
-                    <div className="flex mt-4 bg-emerald-500/5 border-l-2 border-emerald-500 px-2">
-                      <span className="w-8 text-right pr-4 text-zinc-600">
-                        5
-                      </span>
-                      <span className="text-emerald-400">
-                        // discipline &gt; motivation
-                      </span>
-                    </div>
-
-                    <div className="flex mt-4">
-                      <span className="w-8 text-right pr-4 text-zinc-600">
-                        6
-                      </span>
-                      <span>
-                        <span className="text-rose-400">while</span>{" "}
-                        (notHired()) {"{"}
-                      </span>
-                    </div>
-
-                    <div className="flex">
-                      <span className="w-8 text-right pr-4 text-zinc-600">
-                        7
-                      </span>
-                      <span className="ml-8">
-                        <span className="text-emerald-400">solve</span>(goal,
-                        system);
-                      </span>
-                    </div>
-
-                    <div className="flex">
-                      <span className="w-8 text-right pr-4 text-zinc-600">
-                        8
-                      </span>
-                      <span className="ml-8">
-                        <span className="text-emerald-400">measure</span>();
-                      </span>
-                    </div>
-
-                    <div className="flex">
-                      <span className="w-8 text-right pr-4 text-zinc-600">
-                        9
-                      </span>
+                      <span className="w-8 text-right pr-6 text-zinc-800">07</span>
                       <span>{"}"}</span>
+                    </div>
+
+                    <div className="mt-12 flex items-center gap-3">
+                      <div className="size-1 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
+                      <span className="text-[8px] uppercase tracking-[0.4em] text-zinc-600">Mastery Protocol: Active</span>
                     </div>
                   </div>
                 </div>
+
+                {/* Decorative corner detail */}
+                <div className="absolute bottom-0 right-0 p-2 opacity-10">
+                   <div className="size-20 border-r border-b border-zinc-700" />
+                </div>
+              </div>
             </motion.div>
           </div>
         </div>
