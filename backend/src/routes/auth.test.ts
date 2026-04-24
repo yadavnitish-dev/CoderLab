@@ -5,8 +5,27 @@ import { db } from "../libs/db.js";
 import jwt from "jsonwebtoken";
 
 // Mock dependencies
-vi.mock("../libs/db.js");
-vi.mock("jsonwebtoken");
+vi.mock("../libs/db.js", () => {
+  const mockDb = {
+    user: {
+      findUnique: vi.fn(),
+      create: vi.fn(),
+      update: vi.fn(),
+      delete: vi.fn(),
+      findFirst: vi.fn(),
+      findMany: vi.fn(),
+    },
+    $transaction: vi.fn((cb) => cb(mockDb)),
+    $queryRaw: vi.fn(),
+  };
+  return { db: mockDb };
+});
+vi.mock("jsonwebtoken", () => ({
+  default: {
+    sign: vi.fn().mockReturnValue("mock-token"),
+    verify: vi.fn(),
+  },
+}));
 vi.mock("../middleware/rateLimiter.middleware.js", () => ({
   authLimiter: vi.fn((req, res, next) => next()),
   generalLimiter: vi.fn((req, res, next) => next()),
@@ -80,6 +99,7 @@ describe("Auth Endpoints", () => {
     it("should register a new user", async () => {
       (db.user.findUnique as any).mockResolvedValue(null);
       (db.user.create as any).mockResolvedValue({ id: "1", email: "new@example.com", name: "New" });
+      (db.user.update as any).mockResolvedValue({ id: "1", email: "new@example.com", name: "New" });
 
       const res = await request(app)
         .post("/api/v1/auth/register")
@@ -94,7 +114,7 @@ describe("Auth Endpoints", () => {
     it("should login a user", async () => {
       (db.user.findUnique as any).mockResolvedValue({ id: "1", email: "test@example.com", password: "hashed" });
       const bcrypt = await import("bcryptjs");
-      // @ts-ignore
+      // @ts-expect-error
       vi.spyOn(bcrypt.default, "compare").mockResolvedValue(true);
 
       const res = await request(app)
@@ -117,6 +137,33 @@ describe("Auth Endpoints", () => {
 
       expect(res.status).toBe(200);
       expect(res.body.success).toBe(true);
+    });
+  });
+
+  describe("POST /api/v1/auth/refresh-token", () => {
+    it("should refresh tokens using refresh cookie", async () => {
+      (jwt.verify as any).mockReturnValue({ id: "user-123" });
+      (db.user.findUnique as any).mockResolvedValue({
+        id: "user-123",
+        refreshToken: "valid-refresh",
+        refreshTokenExpiry: new Date(Date.now() + 10000),
+      });
+
+      const res = await request(app)
+        .post("/api/v1/auth/refresh-token")
+        .set("Cookie", ["refreshToken=valid-refresh"]);
+
+      expect(res.status).toBe(200);
+      expect(res.body.success).toBe(true);
+      // Verify cookies are set
+      const cookies = res.headers["set-cookie"];
+      expect(cookies.some((c: string) => c.includes("jwt="))).toBe(true);
+      expect(cookies.some((c: string) => c.includes("refreshToken="))).toBe(true);
+    });
+
+    it("should return 401 if refresh cookie is missing", async () => {
+      const res = await request(app).post("/api/v1/auth/refresh-token");
+      expect(res.status).toBe(401);
     });
   });
 });

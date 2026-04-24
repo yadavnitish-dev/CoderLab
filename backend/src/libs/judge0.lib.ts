@@ -1,4 +1,5 @@
 import axios from "axios";
+import { withResilience } from "./resilience.util.js";
 
 const JDOODLE_EXECUTE_URL = "https://api.jdoodle.com/v1/execute";
 
@@ -96,7 +97,18 @@ export const executeSubmission = async (
   submission: Judge0Submission
 ): Promise<Judge0SubmissionResult> => {
   const token = crypto.randomUUID();
-  const jdoodleResponse = await executeJDoodle(submission);
+  
+  const jdoodleResponse = await withResilience(
+    () => executeJDoodle(submission),
+    {
+      timeoutMs: 15000, // Slightly shorter than axios timeout for circuit breaking
+      retries: 2,
+      onRetry: (err, attempt) => {
+        console.warn(`[RETRY] JDoodle execution attempt ${attempt} failed: ${err.message}`);
+      }
+    }
+  );
+
   return mapJDoodleToJudge0(jdoodleResponse, token);
 };
 

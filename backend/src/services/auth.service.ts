@@ -1,7 +1,7 @@
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
 import { db } from "../libs/db.js";
-import { generateToken } from "../libs/jwt.util.js";
+import { generateToken, generateRefreshToken, verifyToken } from "../libs/jwt.util.js";
 import { sendVerificationEmail, sendPasswordResetEmail } from "../libs/email.util.js";
 import { UserRole } from "../generated/prisma/index.js";
 import {
@@ -36,6 +36,7 @@ export interface UserResponse {
 export interface AuthResponse {
   user: UserResponse;
   token: string;
+  refreshToken?: string;
 }
 
 /**
@@ -66,33 +67,48 @@ export class AuthService {
     const verificationToken = crypto.randomBytes(32).toString("hex");
     const verificationTokenExpires = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
 
-    // Create user
-    const newUser = await db.user.create({
-      data: {
-        email: validatedInput.email,
-        password: hashedPassword,
-        name: validatedInput.name,
-        role: UserRole.USER,
-        verificationToken,
-        verificationTokenExpires,
-      },
+    // Create user and tokens in a transaction
+    const result = await db.$transaction(async (tx) => {
+      const newUser = await tx.user.create({
+        data: {
+          email: validatedInput.email,
+          password: hashedPassword,
+          name: validatedInput.name,
+          role: UserRole.USER,
+          verificationToken,
+          verificationTokenExpires,
+        },
+      });
+
+      // Generate tokens
+      const token = generateToken(newUser.id);
+      const refreshToken = generateRefreshToken(newUser.id);
+      const refreshTokenExpiry = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+
+      // Save refresh token
+      const updatedUser = await tx.user.update({
+        where: { id: newUser.id },
+        data: {
+          refreshToken,
+          refreshTokenExpiry,
+        },
+      });
+
+      return {
+        user: this.formatUserResponse(updatedUser),
+        token,
+        refreshToken,
+      };
     });
 
-    // Send verification email
+    // Send verification email outside transaction to avoid blocking
     try {
-      await sendVerificationEmail(newUser.email, verificationToken);
+      await sendVerificationEmail(result.user.email, verificationToken);
     } catch (error) {
       console.error("Failed to send verification email:", error);
-      // We don't throw here to allow the user to registered, they can resend later
     }
 
-    // Generate token
-    const token = generateToken(newUser.id);
-
-    return {
-      user: this.formatUserResponse(newUser),
-      token,
-    };
+    return result;
   }
 
   /**
@@ -121,12 +137,13 @@ export class AuthService {
       throw new UnauthorizedError("Invalid credentials");
     }
 
-    // Generate token
-    const token = generateToken(user.id);
-
+    // Generate tokens
+    const { token, refreshToken } = await this.generateAuthTokens(user.id);
+    
     return {
       user: this.formatUserResponse(user),
       token,
+      refreshToken,
     };
   }
 
@@ -138,7 +155,7 @@ export class AuthService {
     input: UpdateProfileInput
   ): Promise<UserResponse> {
     // Validate input
-    const validatedInput = validateInput<UpdateProfileInput>(
+    validateInput<UpdateProfileInput>(
       input,
       updateProfileSchema,
     );
@@ -316,6 +333,75 @@ export class AuthService {
   }
 
   /**
+   * Revoke refresh token (logout)
+   */
+  async revokeRefreshToken(userId: string): Promise<void> {
+    await db.user.update({
+      where: { id: userId },
+      data: {
+        refreshToken: null,
+        refreshTokenExpiry: null,
+      },
+    });
+  }
+
+  /**
+   * Refresh access token
+   */
+  async refreshToken(token: string): Promise<AuthResponse> {
+    try {
+      const decoded = verifyToken(token, true);
+      const user = await db.user.findUnique({
+        where: { id: decoded.id },
+      });
+
+      if (!user || user.refreshToken !== token || !user.refreshTokenExpiry || user.refreshTokenExpiry < new Date()) {
+        throw new UnauthorizedError("Invalid or expired refresh token");
+      }
+
+      // Generate new tokens (Rotation)
+      const tokens = await this.generateAuthTokens(user.id);
+
+      return {
+        user: this.formatUserResponse(user),
+        ...tokens,
+      };
+    } catch (error) {
+      throw new UnauthorizedError("Invalid refresh token");
+    }
+  }
+
+  /**
+   * Social Login (OAuth)
+   */
+  async loginSocial(user: any): Promise<AuthResponse> {
+    const tokens = await this.generateAuthTokens(user.id);
+    return {
+      user: this.formatUserResponse(user),
+      ...tokens,
+    };
+  }
+
+  /**
+   * Helper to generate and save auth tokens
+   */
+  async generateAuthTokens(userId: string): Promise<{ token: string; refreshToken: string }> {
+    const token = generateToken(userId);
+    const refreshToken = generateRefreshToken(userId);
+    const refreshTokenExpiry = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 days
+
+    await db.user.update({
+      where: { id: userId },
+      data: {
+        refreshToken,
+        refreshTokenExpiry,
+      },
+    });
+
+    return { token, refreshToken };
+  }
+
+  /**
    * Format user response
    */
   private formatUserResponse(user: {
@@ -335,7 +421,7 @@ export class AuthService {
       image: user.image,
       isVerified: user.isVerified || false,
       isSocial: !user.password,
-      socialProvider: (user as any).googleId ? "google" : (user as any).githubId ? "github" : null,
+      socialProvider: (user as { googleId?: string }).googleId ? "google" : (user as { githubId?: string }).githubId ? "github" : null,
     };
   }
 }

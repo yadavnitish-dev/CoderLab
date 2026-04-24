@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express";
 import passport from "../libs/passport.js";
-import { generateToken } from "../libs/jwt.util.js";
-import { setCookie } from "../libs/cookie.util.js";
+import { authService } from "../services/index.js";
+import { setAuthCookies } from "../libs/cookie.util.js";
 
 const router = express.Router();
 
@@ -25,10 +25,15 @@ router.get(
     }
 
     const user = req.user as any;
-    const token = generateToken(user.id);
-    setCookie(res, token);
-
-    res.redirect(`${process.env.FRONTEND_URL}/roadmap`);
+    authService.loginSocial(user).then((result) => {
+      if (result.refreshToken) {
+        setAuthCookies(res, result.token, result.refreshToken);
+      }
+      res.redirect(`${process.env.FRONTEND_URL}/roadmap`);
+    }).catch((err) => {
+      console.error("OAuth Login Error:", err);
+      res.redirect(`${process.env.FRONTEND_URL}/login?error=auth_failed`);
+    });
   }
 );
 
@@ -47,10 +52,15 @@ router.get(
     }
 
     const user = req.user as any;
-    const token = generateToken(user.id);
-    setCookie(res, token);
-
-    res.redirect(`${process.env.FRONTEND_URL}/roadmap`);
+    authService.loginSocial(user).then((result) => {
+      if (result.refreshToken) {
+        setAuthCookies(res, result.token, result.refreshToken);
+      }
+      res.redirect(`${process.env.FRONTEND_URL}/roadmap`);
+    }).catch((err) => {
+      console.error("OAuth Login Error:", err);
+      res.redirect(`${process.env.FRONTEND_URL}/login?error=auth_failed`);
+    });
   }
 );
 

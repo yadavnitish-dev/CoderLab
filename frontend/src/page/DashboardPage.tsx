@@ -8,6 +8,7 @@ import {
   PolarRadiusAxis,
   ResponsiveContainer,
 } from "recharts";
+import { motion } from "framer-motion";
 import { useAuthStore } from "../store/useAuthStore";
 import { Link } from "react-router-dom";
 import {
@@ -113,13 +114,61 @@ const DashboardPage = () => {
 
   if (!authUser) return null;
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.2,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.5 },
+    },
+  };
+
+  const headerVariants = {
+    hidden: { opacity: 0, y: -20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6 },
+    },
+  };
+
+  const profileImageVariants = {
+    hidden: { opacity: 0, scale: 0.8 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: { duration: 0.6 },
+    },
+    hover: { scale: 1.05, transition: { duration: 0.3 } },
+  };
+
   return (
     <div className="min-h-screen pb-20 relative overflow-hidden">
       {/* Profile Header */}
-      <div className="border-b border-zinc-800 bg-[#0d0d0d] py-16 mb-8 relative z-10">
+      <motion.div
+        initial="hidden"
+        animate="visible"
+        variants={headerVariants}
+        className="border-b border-zinc-800 bg-[#0d0d0d] py-16 mb-8 relative z-10"
+      >
         <div className="workspace-container">
           <div className="flex flex-col md:flex-row items-center gap-8">
-            <div className="relative group">
+            <motion.div
+              variants={profileImageVariants}
+              whileHover="hover"
+              className="relative group"
+            >
               <img
                 src={
                   authUser.image ||
@@ -130,9 +179,14 @@ const DashboardPage = () => {
                 alt="Profile"
                 className="size-32 rounded-sm object-cover border border-zinc-800 shadow-2xl relative z-10"
               />
-            </div>
+            </motion.div>
 
-            <div className="text-center md:text-left">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="text-center md:text-left"
+            >
               <div className="flex flex-col md:flex-row items-center gap-3 mb-2">
                 <h1 className="text-4xl font-bold tracking-tight text-white">
                   {authUser.name}
@@ -154,47 +208,81 @@ const DashboardPage = () => {
                   </span>
                 </div>
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
-      </div>
+      </motion.div>
 
       <div className="workspace-container">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          variants={containerVariants}
+          className="grid grid-cols-1 lg:grid-cols-3 gap-6"
+        >
           {/* Bento Stats Grid */}
           <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Main Solve Stat */}
-            <div className="bg-black border border-zinc-800 p-8 rounded-sm relative overflow-hidden group shadow-lg">
-              <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 transition-opacity">
+            <motion.div
+              variants={itemVariants}
+              whileHover={{ y: -4, transition: { duration: 0.3 } }}
+              className="bg-black border border-zinc-800 p-8 rounded-sm relative overflow-hidden group shadow-lg hover:border-zinc-700 hover:shadow-xl transition-all"
+            >
+              <motion.div
+                className="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10"
+                animate={{ rotate: 360 }}
+                transition={{ duration: 20, repeat: Infinity }}
+              >
                 <Target className="size-24" />
-              </div>
+              </motion.div>
               <p className="text-[10px] font-bold text-zinc-600 uppercase tracking-[0.2em] mb-4">
                 Total Progress
               </p>
               <div className="flex items-end gap-3 mb-2">
-                <span className="text-6xl font-bold text-white leading-none">
+                <motion.span
+                  className="text-6xl font-bold text-white leading-none"
+                  initial={{ opacity: 0, scale: 0.5 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: 0.3 }}
+                >
                   {solvedProblems?.length || 0}
-                </span>
+                </motion.span>
                 <span className="text-zinc-600 font-bold mb-1">
                   Problems Solved
                 </span>
               </div>
               <div className="w-full bg-zinc-900 border border-zinc-800 h-2 rounded-sm mt-6 overflow-hidden">
-                <div
-                  className="bg-emerald-500 h-full transition-all duration-1000"
-                  style={{
-                    width: `${Math.min((solvedProblems?.length || 0) * 2, 100)}%`,
-                  }}
-                ></div>
+                <motion.div
+                  className="bg-emerald-500 h-full"
+                  initial={{ width: 0 }}
+                  whileInView={{ width: `${Math.min((solvedProblems?.length || 0) * 2, 100)}%` }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 1.2, delay: 0.4 }}
+                />
               </div>
-            </div>
+            </motion.div>
 
             {/* Skill Radar Chart */}
-            <div className="bg-black border border-zinc-800 p-8 rounded-sm flex flex-col group shadow-lg">
+            <motion.div
+              variants={itemVariants}
+              whileHover={{ y: -4, transition: { duration: 0.3 } }}
+              className="bg-black border border-zinc-800 p-8 rounded-sm flex flex-col group shadow-lg hover:border-zinc-700 hover:shadow-xl transition-all"
+            >
               <h3 className="text-sm font-bold uppercase tracking-widest text-zinc-500 flex items-center gap-2 mb-6">
-                <Target className="size-4" /> Skill Radar
+                <motion.div animate={{ rotate: [0, 10, -10, 0] }} transition={{ duration: 3, repeat: Infinity }}>
+                  <Target className="size-4" />
+                </motion.div>
+                Skill Radar
               </h3>
-              <div className="flex-1 min-h-62.5 w-full mt-4">
+              <motion.div
+                className="flex-1 min-h-62.5 w-full mt-4"
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+              >
                 <ResponsiveContainer width="100%" height="100%">
                   <RadarChart cx="50%" cy="50%" outerRadius="75%" data={radarData}>
                     <PolarGrid stroke="#3f3f46" />
@@ -206,20 +294,35 @@ const DashboardPage = () => {
                       stroke="#10b981"
                       fill="#10b981"
                       fillOpacity={0.5}
+                      isAnimationActive={true}
+                      animationDuration={1500}
                     />
                   </RadarChart>
                 </ResponsiveContainer>
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
 
             {/* Github Contribution Heatmap */}
-            <div className="md:col-span-2 bg-black border border-zinc-800 p-8 rounded-sm overflow-x-auto shadow-lg">
+            <motion.div
+              variants={itemVariants}
+              whileHover={{ y: -4, transition: { duration: 0.3 } }}
+              className="md:col-span-2 bg-black border border-zinc-800 p-8 rounded-sm overflow-x-auto shadow-lg hover:border-zinc-700 hover:shadow-xl transition-all"
+            >
               <div className="flex items-center justify-between mb-8">
                 <h3 className="text-sm font-bold uppercase tracking-widest text-zinc-500 flex items-center gap-2">
-                  <TrendingUp className="size-4" /> Activity Heatmap
+                  <motion.div animate={{ y: [0, -2, 0] }} transition={{ duration: 2, repeat: Infinity }}>
+                    <TrendingUp className="size-4" />
+                  </motion.div>
+                  Activity Heatmap
                 </h3>
               </div>
-              <div className="min-w-200 flex justify-center text-[10px]">
+              <motion.div
+                className="min-w-[200px] flex justify-center text-[10px]"
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5 }}
+              >
                 <ActivityCalendar
                   data={activityData}
                   theme={explicitTheme}
@@ -227,13 +330,16 @@ const DashboardPage = () => {
                     totalCount: `{{count}} submissions in the last year`,
                   }}
                 />
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
           </div>
 
           {/* Right Column: Mini Playlists View */}
-          <div className="lg:col-span-1 space-y-6 h-full">
-            <div className="bg-black border border-zinc-800 p-6 rounded-sm h-full flex flex-col shadow-lg">
+          <motion.div
+            variants={itemVariants}
+            className="lg:col-span-1 space-y-6 h-full"
+          >
+            <div className="bg-black border border-zinc-800 p-6 rounded-sm h-full flex flex-col shadow-lg hover:border-zinc-700 hover:shadow-xl transition-all">
               <div className="flex items-center justify-between mb-6">
                 <h3 className="text-sm font-bold uppercase tracking-widest text-zinc-500">
                   Playlists
@@ -246,45 +352,84 @@ const DashboardPage = () => {
                 </Link>
               </div>
 
-              <div className="space-y-3 flex-1">
+              <motion.div
+                className="space-y-3 flex-1"
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                variants={{
+                  hidden: { opacity: 0 },
+                  visible: {
+                    opacity: 1,
+                    transition: {
+                      staggerChildren: 0.05,
+                    },
+                  },
+                }}
+              >
                 {playlists.slice(0, 5).map((playlist) => (
-                  <Link
+                  <motion.div
                     key={playlist.id}
-                    to={`/playlist/${playlist.id}`}
-                    className="flex items-center justify-between p-4 bg-zinc-900/50 border border-zinc-800 rounded-sm hover:border-zinc-700 transition-all group"
+                    variants={{
+                      hidden: { opacity: 0, x: -10 },
+                      visible: { opacity: 1, x: 0, transition: { duration: 0.3 } },
+                    }}
                   >
-                    <div className="flex-1 min-w-0 mr-4">
-                      <p className="text-sm font-bold text-zinc-200 truncate group-hover:text-white transition-colors">
-                        {playlist.name}
-                      </p>
-                      <p className="text-[10px] text-zinc-600 font-medium uppercase tracking-wider">
-                        {playlist.problems?.length || 0} Challenges
-                      </p>
-                    </div>
-                    <ChevronRight className="size-4 text-zinc-700 group-hover:text-zinc-400 group-hover:translate-x-0.5 transition-all" />
-                  </Link>
+                    <Link
+                      to={`/playlist/${playlist.id}`}
+                      className="flex items-center justify-between p-4 bg-zinc-900/50 border border-zinc-800 rounded-sm hover:border-zinc-700 transition-all group"
+                    >
+                      <div className="flex-1 min-w-0 mr-4">
+                        <p className="text-sm font-bold text-zinc-200 truncate group-hover:text-white transition-colors">
+                          {playlist.name}
+                        </p>
+                        <p className="text-[10px] text-zinc-600 font-medium uppercase tracking-wider">
+                          {playlist.problems?.length || 0} Challenges
+                        </p>
+                      </div>
+                      <motion.div
+                        animate={{ x: [0, 2, 0] }}
+                        transition={{ duration: 2, repeat: Infinity }}
+                        className="text-zinc-700 group-hover:text-zinc-400"
+                      >
+                        <ChevronRight className="size-4" />
+                      </motion.div>
+                    </Link>
+                  </motion.div>
                 ))}
 
                 {playlists.length === 0 && (
-                  <div className="flex flex-col items-center justify-center py-12 text-center">
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5 }}
+                    className="flex flex-col items-center justify-center py-12 text-center"
+                  >
                     <ListMusic className="size-8 text-zinc-800 mb-2" />
                     <p className="text-xs text-zinc-600 italic">
                       No playlists created yet.
                     </p>
-                  </div>
+                  </motion.div>
                 )}
-              </div>
+              </motion.div>
 
-              <Link
-                to="/roadmap"
-                className="mt-8 flex items-center justify-center gap-2 w-full py-4 bg-white text-black rounded-sm text-xs font-bold hover:bg-zinc-200 transition-all"
+              <motion.div
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
               >
-                <Zap className="size-3.5" />
-                Solve More Problems
-              </Link>
+                <Link
+                  to="/roadmap"
+                  className="mt-8 flex items-center justify-center gap-2 w-full py-4 bg-white text-black rounded-sm text-xs font-bold hover:bg-zinc-200 transition-all"
+                >
+                  <motion.div animate={{ rotate: [0, 20, 0] }} transition={{ duration: 0.8, repeat: Infinity }}>
+                    <Zap className="size-3.5" />
+                  </motion.div>
+                  Solve More Problems
+                </Link>
+              </motion.div>
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </div>
     </div>
   );

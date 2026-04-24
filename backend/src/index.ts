@@ -61,28 +61,45 @@ app.get("/", (req, res) => {
 
 // Health check endpoint
 import { db } from "./libs/db.js";
+import { redis } from "./libs/redis.lib.js";
+
 app.get("/health", async (req, res) => {
+  const services = {
+    database: "disconnected",
+    redis: "disconnected",
+    api: "running"
+  };
+
+  let isHealthy = true;
+
   try {
     // Check DB connection
     await db.$queryRaw`SELECT 1`;
-    res.status(200).json({
-      status: "healthy",
-      timestamp: new Date().toISOString(),
-      services: {
-        database: "connected",
-        api: "running"
-      }
-    });
+    services.database = "connected";
   } catch (error) {
-    res.status(503).json({
-      status: "unhealthy",
-      timestamp: new Date().toISOString(),
-      services: {
-        database: "disconnected",
-        api: "running"
-      }
-    });
+    isHealthy = false;
   }
+
+  try {
+    // Check Redis connection (Upstash is REST based, so a simple ping works)
+    if (process.env.UPSTASH_REDIS_REST_URL) {
+      await redis.ping();
+      services.redis = "connected";
+    } else {
+      services.redis = "disabled";
+    }
+  } catch (error) {
+    // We don't fail the health check if redis is down if it's optional, 
+    // but here we mark it as disconnected. 
+    // Usually, if redis is used for rate limiting/sessions, it's critical.
+    isHealthy = false;
+  }
+
+  res.status(isHealthy ? 200 : 503).json({
+    status: isHealthy ? "healthy" : "unhealthy",
+    timestamp: new Date().toISOString(),
+    services
+  });
 });
 
 app.use("/api/v1/auth", authRoutes);

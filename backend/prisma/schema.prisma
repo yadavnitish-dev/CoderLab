@@ -38,6 +38,10 @@ model User {
   // Password Recovery
   resetPasswordToken       String?
   resetPasswordExpires    DateTime?
+  
+  // Refresh Token
+  refreshToken            String?   @unique
+  refreshTokenExpiry      DateTime?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

@@ -9,8 +9,8 @@ import {
 } from "./errors.js";
 
 // Mock the database and bcrypt
-vi.mock("../libs/db.js", () => ({
-  db: {
+vi.mock("../libs/db.js", () => {
+  const mockDb = {
     user: {
       findUnique: vi.fn(),
       create: vi.fn(),
@@ -18,8 +18,10 @@ vi.mock("../libs/db.js", () => ({
       delete: vi.fn(),
       findFirst: vi.fn(),
     },
-  },
-}));
+    $transaction: vi.fn((cb) => cb(mockDb)),
+  };
+  return { db: mockDb };
+});
 
 vi.mock("bcryptjs", () => ({
   default: {
@@ -30,6 +32,8 @@ vi.mock("bcryptjs", () => ({
 
 vi.mock("../libs/jwt.util.js", () => ({
   generateToken: vi.fn().mockReturnValue("mock_token"),
+  generateRefreshToken: vi.fn().mockReturnValue("mock_refresh_token"),
+  verifyToken: vi.fn().mockReturnValue({ id: "mock_id" }),
 }));
 
 vi.mock("../libs/email.util.js", () => ({
@@ -52,6 +56,12 @@ describe("AuthService", () => {
     it("should register a new user successfully", async () => {
       (db.user.findUnique as any).mockResolvedValue(null);
       (db.user.create as any).mockResolvedValue({
+        id: "user-1",
+        ...validRegistration,
+        role: "USER",
+        isVerified: false,
+      });
+      (db.user.update as any).mockResolvedValue({
         id: "user-1",
         ...validRegistration,
         role: "USER",
@@ -258,6 +268,47 @@ describe("AuthService", () => {
     it("should throw NotFoundError if user not found", async () => {
       (db.user.findUnique as any).mockResolvedValue(null);
       await expect(authService.deleteAccount("user-1")).rejects.toThrow();
+    });
+  });
+
+  describe("refreshToken", () => {
+    it("should rotate tokens successfully", async () => {
+      const mockUser = {
+        id: "user-1",
+        refreshToken: "valid-refresh-token",
+        refreshTokenExpiry: new Date(Date.now() + 10000),
+      };
+      (db.user.findUnique as any).mockResolvedValue(mockUser);
+      
+      const result = await authService.refreshToken("valid-refresh-token");
+
+      expect(result.token).toBe("mock_token");
+      expect(result.refreshToken).toBe("mock_refresh_token");
+      expect(db.user.update).toHaveBeenCalledWith(expect.objectContaining({
+        where: { id: "user-1" },
+        data: expect.objectContaining({ refreshToken: "mock_refresh_token" })
+      }));
+    });
+
+    it("should throw UnauthorizedError if token does not match DB", async () => {
+      (db.user.findUnique as any).mockResolvedValue({
+        id: "user-1",
+        refreshToken: "different-token",
+      });
+
+      await expect(authService.refreshToken("valid-refresh-token"))
+        .rejects.toThrow(UnauthorizedError);
+    });
+  });
+
+  describe("revokeRefreshToken", () => {
+    it("should clear refresh token in DB", async () => {
+      await authService.revokeRefreshToken("user-1");
+
+      expect(db.user.update).toHaveBeenCalledWith({
+        where: { id: "user-1" },
+        data: { refreshToken: null, refreshTokenExpiry: null },
+      });
     });
   });
 });

@@ -84,6 +84,7 @@ const memoryAuthLimiter = rateLimit({
   max: 20,
   keyGenerator: (req) => req.ip || "unknown",
   validate: { default: false },
+  standardHeaders: true,
   handler: (req, res) => {
     res.status(429).json({ error: "Too many requests", code: "RATE_LIMIT_EXCEEDED" });
   },
@@ -93,6 +94,7 @@ const memoryGeneralLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 100,
   validate: { default: false },
+  standardHeaders: true,
   keyGenerator: (req) => req.ip || "unknown",
 });
 
@@ -100,6 +102,7 @@ const memoryExecutionLimiter = rateLimit({
   windowMs: 60 * 1000,
   max: 10,
   validate: { default: false },
+  standardHeaders: true,
   keyGenerator: (req) => req.ip || "unknown",
 });
 
@@ -107,6 +110,7 @@ const memoryPasswordLimiter = rateLimit({
   windowMs: 60 * 60 * 1000,
   max: 3,
   validate: { default: false },
+  standardHeaders: true,
   keyGenerator: (req) => req.ip || "unknown",
 });
 

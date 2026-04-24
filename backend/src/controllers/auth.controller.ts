@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { authService, AppError } from "../services/index.js";
-import { setCookie, clearCookie } from "../libs/cookie.util.js";
+import { setCookie, clearCookie, setAuthCookies } from "../libs/cookie.util.js";
 import { AuthenticatedRequest } from "../middleware/auth.middleware.js";
 import { validateInput } from "../services/validation.helper.js";
 import {
@@ -28,8 +28,12 @@ export const register = async (req: Request, res: Response): Promise<void> => {
       registerSchema,
     );
     const result = await authService.register(validatedData);
-
-    setCookie(res, result.token);
+    
+    if (result.refreshToken) {
+      setAuthCookies(res, result.token, result.refreshToken);
+    } else {
+      setCookie(res, result.token);
+    }
 
     res.status(201).json({
       success: true,
@@ -45,8 +49,12 @@ export const login = async (req: Request, res: Response): Promise<void> => {
   try {
     const validatedData = validateInput<LoginInput>(req.body, loginSchema);
     const result = await authService.login(validatedData);
-
-    setCookie(res, result.token);
+    
+    if (result.refreshToken) {
+      setAuthCookies(res, result.token, result.refreshToken);
+    } else {
+      setCookie(res, result.token);
+    }
 
     res.status(200).json({
       success: true,
@@ -58,8 +66,12 @@ export const login = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-export const logout = async (req: Request, res: Response): Promise<void> => {
+export const logout = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
   try {
+    if (req.user?.id) {
+      await authService.revokeRefreshToken(req.user.id);
+    }
+    
     clearCookie(res);
 
     res.status(200).json({
@@ -151,6 +163,29 @@ export const verifyEmail = async (req: Request, res: Response): Promise<void> =>
     res.status(200).json({
       success: true,
       message: "Email verified successfully",
+      user: result.user,
+    });
+  } catch (error) {
+    handleAuthError(error, res);
+  }
+};
+
+export const refreshToken = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const token = req.cookies.refreshToken;
+    if (!token) {
+      res.status(401).json({ error: "Refresh token missing" });
+      return;
+    }
+
+    const result = await authService.refreshToken(token);
+    
+    if (result.refreshToken) {
+      setAuthCookies(res, result.token, result.refreshToken);
+    }
+
+    res.status(200).json({
+      success: true,
       user: result.user,
     });
   } catch (error) {

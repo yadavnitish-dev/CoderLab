@@ -11,6 +11,7 @@ import {
   forgotPassword,
   resetPassword,
   deleteAccount,
+  refreshToken,
 } from "../controllers/auth.controller.js";
 import { authMiddleware } from "../middleware/auth.middleware.js";
 import { sanitizeInputs } from "../middleware/validation.middleware.js";
@@ -28,6 +29,7 @@ authRoutes.use("/", oauthRoutes);
 authRoutes.post("/register", authLimiter, sanitizeInputs, register);
 
 authRoutes.post("/login", authLimiter, sanitizeInputs, login);
+authRoutes.post("/refresh-token", refreshToken);
 
 authRoutes.post("/logout", authMiddleware, logout);
 
