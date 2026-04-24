@@ -99,7 +99,7 @@ export const executeSubmission = async (
   const token = crypto.randomUUID();
   
   const jdoodleResponse = await withResilience(
-    () => executeJDoodle(submission),
+    (signal) => executeJDoodle(submission, signal),
     {
       timeoutMs: 15000, // Slightly shorter than axios timeout for circuit breaking
       retries: 2,
@@ -181,7 +181,8 @@ const inferStatus = (response: JDoodleResponse) => {
 };
 
 const executeJDoodle = async (
-  submission: Judge0Submission
+  submission: Judge0Submission,
+  signal?: AbortSignal
 ): Promise<JDoodleResponse> => {
   ensureJDoodleCredentials();
 
@@ -202,6 +203,7 @@ const executeJDoodle = async (
     payload,
     {
       timeout: 20000,
+      signal, // Ensure underlying socket is aborted on timeout
       headers: {
         "Content-Type": "application/json",
       },

@@ -20,7 +20,7 @@ interface CircuitBreakerOptions {
  * Protects the event loop from hanging on external dependencies
  */
 export async function withResilience<T>(
-  fn: () => Promise<T>,
+  fn: (signal: AbortSignal) => Promise<T>,
   options: CircuitBreakerOptions = {}
 ): Promise<T> {
   const { 
@@ -32,20 +32,31 @@ export async function withResilience<T>(
   let lastError: any;
 
   for (let attempt = 1; attempt <= retries + 1; attempt++) {
+    const controller = new AbortController();
+    let timeoutId: NodeJS.Timeout | undefined;
+
     try {
       // Timeout Logic
       const timeoutPromise = new Promise<never>((_, reject) => {
-        setTimeout(() => reject(new Error("Operation timed out")), timeoutMs);
+        timeoutId = setTimeout(() => {
+          controller.abort("Operation timed out");
+          reject(new Error("Operation timed out"));
+        }, timeoutMs);
       });
 
-      return await Promise.race([fn(), timeoutPromise]);
+      const result = await Promise.race([fn(controller.signal), timeoutPromise]);
+      if (timeoutId) clearTimeout(timeoutId);
+      return result;
     } catch (error: any) {
+      if (timeoutId) clearTimeout(timeoutId);
+      controller.abort(); // Ensure abort is called on any error
+      
       lastError = error;
 
       if (attempt <= retries) {
         if (onRetry) onRetry(error, attempt);
         // Exponential backoff
-        await new Promise(resolve => setTimeout(resolve, Math.pow(2, attempt) * 100));
+        await sleep(Math.pow(2, attempt) * 100);
         continue;
       }
     }
