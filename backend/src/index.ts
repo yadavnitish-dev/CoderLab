@@ -1,4 +1,6 @@
 import express, { Request, Response, NextFunction } from "express";
+import { v4 as uuidv4 } from "uuid";
+import logger from "./libs/logger.util.js";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import cors from "cors";
@@ -16,6 +18,25 @@ dotenv.config();
 const app = express();
 
 app.set("trust proxy", 1);
+
+// Request ID middleware
+app.use((req, res, next) => {
+  const requestId = (req.header("X-Request-ID") || uuidv4()) as string;
+  res.setHeader("X-Request-ID", requestId);
+  next();
+});
+
+// Simple request logger
+app.use((req, res, next) => {
+  const requestId = res.getHeader("X-Request-ID");
+  logger.info({
+    type: "request",
+    method: req.method,
+    url: req.url,
+    requestId,
+  });
+  next();
+});
 
 // Security headers
 app.use(helmet());
@@ -155,7 +176,7 @@ const PORT = process.env.PORT || 8080;
 
 if (process.env.NODE_ENV !== "test") {
   app.listen(PORT, () => {
-    console.log(`Server is running at PORT ${PORT}`);
+    logger.info(`Server is running at PORT ${PORT}`);
   });
 }
 

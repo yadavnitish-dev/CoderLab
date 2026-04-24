@@ -1,4 +1,10 @@
 /**
+ * Simple delay utility (Promisified setTimeout)
+ */
+export const sleep = (ms: number): Promise<void> => 
+  new Promise((resolve) => setTimeout(resolve, ms));
+
+/**
  * Resilience Utilities
  * Artisan-grade patterns for system stability
  */

@@ -7,13 +7,14 @@ import {
   ValidationError 
 } from "./errors.js";
 
-vi.mock("../libs/db.js", () => ({
-  db: {
+vi.mock("../libs/db.js", () => {
+  const mockDb = {
     playlist: {
       create: vi.fn(),
       findMany: vi.fn(),
       findFirst: vi.fn(),
       delete: vi.fn(),
+      deleteMany: vi.fn(),
     },
     problem: {
       findMany: vi.fn(),
@@ -22,8 +23,10 @@ vi.mock("../libs/db.js", () => ({
       createMany: vi.fn(),
       deleteMany: vi.fn(),
     },
-  },
-}));
+    $transaction: vi.fn((cb) => cb(mockDb)),
+  };
+  return { db: mockDb };
+});
 
 describe("PlaylistService", () => {
   beforeEach(() => {
@@ -116,15 +119,21 @@ describe("PlaylistService", () => {
 
   describe("removeProblemFromPlaylist", () => {
     it("should remove problem from playlist successfully", async () => {
-      (db.playlist.findFirst as any).mockResolvedValue({ id: "pl-1", userId: "user-1" });
+      (db.problemInPlaylist.deleteMany as any).mockResolvedValue({ count: 1 });
 
       await playlistService.removeProblemFromPlaylist("pl-1", "p-1", "user-1");
 
-      expect(db.problemInPlaylist.deleteMany).toHaveBeenCalled();
+      expect(db.problemInPlaylist.deleteMany).toHaveBeenCalledWith(expect.objectContaining({
+        where: expect.objectContaining({
+          playListId: "pl-1",
+          problemId: "p-1",
+          playlist: { userId: "user-1" }
+        })
+      }));
     });
 
-    it("should throw NotFoundError if playlist not found", async () => {
-      (db.playlist.findFirst as any).mockResolvedValue(null);
+    it("should throw NotFoundError if playlist entry not found or not owned", async () => {
+      (db.problemInPlaylist.deleteMany as any).mockResolvedValue({ count: 0 });
       await expect(playlistService.removeProblemFromPlaylist("pl-1", "p-1", "user-1"))
         .rejects.toThrow(NotFoundError);
     });
@@ -132,15 +141,17 @@ describe("PlaylistService", () => {
 
   describe("deletePlaylist", () => {
     it("should delete playlist successfully", async () => {
-      (db.playlist.findFirst as any).mockResolvedValue({ id: "pl-1", userId: "user-1" });
+      (db.playlist.deleteMany as any).mockResolvedValue({ count: 1 });
 
       await playlistService.deletePlaylist("pl-1", "user-1");
 
-      expect(db.playlist.delete).toHaveBeenCalled();
+      expect(db.playlist.deleteMany).toHaveBeenCalledWith(expect.objectContaining({
+        where: { id: "pl-1", userId: "user-1" }
+      }));
     });
 
-    it("should throw NotFoundError if playlist not found", async () => {
-      (db.playlist.findFirst as any).mockResolvedValue(null);
+    it("should throw NotFoundError if playlist not found or not owned", async () => {
+      (db.playlist.deleteMany as any).mockResolvedValue({ count: 0 });
       await expect(playlistService.deletePlaylist("pl-1", "user-1"))
         .rejects.toThrow(NotFoundError);
     });

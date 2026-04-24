@@ -87,7 +87,7 @@ passport.use(
       callbackURL: process.env.GITHUB_CALLBACK_URL || "/api/v1/auth/github/callback",
       proxy: true,
     },
-    async (accessToken: string, refreshToken: string, profile: any, done: any) => {
+    async (accessToken: string, refreshToken: string, profile: any, done: (err: any, user?: any) => void) => {
       try {
         const email = profile.emails?.[0].value;
         // GitHub might not provide email depending on user settings

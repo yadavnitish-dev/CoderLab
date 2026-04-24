@@ -75,11 +75,12 @@ describe("AuthService", () => {
       expect(db.user.create).toHaveBeenCalled();
     });
 
-    it("should throw ConflictError if user already exists", async () => {
-      (db.user.findUnique as any).mockResolvedValue({ id: "user-1" });
+    it("should return existing user if email is already registered (no enumeration)", async () => {
+      (db.user.findUnique as any).mockResolvedValue({ id: "user-1", email: "existing@example.com" });
 
-      await expect(authService.register(validRegistration))
-        .rejects.toThrow(ConflictError);
+      const result = await authService.register(validRegistration);
+      expect(result.user.id).toBe("user-1");
+      expect(result.token).toBeDefined();
     });
 
     it("should throw ValidationError if password is too simple", async () => {

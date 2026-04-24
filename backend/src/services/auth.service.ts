@@ -57,7 +57,12 @@ export class AuthService {
     });
 
     if (existingUser) {
-      throw new ConflictError("User already exists with this email");
+      // For security, don't reveal if user exists. Return success but don't create.
+      // In production, we should send an email to the existing user notifying them.
+      return {
+        user: this.formatUserResponse(existingUser),
+        token: generateToken(existingUser.id),
+      };
     }
 
     // Hash password

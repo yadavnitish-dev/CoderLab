@@ -121,38 +121,40 @@ export class PlaylistService {
       throw new ValidationError("At least one problem ID is required");
     }
 
-    // Verify user owns the playlist
-    const playlist = await db.playlist.findFirst({
-      where: {
-        id: playlistId,
-        userId,
-      },
+    return await db.$transaction(async (tx) => {
+      // Verify user owns the playlist
+      const playlist = await tx.playlist.findFirst({
+        where: {
+          id: playlistId,
+          userId,
+        },
+      });
+
+      if (!playlist) {
+        throw new NotFoundError("Playlist");
+      }
+
+      // Verify all problems exist
+      const problems = await tx.problem.findMany({
+        where: { id: { in: input.problemIds } },
+        select: { id: true },
+      });
+
+      if (problems.length !== input.problemIds.length) {
+        throw new ValidationError("One or more problems do not exist");
+      }
+
+      // Add problems to playlist (skip duplicates)
+      const problemsInPlaylist = await tx.problemInPlaylist.createMany({
+        data: input.problemIds.map((problemId) => ({
+          playListId: playlistId,
+          problemId,
+        })),
+        skipDuplicates: true,
+      });
+
+      return problemsInPlaylist;
     });
-
-    if (!playlist) {
-      throw new NotFoundError("Playlist");
-    }
-
-    // Verify all problems exist
-    const problems = await db.problem.findMany({
-      where: { id: { in: input.problemIds } },
-      select: { id: true },
-    });
-
-    if (problems.length !== input.problemIds.length) {
-      throw new ValidationError("One or more problems do not exist");
-    }
-
-    // Add problems to playlist (skip duplicates)
-    const problemsInPlaylist = await db.problemInPlaylist.createMany({
-      data: input.problemIds.map((problemId) => ({
-        playListId: playlistId,
-        problemId,
-      })),
-      skipDuplicates: true,
-    });
-
-    return problemsInPlaylist;
   }
 
   /**
@@ -167,24 +169,20 @@ export class PlaylistService {
       throw new UnauthorizedError();
     }
 
-    // Verify user owns the playlist
-    const playlist = await db.playlist.findFirst({
-      where: {
-        id: playlistId,
-        userId,
-      },
-    });
-
-    if (!playlist) {
-      throw new NotFoundError("Playlist");
-    }
-
-    await db.problemInPlaylist.deleteMany({
+    // Combined ownership check and deletion
+    const result = await db.problemInPlaylist.deleteMany({
       where: {
         playListId: playlistId,
         problemId,
+        playlist: {
+          userId,
+        },
       },
     });
+
+    if (result.count === 0) {
+      throw new NotFoundError("Playlist entry");
+    }
   }
 
   /**
@@ -199,21 +197,17 @@ export class PlaylistService {
       throw new ValidationError("Playlist ID is required");
     }
 
-    // Verify user owns the playlist
-    const playlist = await db.playlist.findFirst({
+    // Combined ownership check and deletion
+    const result = await db.playlist.deleteMany({
       where: {
         id: playlistId,
         userId,
       },
     });
 
-    if (!playlist) {
+    if (result.count === 0) {
       throw new NotFoundError("Playlist");
     }
-
-    await db.playlist.delete({
-      where: { id: playlistId },
-    });
   }
 }
 

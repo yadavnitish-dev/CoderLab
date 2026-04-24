@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
 import { authService, AppError } from "../services/index.js";
+import { sleep } from "../libs/resilience.util.js";
+import logger from "../libs/logger.util.js";
 import { setCookie, clearCookie, setAuthCookies } from "../libs/cookie.util.js";
 import { AuthenticatedRequest } from "../middleware/auth.middleware.js";
 import { validateInput } from "../services/validation.helper.js";
@@ -62,6 +64,8 @@ export const login = async (req: Request, res: Response): Promise<void> => {
       user: result.user,
     });
   } catch (error) {
+    // Progressive Delay: Slow down brute force attacks
+    await sleep(1000);
     handleAuthError(error, res);
   }
 };
@@ -273,7 +277,14 @@ function handleAuthError(error: any, res: Response): void {
     return;
   }
 
-  console.error("Unexpected error in auth controller:", error);
+  // Log only message and stack to avoid leaking PII/Passwords from error objects (like Zod errors)
+  logger.error({
+    msg: "Unexpected error in auth controller",
+    message: error.message,
+    stack: error.stack,
+    code: error.code
+  });
+
   res.status(500).json({
     error: "Internal server error",
   });

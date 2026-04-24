@@ -8,7 +8,7 @@ export interface TestCaseResponse {
   stdout: string | null;
   stderr: string | null;
   compileOutput: string | null;
-  status: any;
+  status: string;
   memory: string | null;
   time: string | null;
 }
@@ -136,17 +136,16 @@ export class SubmissionService {
       throw new UnauthorizedError();
     }
 
-    const submission = await db.submission.findUnique({
-      where: { id: submissionId },
+    const submission = await db.submission.findFirst({
+      where: { 
+        id: submissionId,
+        userId, // Enforcement of ownership at query level
+      },
       include: { testCases: true },
     });
 
     if (!submission) {
       throw new NotFoundError("Submission");
-    }
-
-    if (submission.userId !== userId) {
-      throw new UnauthorizedError("You do not have access to this submission");
     }
 
     return submission as unknown as SubmissionWithTestCases;
