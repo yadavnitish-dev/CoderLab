@@ -222,7 +222,7 @@ const CreateProblemForm = () => {
 
       <div className="max-w-400 mx-auto relative z-10">
         <div className="max-w-5xl mx-auto">
-          <div className="bg-[#0d0d0d] border border-zinc-800 p-6 md:p-8 relative z-10 rounded-sm shadow-2xl">
+          <div className="bg-[#0d0d0d] border border-zinc-800 p-6 md:p-8 relative z-10 rounded-none shadow-none">
             {/* Header */}
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 pb-6 border-b border-white/5 gap-4">
               <div>
@@ -248,7 +248,7 @@ const CreateProblemForm = () => {
                           type="button"
                           className={`btn btn-xs border-0 rounded-sm w-12 ${
                             sampleType === `NC_${num}`
-                              ? "bg-white text-black shadow-lg"
+                              ? "bg-white text-black shadow-none"
                               : "btn-ghost hover:bg-zinc-900 text-zinc-500"
                           }`}
                           onClick={() => setSampleType(`NC_${num}`)}
@@ -283,7 +283,7 @@ const CreateProblemForm = () => {
                   </label>
                   <input
                     type="text"
-                    className={`input input-bordered w-full bg-black border-zinc-800 focus:border-emerald-500/50 focus:bg-black transition-all rounded-sm ${errors.title ? "input-error" : ""}`}
+                    className={`input input-bordered w-full bg-black border-zinc-800 focus:border-emerald-500/50 focus:bg-black transition-none rounded-none ${errors.title ? "input-error" : ""}`}
                     {...register("title")}
                     placeholder="e.g. Two Sum"
                   />
@@ -301,7 +301,7 @@ const CreateProblemForm = () => {
                     </span>
                   </label>
                   <textarea
-                    className={`textarea textarea-bordered min-h-32 w-full bg-black border-zinc-800 focus:border-emerald-500/50 focus:bg-black transition-all text-base leading-relaxed rounded-sm ${errors.description ? "textarea-error" : ""}`}
+                    className={`textarea textarea-bordered min-h-32 w-full bg-black border-zinc-800 focus:border-emerald-500/50 focus:bg-black transition-none text-base leading-relaxed rounded-none ${errors.description ? "textarea-error" : ""}`}
                     {...register("description")}
                     placeholder="Describe the problem in detail..."
                   />
@@ -336,7 +336,7 @@ const CreateProblemForm = () => {
               </div>
 
               {/* Tags Section */}
-              <div className="bg-black rounded-sm p-6 border border-zinc-800">
+              <div className="bg-black rounded-none p-6 border border-zinc-800">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-lg font-semibold flex items-center gap-2 text-white">
                     <BookOpen className="w-5 h-5 text-secondary" />
@@ -355,7 +355,7 @@ const CreateProblemForm = () => {
                     <div key={field.id} className="flex gap-2 items-center">
                       <input
                         type="text"
-                        className="input input-sm input-bordered flex-1 bg-black border-zinc-800 focus:border-emerald-500/50 rounded-sm"
+                        className="input input-sm input-bordered flex-1 bg-black border-zinc-800 focus:border-emerald-500/50 rounded-none"
                         {...register(`tags.${index}.value`)}
                         placeholder="e.g. Array"
                       />
@@ -378,7 +378,7 @@ const CreateProblemForm = () => {
               </div>
 
               {/* Test Cases Section */}
-              <div className="bg-black rounded-sm p-6 border border-zinc-800">
+              <div className="bg-black rounded-none p-6 border border-zinc-800">
                 <div className="flex items-center justify-between mb-6">
                   <h3 className="text-lg font-semibold flex items-center gap-2 text-white">
                     <CheckCircle2 className="w-5 h-5 text-success" />
@@ -397,7 +397,7 @@ const CreateProblemForm = () => {
                   {testCaseFields.map((field, index) => (
                     <div
                       key={field.id}
-                      className="bg-black rounded-sm p-4 border border-zinc-800 relative group"
+                      className="bg-black rounded-none p-4 border border-zinc-800 relative group"
                     >
                       <button
                         type="button"
@@ -420,7 +420,7 @@ const CreateProblemForm = () => {
                             </span>
                           </label>
                           <textarea
-                            className="textarea textarea-bordered min-h-16 w-full bg-black border-zinc-800 font-mono text-sm leading-relaxed focus:border-emerald-500/50 rounded-sm"
+                            className="textarea textarea-bordered min-h-16 w-full bg-black border-zinc-800 font-mono text-sm leading-relaxed focus:border-emerald-500/50 rounded-none"
                             {...register(`testcases.${index}.input`)}
                             placeholder="Input data..."
                           />
@@ -437,7 +437,7 @@ const CreateProblemForm = () => {
                             </span>
                           </label>
                           <textarea
-                            className="textarea textarea-bordered min-h-16 w-full bg-black border-zinc-800 font-mono text-sm leading-relaxed focus:border-emerald-500/50 rounded-sm"
+                            className="textarea textarea-bordered min-h-16 w-full bg-black border-zinc-800 font-mono text-sm leading-relaxed focus:border-emerald-500/50 rounded-none"
                             {...register(`testcases.${index}.output`)}
                             placeholder="Expected output..."
                           />
@@ -463,7 +463,7 @@ const CreateProblemForm = () => {
                 {(["JAVASCRIPT", "PYTHON", "JAVA", "CPP"] as const).map((language) => (
                   <div
                     key={language}
-                    className="collapse collapse-arrow bg-black border border-zinc-800 rounded-sm overflow-hidden"
+                    className="collapse collapse-arrow bg-black border border-zinc-800 rounded-none overflow-hidden"
                   >
                     <input
                       type="checkbox"
@@ -471,7 +471,7 @@ const CreateProblemForm = () => {
                     />
                     <div className="collapse-title text-base font-semibold flex items-center gap-2 p-4">
                       <div
-                        className={`w-8 h-8 rounded-sm flex items-center justify-center bg-zinc-900 border border-zinc-800`}
+                        className={`w-8 h-8 rounded-none flex items-center justify-center bg-zinc-900 border border-zinc-800`}
                       >
                         <Code2 className="w-4 h-4" />
                       </div>
@@ -551,7 +551,7 @@ const CreateProblemForm = () => {
                       </div>
 
                       {/* Examples */}
-                      <div className="bg-black rounded-sm p-4 border border-zinc-800">
+                      <div className="bg-black rounded-none p-4 border border-zinc-800">
                         <label className="text-sm font-semibold mb-4 block">
                           Language Specific Examples
                         </label>
@@ -594,7 +594,7 @@ const CreateProblemForm = () => {
               </div>
 
               {/* Extra Info */}
-              <div className="bg-black rounded-sm p-6 border border-zinc-800">
+              <div className="bg-black rounded-none p-6 border border-zinc-800">
                 <h3 className="text-lg font-semibold flex items-center gap-2 text-white mb-4">
                   <Lightbulb className="w-5 h-5 text-warning" />
                   Hints & Extras
@@ -607,7 +607,7 @@ const CreateProblemForm = () => {
                       </span>
                     </label>
                     <textarea
-                      className="textarea textarea-bordered min-h-24 w-full bg-black border-zinc-800 rounded-sm focus:border-emerald-500/50 transition-all"
+                      className="textarea textarea-bordered min-h-24 w-full bg-black border-zinc-800 rounded-none focus:border-emerald-500/50 transition-none"
                       {...register("constraints")}
                       placeholder="e.g. 1 <= n <= 10^5"
                     />
@@ -624,7 +624,7 @@ const CreateProblemForm = () => {
                       </span>
                     </label>
                     <textarea
-                      className="textarea textarea-bordered min-h-20 w-full bg-black border-zinc-800 rounded-sm focus:border-emerald-500/50 transition-all"
+                      className="textarea textarea-bordered min-h-20 w-full bg-black border-zinc-800 rounded-none focus:border-emerald-500/50 transition-none"
                       {...register("hints")}
                       placeholder="Helpful tips..."
                     />
@@ -636,7 +636,7 @@ const CreateProblemForm = () => {
                       </span>
                     </label>
                     <textarea
-                      className="textarea textarea-bordered min-h-32 w-full bg-black border-zinc-800 rounded-sm focus:border-emerald-500/50 transition-all"
+                      className="textarea textarea-bordered min-h-32 w-full bg-black border-zinc-800 rounded-none focus:border-emerald-500/50 transition-none"
                       {...register("editorial")}
                       placeholder="Full solution explanation..."
                     />
@@ -647,7 +647,7 @@ const CreateProblemForm = () => {
               <div className="flex justify-end pt-6 border-t border-white/5">
                 <button
                   type="submit"
-                  className="btn btn-primary btn-lg shadow-lg shadow-primary/20 hover:scale-[1.02] transition-transform w-full md:w-auto"
+                  className="btn btn-primary btn-lg rounded-none shadow-none w-full md:w-auto"
                   disabled={isLoading}
                 >
                   {isLoading ? (
@@ -669,7 +669,7 @@ const CreateProblemForm = () => {
 
       {isLoading && (
         <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center">
-          <div className="bg-[#0d0d0d] border border-zinc-800 p-8 rounded-sm flex flex-col items-center gap-4">
+          <div className="bg-[#0d0d0d] border border-zinc-800 p-8 rounded-none flex flex-col items-center gap-4">
             <Loader2 className="size-10 animate-spin text-zinc-400" />
             <p className="text-lg font-medium text-white">
               Creating Problem...

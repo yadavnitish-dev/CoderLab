@@ -22,14 +22,14 @@ const VerifyEmailPage = () => {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#0a0a0a] p-4">
         <div className="max-w-md w-full text-center space-y-6">
-          <div className="size-16 mx-auto rounded-sm bg-rose-500/10 flex items-center justify-center text-rose-500 border border-rose-500/20">
+          <div className="size-16 mx-auto rounded-none bg-rose-500/10 flex items-center justify-center text-rose-500 border border-rose-500/20">
             <ShieldAlert className="size-8" />
           </div>
           <h1 className="text-2xl font-bold tracking-tight text-white uppercase">Invalid Link</h1>
           <p className="text-zinc-500 text-sm">
             No verification token detected. Please use the link sent to your email.
           </p>
-          <Link to="/" className="inline-flex items-center gap-2 text-white bg-zinc-900 border border-zinc-800 px-6 py-2.5 rounded-sm text-xs font-bold hover:bg-zinc-800 transition-all">
+          <Link to="/" className="inline-flex items-center gap-2 text-white bg-zinc-900 border border-zinc-800 px-6 py-2.5 rounded-none text-xs font-bold hover:bg-zinc-800 transition-none">
             Go to Homepage
           </Link>
         </div>
@@ -39,7 +39,7 @@ const VerifyEmailPage = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#0a0a0a] p-4">
-      <div className="max-w-md w-full text-center space-y-8 animate-in fade-in zoom-in duration-500">
+      <div className="max-w-md w-full text-center space-y-8">
         <div className="header text-[10px] font-bold uppercase tracking-[0.3em] text-zinc-600 mb-8">
           AlgoPrep // Email Verification
         </div>
@@ -51,7 +51,7 @@ const VerifyEmailPage = () => {
           </div>
         ) : authUser?.isVerified ? (
           <div className="space-y-8">
-            <div className="size-20 mx-auto rounded-sm bg-emerald-500/10 flex items-center justify-center text-emerald-500 border border-emerald-500/20 shadow-lg shadow-emerald-500/5">
+            <div className="size-20 mx-auto rounded-none bg-emerald-500/10 flex items-center justify-center text-emerald-500 border border-emerald-500/20">
               <ShieldCheck className="size-10" />
             </div>
             <div className="space-y-3">
@@ -63,16 +63,16 @@ const VerifyEmailPage = () => {
             <div className="pt-4">
               <Link
                 to="/roadmap"
-                className="group inline-flex items-center gap-2 bg-white text-black px-8 py-3 rounded-sm text-sm font-bold hover:bg-zinc-200 transition-all shadow-xl shadow-white/5"
+                className="group inline-flex items-center gap-2 bg-white text-black px-8 py-3 rounded-none text-sm font-bold hover:bg-zinc-200 transition-none"
               >
                 Enter Workspace
-                <ArrowRight className="size-4 group-hover:translate-x-0.5 transition-transform" />
+                <ArrowRight className="size-4" />
               </Link>
             </div>
           </div>
         ) : (
           <div className="space-y-8">
-            <div className="size-20 mx-auto rounded-sm bg-rose-500/10 flex items-center justify-center text-rose-500 border border-rose-500/20">
+            <div className="size-20 mx-auto rounded-none bg-rose-500/10 flex items-center justify-center text-rose-500 border border-rose-500/20">
               <ShieldAlert className="size-10" />
             </div>
             <div className="space-y-3">
@@ -84,7 +84,7 @@ const VerifyEmailPage = () => {
             <div className="pt-4">
               <Link
                 to="/login"
-                className="inline-flex items-center gap-2 bg-zinc-900 border border-zinc-800 text-white px-8 py-3 rounded-sm text-sm font-bold hover:bg-zinc-800 transition-all"
+                className="inline-flex items-center gap-2 bg-zinc-900 border border-zinc-800 text-white px-8 py-3 rounded-none text-sm font-bold hover:bg-zinc-800 transition-none"
               >
                 Log In
               </Link>

@@ -83,7 +83,7 @@ const SubmissionResults: React.FC<SubmissionResultsProps> = ({
         ].map((metric, i) => (
           <div
             key={i}
-            className="bg-black border border-zinc-800 p-5 rounded-sm relative overflow-hidden group shadow-lg"
+            className="bg-black border border-zinc-800 p-5 rounded-none relative overflow-hidden group shadow-none"
           >
             <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
               <metric.icon className="size-12" />
@@ -99,7 +99,7 @@ const SubmissionResults: React.FC<SubmissionResultsProps> = ({
       </div>
 
       {/* Results Table */}
-      <div className="bg-black border border-zinc-800 rounded-sm overflow-hidden">
+      <div className="bg-black border border-zinc-800 rounded-none overflow-hidden">
         <div className="px-6 py-4 border-b border-zinc-800 bg-zinc-900/30">
           <h4 className="text-xs font-bold text-zinc-400 uppercase tracking-widest">
             Test Case Breakdown
@@ -127,7 +127,7 @@ const SubmissionResults: React.FC<SubmissionResultsProps> = ({
               {submission.testCases.map((testCase, _i) => (
                 <tr
                   key={testCase.id}
-                  className="group hover:bg-zinc-900 transition-colors"
+                  className="group hover:bg-zinc-900 transition-none"
                 >
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-2">

@@ -16,7 +16,7 @@ const Navbar = () => {
         {/* Brand */}
         <div className="flex items-center gap-12">
           <Link to="/" className="flex items-center gap-2 group">
-            <div className="bg-zinc-900 border border-zinc-800 p-1.5 rounded-sm group-hover:border-zinc-500 transition-all duration-300">
+            <div className="bg-zinc-900 border border-zinc-800 p-1.5 rounded-none group-hover:border-zinc-500 transition-none">
               <Code2 className="size-5 text-white" />
             </div>
             <span className="text-lg font-bold tracking-tighter text-white font-display uppercase">
@@ -28,13 +28,13 @@ const Navbar = () => {
           <div className="hidden md:flex items-center gap-1">
             <Link
               to="/roadmap"
-              className={`px-4 py-2 text-[10px] font-bold uppercase tracking-[0.2em] transition-all ${isActive("/roadmap") ? "text-white" : "text-zinc-500 hover:text-zinc-300"}`}
+              className={`px-4 py-2 text-[10px] font-bold uppercase tracking-[0.2em] transition-none ${isActive("/roadmap") ? "text-white" : "text-zinc-500 hover:text-zinc-300"}`}
             >
               Roadmap
             </Link>
             <Link
               to="/playlists"
-              className={`px-4 py-2 text-[10px] font-bold uppercase tracking-[0.2em] transition-all ${isActive("/playlists") ? "text-white" : "text-zinc-500 hover:text-zinc-300"}`}
+              className={`px-4 py-2 text-[10px] font-bold uppercase tracking-[0.2em] transition-none ${isActive("/playlists") ? "text-white" : "text-zinc-500 hover:text-zinc-300"}`}
             >
               Playlists
             </Link>
@@ -72,7 +72,7 @@ const Navbar = () => {
                     {authUser.name}
                   </p>
                 </div>
-                <div className="size-8 rounded-sm overflow-hidden border border-zinc-800 group-hover:border-zinc-700 transition-colors">
+                <div className="size-8 rounded-none overflow-hidden border border-zinc-800 group-hover:border-zinc-700 transition-none">
                   <img
                     src={
                       authUser?.image ||
@@ -88,7 +88,7 @@ const Navbar = () => {
 
               <ul
                 tabIndex={0}
-                className="dropdown-content mt-4 z-1 p-2 shadow-2xl bg-[#0d0d0d] border border-zinc-800 rounded-sm w-64"
+                className="dropdown-content mt-4 z-1 p-2 shadow-none bg-[#0d0d0d] border border-zinc-800 rounded-none w-64"
               >
                 <div className="px-4 py-3 border-b border-zinc-800 mb-2">
                   <p className="text-sm font-bold text-white">
@@ -102,7 +102,7 @@ const Navbar = () => {
                 <li>
                   <Link
                     to="/dashboard"
-                    className="flex items-center gap-3 p-3 hover:bg-zinc-800 rounded-sm transition-all text-zinc-300 hover:text-white"
+                    className="flex items-center gap-3 p-3 hover:bg-zinc-800 rounded-none transition-none text-zinc-300 hover:text-white"
                   >
                     <LayoutDashboard className="size-4" />
                     <span className="text-xs font-bold uppercase tracking-widest">Dashboard</span>
@@ -112,7 +112,7 @@ const Navbar = () => {
                 <li>
                   <Link
                     to="/settings"
-                    className="flex items-center gap-3 p-3 hover:bg-zinc-800 rounded-sm transition-all text-zinc-300 hover:text-white"
+                    className="flex items-center gap-3 p-3 hover:bg-zinc-800 rounded-none transition-none text-zinc-300 hover:text-white"
                   >
                     <Settings className="size-4" />
                     <span className="text-xs font-bold uppercase tracking-widest">Settings</span>
@@ -123,7 +123,7 @@ const Navbar = () => {
                   <li>
                     <Link
                       to="/add-problem"
-                      className="flex items-center gap-3 p-3 hover:bg-zinc-800 rounded-sm transition-all text-zinc-300 hover:text-white"
+                      className="flex items-center gap-3 p-3 hover:bg-zinc-800 rounded-none transition-none text-zinc-300 hover:text-white"
                     >
                       <LayoutDashboard className="size-4" />
                       <span className="text-xs font-bold uppercase tracking-widest">
@@ -136,7 +136,7 @@ const Navbar = () => {
                 <div className="h-px bg-zinc-800 my-2 mx-2" />
 
                 <li>
-                  <LogoutButton className="flex w-full items-center gap-3 p-3 hover:bg-red-500/10 rounded-sm transition-colors text-red-400 hover:text-red-300 group">
+                  <LogoutButton className="flex w-full items-center gap-3 p-3 hover:bg-red-500/10 rounded-none transition-none text-red-400 hover:text-red-300 group">
                     <LogOut className="size-4" />
                     <span className="text-xs font-bold uppercase tracking-widest">Sign Out</span>
                   </LogoutButton>

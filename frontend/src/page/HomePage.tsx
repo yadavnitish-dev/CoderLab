@@ -91,9 +91,9 @@ export default function HomePage() {
                 <div className="flex items-center justify-between border-b border-zinc-900 bg-zinc-900/10 px-6 py-4">
                   <div className="flex items-center gap-3">
                     <div className="flex gap-1">
-                      <div className="size-1.5 rounded-full bg-rose-500/30" />
-                      <div className="size-1.5 rounded-full bg-amber-500/30" />
-                      <div className="size-1.5 rounded-full bg-emerald-500/30" />
+                      <div className="size-1.5 rounded-none bg-rose-500/30" />
+                      <div className="size-1.5 rounded-none bg-amber-500/30" />
+                      <div className="size-1.5 rounded-none bg-emerald-500/30" />
                     </div>
                     <p className="font-mono text-[9px] uppercase tracking-[0.3em] text-zinc-500">
                       core_protocol.cpp
@@ -146,7 +146,7 @@ export default function HomePage() {
                     </div>
 
                     <div className="mt-12 flex items-center gap-3">
-                      <div className="size-1 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
+                      <div className="size-1 rounded-none bg-emerald-500 shadow-none" />
                       <span className="text-[8px] uppercase tracking-[0.4em] text-zinc-600">Mastery Protocol: Active</span>
                     </div>
                   </div>
@@ -190,9 +190,9 @@ export default function HomePage() {
               <div className="terminal-window h-[580px] bg-[#0b0b0b] flex flex-col border-zinc-800/50 group-hover:border-zinc-700 transition-colors">
                 <div className="terminal-header">
                   <div className="flex gap-1.5">
-                    <div className="size-2 rounded-full bg-zinc-800" />
-                    <div className="size-2 rounded-full bg-zinc-800" />
-                    <div className="size-2 rounded-full bg-zinc-800" />
+                    <div className="size-2 rounded-none bg-zinc-800" />
+                    <div className="size-2 rounded-none bg-zinc-800" />
+                    <div className="size-2 rounded-none bg-zinc-800" />
                   </div>
                   <div className="text-[9px] font-mono text-zinc-600 uppercase tracking-[0.3em]">
                     system_runtime / mastery_roadmap.sys
@@ -215,7 +215,7 @@ export default function HomePage() {
                           <span className={`font-mono text-[10px] ${cat.active ? 'text-emerald-400' : 'text-zinc-400'}`}>{cat.name}</span>
                           <span className="text-[8px] font-mono text-zinc-600">{cat.progress}%</span>
                         </div>
-                        <div className="h-1 w-full bg-zinc-800 rounded-full overflow-hidden">
+                        <div className="h-1 w-full bg-zinc-800 rounded-none overflow-hidden">
                           <div className={`h-full ${cat.active ? 'bg-emerald-500' : 'bg-zinc-700'}`} style={{ width: `${cat.progress}%` }} />
                         </div>
                       </div>
@@ -253,9 +253,9 @@ export default function HomePage() {
                               prob.difficulty === 'Easy' ? 'text-emerald-500' : 
                               prob.difficulty === 'Medium' ? 'text-amber-500' : 'text-rose-500'
                             }`}>{prob.difficulty}</span>
-                            <div className={`size-1.5 rounded-full ${
+                            <div className={`size-1.5 rounded-none ${
                               prob.status === 'Done' ? 'bg-emerald-500' : 
-                              prob.status === 'Processing' ? 'bg-amber-500 animate-pulse' : 'bg-zinc-800'
+                              prob.status === 'Processing' ? 'bg-amber-500' : 'bg-zinc-800'
                             }`} />
                           </div>
                         </div>
@@ -334,7 +334,7 @@ export default function HomePage() {
                       <span>Coverage: NeetCode 150</span>
                       <span>68%</span>
                     </div>
-                    <div className="h-1.5 w-full bg-zinc-900 rounded-full overflow-hidden">
+                    <div className="h-1.5 w-full bg-zinc-900 rounded-none overflow-hidden">
                       <motion.div
                         initial={{ width: 0 }}
                         whileInView={{ width: "68%" }}
@@ -349,7 +349,7 @@ export default function HomePage() {
                       <span>Daily Consistency</span>
                       <span>92%</span>
                     </div>
-                    <div className="h-1.5 w-full bg-zinc-900 rounded-full overflow-hidden">
+                    <div className="h-1.5 w-full bg-zinc-900 rounded-none overflow-hidden">
                       <motion.div
                         initial={{ width: 0 }}
                         whileInView={{ width: "92%" }}
@@ -408,17 +408,17 @@ export default function HomePage() {
                 {/* Visual: Roadmap Schematic */}
                 <div className="mt-12 border border-zinc-900 bg-zinc-900/20 p-4 font-mono text-[9px] space-y-3 opacity-60 group-hover:opacity-100 transition-opacity">
                   <div className="flex items-center gap-3">
-                    <div className="size-1.5 rounded-full bg-emerald-500" />
+                    <div className="size-1.5 rounded-none bg-emerald-500" />
                     <span className="text-zinc-400">01_ARRAYS_AND_HASHING</span>
                     <span className="text-emerald-500 ml-auto">COMPLETED</span>
                   </div>
                   <div className="flex items-center gap-3 border-l-2 border-zinc-800 ml-[2.5px] pl-3 py-1">
-                    <div className="size-1.5 rounded-full bg-amber-500 animate-pulse" />
+                    <div className="size-1.5 rounded-none bg-amber-500" />
                     <span className="text-white font-bold">02_TWO_POINTERS</span>
                     <span className="text-amber-500 ml-auto">ACTIVE</span>
                   </div>
                   <div className="flex items-center gap-3 opacity-40">
-                    <div className="size-1.5 rounded-full bg-zinc-800" />
+                    <div className="size-1.5 rounded-none bg-zinc-800" />
                     <span className="text-zinc-600">03_SLIDING_WINDOW</span>
                     <span className="text-zinc-800 ml-auto">LOCKED</span>
                   </div>
@@ -489,7 +489,7 @@ export default function HomePage() {
                         fill="rgba(16, 185, 129, 0.1)" 
                         stroke="#10b981" 
                         strokeWidth="1.5"
-                        className="animate-pulse"
+                        className="transition-none"
                       />
                       {/* Axis Lines */}
                       <line x1="50" y1="50" x2="50" y2="5" stroke="#18181b" strokeWidth="1" />
@@ -590,7 +590,7 @@ export default function HomePage() {
                   <ArrowRight className="size-6 group-hover:translate-x-1 transition-transform" />
                 </span>
               </BrutalistButton>
-              <p className="font-mono text-[10px] text-zinc-600 uppercase tracking-[0.4em] animate-pulse">
+              <p className="font-mono text-[10px] text-zinc-600 uppercase tracking-[0.4em]">
                 &gt; Awaiting connection...
               </p>
             </div>

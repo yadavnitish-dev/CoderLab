@@ -33,7 +33,7 @@ const ResetPasswordPage = () => {
         <div className="max-w-md w-full text-center space-y-6">
           <h1 className="text-2xl font-bold tracking-tight text-white uppercase">Invalid Link</h1>
           <p className="text-zinc-500 text-sm">Security token is required to reset password.</p>
-          <Link to="/login" className="inline-flex items-center gap-2 text-white bg-zinc-900 border border-zinc-800 px-6 py-2.5 rounded-sm text-xs font-bold hover:bg-zinc-800 transition-all">
+          <Link to="/login" className="inline-flex items-center gap-2 text-white bg-zinc-900 border border-zinc-800 px-6 py-2.5 rounded-none text-xs font-bold hover:bg-zinc-800 transition-none">
             Return to Login
           </Link>
         </div>
@@ -43,7 +43,7 @@ const ResetPasswordPage = () => {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-[#0a0a0a] p-4">
-      <div className="w-full max-w-sm space-y-8 animate-in fade-in slide-in-from-bottom duration-500">
+      <div className="w-full max-w-sm space-y-8">
         <div className="text-center space-y-2">
           <div className="text-[10px] font-bold uppercase tracking-[0.3em] text-zinc-600 mb-6">
             AlgoPrep // Reset Password
@@ -62,7 +62,7 @@ const ResetPasswordPage = () => {
                 </div>
                 <input
                   type="password"
-                  className="w-full bg-black border border-zinc-800 rounded-sm pl-10 pr-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500/50 transition-all"
+                  className="w-full bg-black border border-zinc-800 rounded-none pl-10 pr-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500/50 transition-none"
                   placeholder="••••••••"
                   {...register("password", { 
                     required: "Password required",
@@ -84,7 +84,7 @@ const ResetPasswordPage = () => {
                 </div>
                 <input
                   type="password"
-                  className="w-full bg-black border border-zinc-800 rounded-sm pl-10 pr-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500/50 transition-all"
+                  className="w-full bg-black border border-zinc-800 rounded-none pl-10 pr-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500/50 transition-none"
                   placeholder="••••••••"
                   {...register("confirmPassword", { 
                     required: "Confirmation required",
@@ -101,12 +101,12 @@ const ResetPasswordPage = () => {
           <button
             type="submit"
             disabled={isLoggingIn}
-            className="w-full bg-white text-black py-3 rounded-sm text-sm font-bold hover:bg-zinc-200 transition-all flex items-center justify-center gap-2 group shadow-xl shadow-white/5 disabled:opacity-50"
+            className="w-full bg-white text-black py-3 rounded-none text-sm font-bold hover:bg-zinc-200 transition-none flex items-center justify-center gap-2 disabled:opacity-50"
           >
             {isLoggingIn ? (
               <Loader2 className="size-4 animate-spin" />
             ) : (
-              <ShieldCheck className="size-4 group-hover:scale-110 transition-transform" />
+              <ShieldCheck className="size-4" />
             )}
             Set New Password
           </button>

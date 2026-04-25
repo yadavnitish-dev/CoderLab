@@ -62,7 +62,7 @@ const SubmissionsList: React.FC<SubmissionsListProps> = ({
 
   if (!submissions?.length) {
     return (
-      <div className="flex flex-col items-center justify-center py-20 bg-black border border-dashed border-zinc-800 rounded-sm">
+      <div className="flex flex-col items-center justify-center py-20 bg-black border border-zinc-800 rounded-none">
         <p className="text-zinc-600 text-sm font-medium">
           No submission history found
         </p>
@@ -81,7 +81,7 @@ const SubmissionsList: React.FC<SubmissionsListProps> = ({
           <div
             key={submission.id}
             onClick={() => onSubmissionClick?.(submission)}
-            className="group relative bg-[#0d0d0d] border border-zinc-800 hover:border-zinc-700 p-4 rounded-sm cursor-pointer transition-all shadow-sm"
+            className="group relative bg-[#0d0d0d] border border-zinc-800 hover:border-zinc-700 p-4 rounded-none cursor-pointer transition-none shadow-none"
           >
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-6">
@@ -137,7 +137,7 @@ const SubmissionsList: React.FC<SubmissionsListProps> = ({
                     {new Date(submission.createdAt || "").toLocaleDateString()}
                   </div>
                 </div>
-                <ChevronRight className="size-4 text-zinc-700 group-hover:text-zinc-400 group-hover:translate-x-0.5 transition-all" />
+                <ChevronRight className="size-4 text-zinc-700 group-hover:text-zinc-400 transition-none" />
               </div>
             </div>
           </div>

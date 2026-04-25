@@ -99,7 +99,7 @@ const SettingsPage: FC = () => {
     <div className="min-h-screen relative overflow-hidden pb-20">
       <div className="workspace-container relative z-10 pt-12">
         <div className="flex items-center gap-4 mb-12">
-          <div className="bg-zinc-900 border border-zinc-800 p-3 rounded-sm">
+          <div className="bg-zinc-900 border border-zinc-800 p-3 rounded-none">
             <SettingsIcon className="size-6 text-white" />
           </div>
           <div>
@@ -147,9 +147,9 @@ const SettingsPage: FC = () => {
 
           {/* Main Form Content */}
           <div className="lg:col-span-3">
-            <div className="bg-black border border-zinc-800 p-8 rounded-sm shadow-2xl">
+            <div className="bg-black border border-zinc-800 p-8 rounded-none">
               {activeTab === "profile" ? (
-                <form onSubmit={handleSubmitProfile(onProfileSubmit)} className="space-y-8 animate-in fade-in duration-500">
+                <form onSubmit={handleSubmitProfile(onProfileSubmit)} className="space-y-8">
                   <div className="space-y-6">
                     <div className="space-y-2">
                       <label className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-zinc-500 ml-1">
@@ -160,7 +160,7 @@ const SettingsPage: FC = () => {
                         <input
                           readOnly
                           value={authUser?.email || ""}
-                          className="w-full bg-[#050505] border border-zinc-900 rounded-sm py-3 pl-10 pr-4 text-sm text-zinc-500 font-mono cursor-not-allowed"
+                          className="w-full bg-[#050505] border border-zinc-900 rounded-none py-3 pl-10 pr-4 text-sm text-zinc-500 font-mono cursor-not-allowed"
                         />
                       </div>
                       <p className="text-[9px] text-zinc-600 font-mono ml-1 italic">
@@ -176,7 +176,7 @@ const SettingsPage: FC = () => {
                         <UserIcon className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-zinc-600 group-focus-within:text-emerald-500/50 transition-colors" />
                         <input
                           {...registerProfile("name")}
-                          className={`w-full bg-[#050505] border ${profileErrors.name ? "border-rose-500/50" : "border-zinc-800"} rounded-sm py-3 pl-10 pr-4 text-sm text-zinc-200 focus:outline-none focus:border-emerald-500/50 transition-all font-mono`}
+                          className={`w-full bg-[#050505] border ${profileErrors.name ? "border-rose-500/50" : "border-zinc-800"} rounded-none py-3 pl-10 pr-4 text-sm text-zinc-200 focus:outline-none focus:border-emerald-500/50 transition-none font-mono`}
                           placeholder="Your name"
                         />
                       </div>
@@ -203,9 +203,9 @@ const SettingsPage: FC = () => {
                 </form>
               ) : activeTab === "security" ? (
                 authUser?.isSocial ? (
-                  <div className="space-y-8 animate-in fade-in duration-500">
-                    <div className="p-12 border border-zinc-900 bg-[#050505] rounded-sm text-center space-y-6">
-                      <div className="bg-zinc-900/50 size-16 mx-auto rounded-full flex items-center justify-center">
+                  <div className="space-y-8">
+                    <div className="p-12 border border-zinc-900 bg-[#050505] rounded-none text-center space-y-6">
+                      <div className="bg-zinc-900/50 size-16 mx-auto rounded-none flex items-center justify-center">
                         <Shield className="size-8 text-emerald-500/50" />
                       </div>
                       <div className="space-y-2">
@@ -218,7 +218,7 @@ const SettingsPage: FC = () => {
                     </div>
                   </div>
                 ) : (
-                  <form onSubmit={handleSubmitPassword(onPasswordSubmit)} className="space-y-8 animate-in fade-in duration-500">
+                  <form onSubmit={handleSubmitPassword(onPasswordSubmit)} className="space-y-8">
                     <div className="space-y-6">
                       <div className="space-y-2">
                         <label className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-zinc-500 ml-1">
@@ -229,7 +229,7 @@ const SettingsPage: FC = () => {
                           <input
                             type="password"
                             {...registerPassword("oldPassword")}
-                            className={`w-full bg-[#050505] border ${passwordErrors.oldPassword ? "border-rose-500/50" : "border-zinc-800"} rounded-sm py-3 pl-10 pr-4 text-sm text-zinc-200 focus:outline-none focus:border-emerald-500/50 transition-all font-mono`}
+                            className={`w-full bg-[#050505] border ${passwordErrors.oldPassword ? "border-rose-500/50" : "border-zinc-800"} rounded-none py-3 pl-10 pr-4 text-sm text-zinc-200 focus:outline-none focus:border-emerald-500/50 transition-none font-mono`}
                             placeholder="••••••••"
                           />
                         </div>
@@ -250,7 +250,7 @@ const SettingsPage: FC = () => {
                             <input
                               type="password"
                               {...registerPassword("newPassword")}
-                              className={`w-full bg-[#050505] border ${passwordErrors.newPassword ? "border-rose-500/50" : "border-zinc-800"} rounded-sm py-3 pl-10 pr-4 text-sm text-zinc-200 focus:outline-none focus:border-emerald-500/50 transition-all font-mono`}
+                              className={`w-full bg-[#050505] border ${passwordErrors.newPassword ? "border-rose-500/50" : "border-zinc-800"} rounded-none py-3 pl-10 pr-4 text-sm text-zinc-200 focus:outline-none focus:border-emerald-500/50 transition-none font-mono`}
                               placeholder="••••••••"
                             />
                           </div>
@@ -270,7 +270,7 @@ const SettingsPage: FC = () => {
                             <input
                               type="password"
                               {...registerPassword("confirmPassword")}
-                              className={`w-full bg-[#050505] border ${passwordErrors.confirmPassword ? "border-rose-500/50" : "border-zinc-800"} rounded-sm py-3 pl-10 pr-4 text-sm text-zinc-200 focus:outline-none focus:border-emerald-500/50 transition-all font-mono`}
+                              className={`w-full bg-[#050505] border ${passwordErrors.confirmPassword ? "border-rose-500/50" : "border-zinc-800"} rounded-none py-3 pl-10 pr-4 text-sm text-zinc-200 focus:outline-none focus:border-emerald-500/50 transition-none font-mono`}
                               placeholder="••••••••"
                             />
                           </div>
@@ -298,8 +298,8 @@ const SettingsPage: FC = () => {
                   </form>
                 )
               ) : (
-                <div className="space-y-8 animate-in fade-in duration-500">
-                  <div className="p-6 border border-rose-900/50 bg-rose-950/10 rounded-sm space-y-4">
+                <div className="space-y-8">
+                  <div className="p-6 border border-rose-900/50 bg-rose-950/10 rounded-none space-y-4">
                     <div className="flex items-center gap-3 text-rose-500">
                       <AlertTriangle className="size-5" />
                       <h3 className="font-bold uppercase tracking-widest text-sm">Delete Account</h3>
@@ -331,9 +331,9 @@ const SettingsPage: FC = () => {
       {showConfirmModal && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" onClick={() => !isDeleting && setShowConfirmModal(false)}></div>
-          <div className="relative w-full max-w-md bg-zinc-950 border border-zinc-800 p-8 shadow-2xl animate-in zoom-in duration-300">
+          <div className="relative w-full max-w-md bg-zinc-950 border border-zinc-800 p-8 shadow-none transition-none">
             <div className="flex items-center gap-4 mb-6">
-              <div className="bg-rose-950/30 p-3 rounded-full">
+              <div className="bg-rose-950/30 p-3 rounded-none">
                 <AlertTriangle className="size-6 text-rose-500" />
               </div>
               <h2 className="text-xl font-bold text-white uppercase tracking-tighter">Confirm Deletion</h2>
@@ -347,14 +347,14 @@ const SettingsPage: FC = () => {
               <button
                 disabled={isDeleting}
                 onClick={() => setShowConfirmModal(false)}
-                className="flex-1 px-6 py-3 border border-zinc-800 text-zinc-400 text-sm font-bold uppercase tracking-widest hover:bg-zinc-900 hover:text-white transition-all disabled:opacity-50"
+                className="flex-1 px-6 py-3 border border-zinc-800 text-zinc-400 text-sm font-bold uppercase tracking-widest hover:bg-zinc-900 hover:text-white transition-none disabled:opacity-50"
               >
                 Cancel
               </button>
               <button
                 disabled={isDeleting}
                 onClick={handleDeleteAccount}
-                className="flex-1 px-6 py-3 bg-rose-600 border border-rose-700 text-white text-sm font-bold uppercase tracking-widest hover:bg-rose-500 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+                className="flex-1 px-6 py-3 bg-rose-600 border border-rose-700 text-white text-sm font-bold uppercase tracking-widest hover:bg-rose-500 transition-none disabled:opacity-50 flex items-center justify-center gap-2"
               >
                 {isDeleting ? (
                   <>

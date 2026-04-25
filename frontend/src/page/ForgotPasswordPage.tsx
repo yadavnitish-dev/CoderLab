@@ -43,7 +43,7 @@ const ForgotPasswordPage = () => {
                 </div>
                 <input
                   type="email"
-                  className="w-full bg-black border border-zinc-800 rounded-sm pl-10 pr-4 py-2.5 text-sm text-white focus:outline-none focus:border-rose-500/50 transition-all placeholder:text-zinc-800"
+                  className="w-full bg-black border border-zinc-800 rounded-none pl-10 pr-4 py-2.5 text-sm text-white focus:outline-none focus:border-rose-500/50 transition-none placeholder:text-zinc-800"
                   placeholder="name@example.com"
                   {...register("email", { required: "Email address required" })}
                 />
@@ -59,12 +59,12 @@ const ForgotPasswordPage = () => {
           <button
             type="submit"
             disabled={isLoggingIn}
-            className="w-full bg-white text-black py-3 rounded-sm text-sm font-bold hover:bg-zinc-200 transition-all flex items-center justify-center gap-2 group shadow-xl shadow-white/5 disabled:opacity-50"
+            className="w-full bg-white text-black py-3 rounded-none text-sm font-bold hover:bg-zinc-200 transition-none flex items-center justify-center gap-2 disabled:opacity-50"
           >
             {isLoggingIn ? (
               <Loader2 className="size-4 animate-spin" />
             ) : (
-              <Send className="size-4 group-hover:translate-x-0.5 transition-transform" />
+              <Send className="size-4" />
             )}
             Send Reset Link
           </button>

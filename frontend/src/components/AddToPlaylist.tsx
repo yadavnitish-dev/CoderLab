@@ -39,8 +39,8 @@ const AddToPlaylistModal: React.FC<AddToPlaylistModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4 transition-all duration-300">
-      <div className="bg-[#0d0d0d] border border-zinc-800 w-full max-w-md rounded-sm shadow-2xl overflow-hidden animate-scale-in">
+    <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4 transition-none">
+      <div className="bg-[#0d0d0d] border border-zinc-800 w-full max-w-md rounded-none overflow-hidden">
         {/* Header */}
         <div className="flex justify-between items-center p-5 border-b border-zinc-800 bg-zinc-900/50">
           <h3 className="text-xl font-bold flex items-center gap-2 text-white">
@@ -49,7 +49,7 @@ const AddToPlaylistModal: React.FC<AddToPlaylistModalProps> = ({
           </h3>
           <button
             onClick={onClose}
-            className="btn btn-ghost btn-sm btn-circle hover:bg-white/10 text-base-content/60 hover:text-white transition-colors"
+            className="btn btn-ghost btn-sm btn-circle hover:bg-white/10 text-base-content/60 hover:text-white transition-none"
           >
             <X className="w-5 h-5" />
           </button>
@@ -68,7 +68,7 @@ const AddToPlaylistModal: React.FC<AddToPlaylistModalProps> = ({
                   <div
                     key={playlist.id}
                     onClick={() => setSelectedPlaylist(playlist.id)}
-                    className={`p-3 rounded-sm border cursor-pointer transition-all duration-200 flex items-center justify-between group ${
+                    className={`p-3 rounded-none border cursor-pointer transition-none flex items-center justify-between group ${
                       selectedPlaylist === playlist.id
                         ? "bg-emerald-500/10 border-emerald-500/30"
                         : "bg-black border-zinc-800 hover:border-zinc-700"
@@ -76,7 +76,7 @@ const AddToPlaylistModal: React.FC<AddToPlaylistModalProps> = ({
                   >
                     <div className="flex items-center gap-3">
                       <div
-                        className={`w-2 h-2 rounded-sm ${selectedPlaylist === playlist.id ? "bg-emerald-500" : "bg-zinc-800"}`}
+                        className={`w-2 h-2 rounded-none ${selectedPlaylist === playlist.id ? "bg-emerald-500" : "bg-zinc-800"}`}
                       ></div>
                       <span
                         className={`font-medium text-sm ${selectedPlaylist === playlist.id ? "text-emerald-400" : "text-zinc-400"}`}
@@ -90,7 +90,7 @@ const AddToPlaylistModal: React.FC<AddToPlaylistModalProps> = ({
                   </div>
                 ))
               ) : (
-                <div className="text-center py-8 text-zinc-600 bg-black rounded-sm border border-dashed border-zinc-800">
+                <div className="text-center py-8 text-zinc-600 bg-black rounded-none border border-dashed border-zinc-800">
                   <p className="text-sm">No playlists found</p>
                 </div>
               )}
@@ -101,13 +101,13 @@ const AddToPlaylistModal: React.FC<AddToPlaylistModalProps> = ({
             <button
                type="button"
                onClick={onClose}
-               className="px-6 py-2.5 bg-zinc-900 border border-zinc-800 text-zinc-400 hover:text-white rounded-sm font-medium text-sm flex-1 transition-colors"
+               className="px-6 py-2.5 bg-zinc-900 border border-zinc-800 text-zinc-400 hover:text-white rounded-none font-medium text-sm flex-1 transition-none"
              >
               Cancel
             </button>
             <button
               type="submit"
-              className="bg-white text-black px-6 py-2.5 rounded-sm font-bold text-sm hover:bg-zinc-200 transition-all flex items-center justify-center gap-2 flex-1 shadow-lg shadow-white/5 italic lg:not-italic"
+              className="bg-white text-black px-6 py-2.5 rounded-none font-bold text-sm hover:bg-zinc-200 transition-none flex items-center justify-center gap-2 flex-1 italic lg:not-italic"
               disabled={!selectedPlaylist || isLoading}
             >
               {isLoading ? (
