@@ -1,6 +1,6 @@
 import { useEffect, useState, useMemo } from "react";
 import { useProblemStore } from "../store/useProblemStore";
-import { Loader2, ArrowLeft } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import ProblemTable from "../components/ProblemTable";
 import NC150Roadmap from "../components/NC150Roadmap";
 

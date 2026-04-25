@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { usePlaylistStore } from "../store/usePlaylistStore";
-import { Loader2, Plus, ListMusic, ChevronRight } from "lucide-react";
+import { Plus, ListMusic, ChevronRight } from "lucide-react";
 import CreatePlaylistModal from "../components/CreatePlaylistModal";
 
 const PlaylistsPage = () => {

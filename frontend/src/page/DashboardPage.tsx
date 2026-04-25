@@ -7,6 +7,7 @@ import {
   PolarAngleAxis,
   PolarRadiusAxis,
   ResponsiveContainer,
+  Tooltip,
 } from "recharts";
 import { motion } from "framer-motion";
 import { useAuthStore } from "../store/useAuthStore";
@@ -118,38 +119,35 @@ const DashboardPage = () => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2,
+        staggerChildren: 0.15,
+        delayChildren: 0.1,
       },
     },
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
+    hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      y: 0,
-      transition: { duration: 0.5 },
+      transition: { duration: 0.01 },
     },
   };
 
   const headerVariants = {
-    hidden: { opacity: 0, y: -20 },
+    hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      y: 0,
-      transition: { duration: 0.6 },
+      transition: { duration: 0.01 },
     },
   };
 
   const profileImageVariants = {
-    hidden: { opacity: 0, scale: 0.8 },
+    hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      scale: 1,
-      transition: { duration: 0.6 },
+      transition: { duration: 0.01 },
     },
-    hover: { scale: 1.05, transition: { duration: 0.3 } },
+    hover: { scale: 1.05, transition: { duration: 0.1 } },
   };
 
   return (
@@ -187,7 +185,7 @@ const DashboardPage = () => {
               className="text-center md:text-left"
             >
               <div className="flex flex-col md:flex-row items-center gap-3 mb-2">
-                <h1 className="text-4xl font-bold tracking-tight text-white">
+                <h1 className="text-4xl font-mono font-bold tracking-tighter text-white uppercase">
                   {authUser.name}
                 </h1>
               </div>
@@ -195,15 +193,15 @@ const DashboardPage = () => {
               <div className="flex flex-wrap justify-center md:justify-start gap-6 text-sm text-zinc-500">
                 <div className="flex items-center gap-2">
                   <Mail className="size-4" />
-                  <span>{authUser.email}</span>
+                  <span className="font-mono tracking-tight">{authUser.email}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Calendar className="size-4" />
-                  <span>
-                    Joined{" "}
+                  <span className="font-mono tracking-tight text-xs">
+                    JOINED:{" "}
                     {authUser.createdAt
                       ? new Date(authUser.createdAt).toLocaleDateString()
-                      : "Unknown"}
+                      : "UNKNOWN"}
                   </span>
                 </div>
               </div>
@@ -225,18 +223,20 @@ const DashboardPage = () => {
             {/* Main Solve Stat */}
             <motion.div
               variants={itemVariants}
-              whileHover={{ y: -4, transition: { duration: 0.3 } }}
               className="bg-[#0a0a0a] p-8 relative overflow-hidden group transition-colors hover:bg-[#0c0c0c]"
             >
+              <div className="absolute inset-0 pointer-events-none opacity-[0.03] overflow-hidden z-0">
+                <div className="w-full h-full bg-gradient-to-b from-transparent via-white to-transparent animate-scanline"></div>
+              </div>
               <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 transition-opacity">
                 <Target className="size-24" />
               </div>
-              <p className="text-[10px] font-bold text-zinc-600 uppercase tracking-[0.2em] mb-4">
-                Total Progress
+              <p className="text-[10px] font-mono font-bold text-zinc-500 uppercase tracking-[0.3em] mb-4">
+                [ SYSTEM_PROGRESS ]
               </p>
               <div className="flex items-end gap-3 mb-2">
                 <motion.span
-                  className="text-6xl font-bold text-white leading-none"
+                  className="text-8xl font-mono font-bold text-white leading-none tracking-tighter"
                   initial={{ opacity: 0, scale: 0.5 }}
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }}
@@ -244,8 +244,8 @@ const DashboardPage = () => {
                 >
                   {solvedProblems?.length || 0}
                 </motion.span>
-                <span className="text-zinc-600 font-bold mb-1">
-                  Problems Solved
+                <span className="text-[10px] font-mono text-zinc-600 uppercase tracking-[0.2em] mb-2">
+                  [ TOTAL_RESOLVED ]
                 </span>
               </div>
               <div className="w-full bg-zinc-900 border border-zinc-800 h-2 mt-6 overflow-hidden">
@@ -254,7 +254,7 @@ const DashboardPage = () => {
                   initial={{ width: 0 }}
                   whileInView={{ width: `${Math.min((solvedProblems?.length || 0) * 2, 100)}%` }}
                   viewport={{ once: true }}
-                  transition={{ duration: 1.2, delay: 0.4 }}
+                  transition={{ duration: 0.01, delay: 0.4 }}
                 />
               </div>
             </motion.div>
@@ -262,12 +262,14 @@ const DashboardPage = () => {
             {/* Skill Radar Chart */}
             <motion.div
               variants={itemVariants}
-              whileHover={{ y: -4, transition: { duration: 0.3 } }}
-              className="bg-[#0a0a0a] p-8 flex flex-col group transition-colors hover:bg-[#0c0c0c]"
+              className="bg-[#0a0a0a] p-8 relative overflow-hidden flex flex-col group transition-colors hover:bg-[#0c0c0c]"
             >
-              <h3 className="text-sm font-bold uppercase tracking-widest text-zinc-500 flex items-center gap-2 mb-6">
+              <div className="absolute inset-0 pointer-events-none opacity-[0.03] overflow-hidden z-0">
+                <div className="w-full h-full bg-gradient-to-b from-transparent via-white to-transparent animate-scanline" style={{ animationDelay: '2s' }}></div>
+              </div>
+              <h3 className="text-[10px] font-mono font-bold uppercase tracking-[0.3em] text-zinc-500 flex items-center gap-2 mb-6">
                 <Target className="size-4" />
-                Skill Radar
+                [ SKILL_TELEMETRY ]
               </h3>
               <motion.div
                 className="flex-1 min-h-62.5 w-full mt-4"
@@ -279,16 +281,21 @@ const DashboardPage = () => {
                 <ResponsiveContainer width="100%" height="100%">
                   <RadarChart cx="50%" cy="50%" outerRadius="75%" data={radarData}>
                     <PolarGrid stroke="#3f3f46" />
-                    <PolarAngleAxis dataKey="subject" tick={{ fill: "#a1a1aa", fontSize: 12 }} />
+                    <PolarAngleAxis dataKey="subject" tick={{ fill: "#a1a1aa", fontSize: 10, fontFamily: "monospace", textAnchor: "middle" }} />
                     <PolarRadiusAxis angle={30} domain={[0, "auto"]} tick={false} axisLine={false} />
+                    <Tooltip 
+                      contentStyle={{ backgroundColor: "#000", border: "1px solid #27272a", borderRadius: "0", color: "#10b981", fontFamily: "monospace", fontSize: "10px", textTransform: "uppercase", letterSpacing: "0.1em" }}
+                      itemStyle={{ color: "#10b981" }}
+                      cursor={{ stroke: '#3f3f46', strokeWidth: 1 }}
+                    />
                     <Radar
                       name="Skills"
                       dataKey="count"
                       stroke="#10b981"
+                      strokeWidth={2}
                       fill="#10b981"
-                      fillOpacity={0.5}
-                      isAnimationActive={true}
-                      animationDuration={1500}
+                      fillOpacity={0.15}
+                      isAnimationActive={false}
                     />
                   </RadarChart>
                 </ResponsiveContainer>
@@ -298,30 +305,34 @@ const DashboardPage = () => {
             {/* Github Contribution Heatmap */}
             <motion.div
               variants={itemVariants}
-              whileHover={{ y: -4, transition: { duration: 0.3 } }}
-              className="md:col-span-2 bg-[#0a0a0a] p-8 overflow-x-auto transition-colors hover:bg-[#0c0c0c]"
+              className="md:col-span-2 bg-[#0a0a0a] p-8 relative overflow-hidden transition-colors hover:bg-[#0c0c0c]"
             >
-              <div className="flex items-center justify-between mb-8">
-                <h3 className="text-sm font-bold uppercase tracking-widest text-zinc-500 flex items-center gap-2">
-                  <TrendingUp className="size-4" />
-                  Activity Heatmap
-                </h3>
+              <div className="absolute inset-0 pointer-events-none opacity-[0.03] overflow-hidden z-0">
+                <div className="w-full h-full bg-gradient-to-b from-transparent via-white to-transparent animate-scanline" style={{ animationDelay: '4s' }}></div>
               </div>
-              <motion.div
-                className="min-w-[200px] flex justify-center text-[10px]"
-                initial={{ opacity: 0, scale: 0.95 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5 }}
-              >
-                <ActivityCalendar
-                  data={activityData}
-                  theme={explicitTheme}
-                  labels={{
-                    totalCount: `{{count}} submissions in the last year`,
-                  }}
-                />
-              </motion.div>
+              <div className="relative z-10 overflow-x-auto">
+                <div className="flex items-center justify-between mb-8">
+                  <h3 className="text-[10px] font-mono font-bold uppercase tracking-[0.3em] text-zinc-500 flex items-center gap-2">
+                    <TrendingUp className="size-4" />
+                    [ EXECUTION_HEATMAP ]
+                  </h3>
+                </div>
+                <motion.div
+                  className="min-w-[200px] flex justify-center text-[10px]"
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.01 }}
+                >
+                  <ActivityCalendar
+                    data={activityData}
+                    theme={explicitTheme}
+                    labels={{
+                      totalCount: `{{count}} submissions in the last year`,
+                    }}
+                  />
+                </motion.div>
+              </div>
             </motion.div>
           </div>
 
@@ -332,8 +343,8 @@ const DashboardPage = () => {
           >
             <div className="bg-[#0a0a0a] p-6 h-full flex flex-col transition-colors hover:bg-[#0c0c0c]">
               <div className="flex items-center justify-between mb-6">
-                <h3 className="text-sm font-bold uppercase tracking-widest text-zinc-500">
-                  Playlists
+                <h3 className="text-[10px] font-mono font-bold uppercase tracking-[0.3em] text-zinc-500">
+                  [ PLAYLISTS ]
                 </h3>
                 <Link
                   to="/playlists"

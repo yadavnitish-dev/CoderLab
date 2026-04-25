@@ -27,37 +27,27 @@ const BrutalistButton: React.FC<BrutalistButtonProps> = ({
   icon: Icon,
   type = 'button',
 }) => {
-  const baseStyles = "group relative border border-transparent overflow-hidden rounded-sm font-bold uppercase tracking-widest transition-all active:scale-95 disabled:opacity-50 disabled:pointer-events-none flex items-center justify-center gap-2";
+  const baseStyles = "relative inline-flex items-center justify-center gap-2 rounded-none font-mono font-bold uppercase tracking-[0.2em] transition-none disabled:opacity-50 disabled:pointer-events-none active:translate-y-[2px] active:border-b-0 border-b-[3px]";
   
   const sizeStyles = {
     sm: "px-4 py-1.5 text-[10px]",
-    md: "px-6 py-2.5 text-xs",
-    lg: "px-8 py-4 text-sm",
-    xl: "px-12 py-5 text-sm",
+    md: "px-6 py-2.5 text-[10px]",
+    lg: "px-8 py-3.5 text-xs",
+    xl: "px-12 py-4 text-sm",
   };
 
   const variantStyles = {
-    primary: "bg-white text-black hover:scale-[1.02]",
-    secondary: "bg-zinc-900 border-zinc-800 text-white hover:border-zinc-700",
-    outline: "bg-transparent border-zinc-800 text-zinc-400 hover:text-white hover:border-zinc-600",
-    danger: "bg-rose-500/10 border-rose-500/20 text-rose-500 hover:bg-rose-500 hover:text-white hover:border-transparent",
-  };
-
-  const slideBgStyles = {
-    primary: "bg-emerald-500",
-    secondary: "bg-zinc-800",
-    outline: "bg-zinc-900",
-    danger: "bg-rose-600",
+    primary: "bg-white border-zinc-400 text-black hover:bg-zinc-200",
+    secondary: "bg-zinc-900 border-black text-white hover:bg-zinc-800",
+    outline: "bg-black border-zinc-800 text-zinc-400 hover:text-white hover:border-zinc-600",
+    danger: "bg-rose-950 border-black text-rose-500 hover:bg-rose-900 hover:text-white",
   };
 
   const content = (
-    <>
-      <div className="relative z-10 flex items-center gap-2">
-        {isLoading ? <span className="animate-blink font-mono font-bold">_</span> : Icon && <Icon className="size-4" />}
-        {children}
-      </div>
-      <div className={`absolute inset-0 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ${slideBgStyles[variant]}`}></div>
-    </>
+    <div className="relative z-10 flex items-center gap-2">
+      {isLoading ? <span className="animate-blink font-mono font-bold text-emerald-500">_</span> : Icon && <Icon className="size-4" />}
+      {children}
+    </div>
   );
 
   const fullClassName = `${baseStyles} ${sizeStyles[size]} ${variantStyles[variant]} ${className}`;

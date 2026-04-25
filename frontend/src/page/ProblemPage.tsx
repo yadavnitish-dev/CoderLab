@@ -3,7 +3,6 @@ import { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import {
   FileText,
   Lightbulb,
-  Loader2,
   GripVertical,
   Code2,
   XCircle,

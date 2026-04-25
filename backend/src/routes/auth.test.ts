@@ -157,8 +157,9 @@ describe("Auth Endpoints", () => {
       expect(res.body.success).toBe(true);
       // Verify cookies are set
       const cookies = res.headers["set-cookie"];
-      expect(cookies.some((c: string) => c.includes("jwt="))).toBe(true);
-      expect(cookies.some((c: string) => c.includes("refreshToken="))).toBe(true);
+      const cookieArray = Array.isArray(cookies) ? cookies : [cookies || ""];
+      expect(cookieArray.some((c: string) => c.includes("jwt="))).toBe(true);
+      expect(cookieArray.some((c: string) => c.includes("refreshToken="))).toBe(true);
     });
 
     it("should return 401 if refresh cookie is missing", async () => {
