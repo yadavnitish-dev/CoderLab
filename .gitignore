@@ -34,3 +34,9 @@ yarn-error.log*
 # Documentation
 *.md
 !README.md
+
+
+CODEBASE_ARCHITECTURE.md
+API_DOCUMENTATION.md
+GEMINI.md
+SECURITY.md
