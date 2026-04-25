@@ -1,178 +1,143 @@
 # AlgoPrep
 
-**AlgoPrep** is a hardcore engineering workspace for mastering technical interviews. Engineered for discipline over motivation, it eliminates decision fatigue through a linear roadmap of the NeetCode 150, validated by an instant feedback loop that replaces guesswork with measurable technical mastery.
+[![Project Version](https://img.shields.io/badge/version-1.0.4-emerald.svg)](https://github.com/yadavnitish-dev/AlgoPrep)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Stack](https://img.shields.io/badge/stack-TS--Node--React-black.svg)](https://github.com/yadavnitish-dev/AlgoPrep)
 
-## Security Status
+**AlgoPrep** is a high-performance, full-stack platform designed for mastering Data Structures and Algorithms. It provides a specialized environment for technical interview preparation, focusing on structured progression through the NeetCode 150 roadmap and secure, self-hosted code execution.
 
-🛡️ **Security First**: This codebase implements enterprise-grade security practices including:
+Built for engineers who value precision and discipline, AlgoPrep eliminates the distractions of typical learning platforms to provide a focused "Lab" environment.
 
-- **Zero Critical Vulnerabilities** (Backend: 0 vulnerabilities, Frontend: 2 moderate in dev dependency)
-- **Security Headers** (Helmet middleware with HSTS, CSP, X-Frame-Options)
-- **Rate Limiting** (Multiple tiers for different endpoints)
-- **Input Validation** (Zod schemas with payload limits)
-- **Secure Authentication** (JWT in HTTP-only cookies, bcrypt password hashing)
-- **Automated Security Scanning** (npm audit in CI/CD pipeline)
+---
 
-## Features
+## 🚀 Key Features
 
-- 🔐 **Secure Authentication** with JWT (HTTP-only cookies), **OAuth 2.0** (Google/GitHub), and **Identity Verification**.
-- ⚡ **Asynchronous Execution Pipeline**: Non-blocking code execution with background polling for high-performance results.
-- 🎨 **Engineer's Lab UI**: A brutalist, monochromatic workspace featuring blueprint grids, CRT textures, and artisan-grade schematics.
-- 📚 **Structured Roadmaps**: A linear, non-negotiable path through the **NeetCode 150** to eliminate decision fatigue.
-- 📊 **Mastery Metrics**: High-density visualization of problem-solving depth, runtime patterns, and discipline deltas.
-- ⚡ **Multi-Language Support**: Industrial-grade execution for Python, Java, JavaScript, TypeScript, and C++ (via JDoodle API).
-- 📁 **Modular Workspace**: Integrated submission history, per-testcase logs, and custom problem playlists.
-- 🛡️ **Hardened Architecture**: Persistent Redis rate limiting, secure account lifecycle, and enterprise-grade security headers.
+*   **Self-Hosted Execution Engine:** Secure, sandboxed code execution (Python, Java, C++, JavaScript) powered by a local Judge0 instance.
+*   **Curated Roadmap:** A non-negotiable, structured path through the NeetCode 150, categorized by topic and difficulty.
+*   **Mastery Analytics:** High-density telemetry showing completion rates, percentile rankings, and daily consistency metrics.
+*   **Custom Playlists:** Ability to organize problems into custom collections for focused practice sessions.
+*   **Professional Workspace:** Features the Monaco Editor (VS Code core) with custom themes designed for long-form coding sessions.
+*   **Administrative Suite:** Robust tools for problem creation, test case management, and boilerplate generation.
 
-## Security Features
+---
 
-- **Authentication**: JWT tokens stored in HTTP-only cookies
-- **Password Security**: bcrypt hashing with salt rounds
-- **Rate Limiting**: Different limits for auth (20/15min), general (100/15min), code execution (10/min)
-- **Input Validation**: Zod schemas with size limits (100KB source code, 200KB execution payload)
-- **Security Headers**: Helmet middleware (HSTS, CSP, X-Frame-Options, etc.)
-- **CORS Protection**: Validated origins only
-- **Logging Security**: Sensitive data sanitized from logs
-- **CI/CD Security**: Automated vulnerability scanning
+## 🏗️ System Architecture
 
-## Stack
+AlgoPrep utilizes a robust microservices architecture centered around a self-hosted sandboxed execution environment.
+
+```mermaid
+graph TD
+    User((User)) --> Frontend[React 19 / Vite]
+    Frontend --> API[Express API Server]
+    API --> DB[(PostgreSQL / Prisma)]
+    API --> J0[Judge0 Service Stack]
+    J0 --> Workers[Sandboxed Workers]
+    Workers --> Results[Execution Feedback]
+    Results --> Frontend
+```
+
+---
+
+## 🛠️ Technology Stack
 
 ### Frontend
-
-- **React 19** + **Vite 7**
-- **TailwindCSS 4** + **DaisyUI 5**
-- **Zustand 5** (State Management)
-- **React Router 7**
-- **Monaco Editor**
+- **Framework:** React 19 (Vite)
+- **Styling:** TailwindCSS 4 + DaisyUI 5
+- **State Management:** Zustand
+- **Editor:** Monaco Editor
+- **Routing:** React Router 7
 
 ### Backend
+- **Runtime:** Node.js (TypeScript)
+- **Framework:** Express
+- **ORM:** Prisma 6
+- **Authentication:** JWT with Secure HTTP-only Cookies
 
-- **Node.js** + **Express**
-- **PostgreSQL**
-- **Prisma 6** (ORM)
-- **JDoodle Compiler API**
+### Infrastructure & Services
+- **Database:** PostgreSQL
+- **Caching:** Redis (Global & Judge0)
+- **Execution:** Judge0 (Self-hosted via Docker)
+- **Email:** Resend SDK
 
-## Execution Flow (Asynchronous)
+---
 
-1. The frontend sends source code, language, and testcase inputs to the backend.
-2. The backend creates a **Processing** submission record in the database and returns a `submissionId` immediately.
-3. The frontend begins **Polling** the `/api/v1/execute-code/status/:id` endpoint.
-4. A **Background Worker** on the backend batches all testcases and executes them via the JDoodle API.
-5. Once JDoodle returns the results, the backend updates the submission record and testcase results.
-6. The frontend receives the completed results on its next poll and updates the UI.
-
-## Local Setup
+## 🏁 Getting Started
 
 ### Prerequisites
+- **Node.js** (v20.x or higher)
+- **Docker & Docker Compose** (Required for Database and Judge0)
+- **Git**
 
-- Node.js 18+
-- PostgreSQL
-- A JDoodle account with API credentials
-
-### Backend
-
+### 1. Installation
 ```bash
-cd backend
-npm install
-cp .env.example .env
+# Clone the repository
+git clone https://github.com/yadavnitish-dev/AlgoPrep.git
+cd AlgoPrep
 ```
 
-Set these values in `backend/.env`:
+### 2. Deploy Infrastructure (Docker)
+AlgoPrep requires a running Judge0 instance. You can deploy the complete stack (Postgres, Redis, Judge0) using Docker:
 
+```bash
+# Deploy Judge0 and Database
+# (Ensure you have a Judge0 deployment configuration)
+docker-compose up -d
+```
+
+### 3. Environment Configuration
+Create a `.env` file in the `backend` directory:
 ```env
-PORT=5000
-FRONTEND_URL=http://localhost:5173
-DATABASE_URL=postgresql://USER:PASSWORD@localhost:5432/algoprep
-JWT_SECRET=replace_this
-JDOODLE_CLIENT_ID=your_client_id
-JDOODLE_CLIENT_SECRET=your_client_secret
-
-# OAuth & Email Configuration
-See the dedicated guides for generating secure credentials:
-- **[OAuth Setup Guide](file:///Users/nitish/.gemini/antigravity/brain/dec500f0-228c-4717-81c3-9a8d8f493c18/OAUTH_SETUP_GUIDE.md)**
-- **[Resend Setup Guide](file:///Users/nitish/.gemini/antigravity/brain/dec500f0-228c-4717-81c3-9a8d8f493c18/RESEND_SETUP_GUIDE.md)**
-
-Then run:
-
-```bash
-npx prisma migrate dev
-npm run dev
+DATABASE_URL="postgresql://user:password@localhost:5432/algoprep"
+JWT_SECRET="your_secure_secret"
+JUDGE0_URL="http://localhost:2358"
+RESEND_API_KEY="your_resend_key"
+FRONTEND_URL="http://localhost:5173"
 ```
 
-### Frontend
-
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-## JDoodle Notes
-
-- API keys come from the JDoodle API dashboard after subscribing to a plan.
-- The backend keeps `JDOODLE_CLIENT_SECRET` server-side only. Do not expose it in the frontend.
-- Supported language/version mappings in this repo are:
-  - Python: `python3` / version index `5`
-  - Java: `java` / version index `5`
-  - JavaScript: `nodejs` / version index `6`
-  - TypeScript: `typescript` / version index `0`
-  - C++: `cpp17` / version index `0`
-
-## Security Notes
-
-⚠️ **Important**: Never commit `.env` files to version control. The `.env` file is gitignored by default.
-
-### Environment Variables Security
-
-- `JWT_SECRET`: Use a strong, random 256-bit key
-- `JDOODLE_CLIENT_ID/SECRET`: Keep server-side only, never expose to frontend
-- `DATABASE_URL`: Use SSL connections (`sslmode=require`)
-
-### Current Security Status
-
-- ✅ **Backend**: 0 vulnerabilities (all fixed)
-- ⚠️ **Frontend**: 2 moderate vulnerabilities (in Monaco editor dev dependency - acceptable)
-- ✅ **CI/CD**: Automated security scanning enabled
-- ✅ **Secrets**: Not committed to repository
-
-### Security Best Practices
-
-- Rotate secrets regularly
-- Use HTTPS in production
-- Keep dependencies updated
-- Monitor for new vulnerabilities
-- Implement proper logging (not included in this MVP)
-
-## 🧪 Testing
-
-AlgoPrep uses **Vitest** and **Supertest** for automated API testing. All tests are mocked and do not require a live database connection.
-
-### Run Tests Locally
+### 4. Database Migration
 ```bash
 cd backend
-npm test
+npx prisma migrate dev
 ```
 
-### CI/CD Integration
-Tests are automatically executed in GitHub Actions via `.github/workflows/deploy.yml`. Any failing test will block the deployment to production, ensuring only stable code is released.
+### 5. Launching the Application
+```bash
+# Start Backend
+cd backend
+npm run dev
 
-## Project Assessment
+# Start Frontend (in a separate terminal)
+cd ../frontend
+npm run dev
+```
 
-| Category | Rating | Status |
-|----------|---------|--------|
-| **Architecture** | 8.5/10 | **Modular / Async**: Non-blocking submission pipeline with background polling |
-| **Code Quality** | 7.5/10 | **Improved**: Hardened service types and zero `any` in core logic |
-| **UI Aesthetic** | 9.5/10 | **Artisan-Grade**: High-fidelity "Engineer's Lab" with industrial precision |
-| **Functionality** | 8.5/10 | **Mastery-Ready**: Linear NC150 roadmap with integrated consistency tracking |
-| **Performance** | 8.5/10 | **Reliable**: Cache-aside architecture for high-density data visualization |
-| **Maintainability** | 7.5/10 | **Standardized**: `npm test` script with automated regression protection |
-| **Security** | 8.5/10 | **Hardened**: Persistent rate limiting and secure account lifecycle |
-| **Testing** | 7.5/10 | **Integrated**: API coverage for Auth, Problems, and Execution |
-| **Documentation** | 8.5/10 | **Detailed**: Comprehensive "Engineer's Lab" mandates and architecture analysis |
-| **User Experience** | 8.0/10 | **Focused**: Minimalist, distraction-free environment built for discipline |
-| **Scalability** | 8.0/10 | **Distributed**: Redis-backed concurrency and distributed caching |
+---
 
-**Overall Technical Score: 8.3/10**
+## 📂 Project Structure
 
-> [!TIP]
-> AlgoPrep achieves a world-class workspace experience by blending brutalist structural elements with high-density metadata visualization—engineered for discipline over motivation.
+```text
+algoprep/
+├── backend/            # Express API Server (Node/TS)
+│   ├── src/
+│   │   ├── controllers/ # Request handlers
+│   │   ├── libs/        # Judge0 and DB wrappers
+│   │   ├── routes/      # API endpoints
+│   │   └── middleware/  # Auth and validation logic
+│   └── prisma/         # Prisma Schema & Migrations
+├── frontend/           # React 19 Application
+│   ├── src/
+│   │   ├── components/  # Atomic UI units
+│   │   ├── page/        # Routed views
+│   │   └── store/       # Zustand state slices
+│   └── public/          # Static assets
+└── docker-compose.yml  # Infrastructure orchestration
+```
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License.
+
+---
+**[ AlgoPrep ]** — Engineered for discipline.
