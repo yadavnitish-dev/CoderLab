@@ -35,11 +35,3 @@ yarn-error.log*
 *.md
 !README.md
 
-
-CODEBASE_ARCHITECTURE.md
-API_DOCUMENTATION.md
-GEMINI.md
-SECURITY.md
-DESIGN.md
-createProblemRule.md
-CODEBASE_ARCHITECTURE.md
