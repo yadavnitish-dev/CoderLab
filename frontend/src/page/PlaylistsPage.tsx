@@ -15,7 +15,9 @@ const PlaylistsPage = () => {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-[calc(100vh-64px)]">
-        <Loader2 className="size-8 animate-spin text-zinc-600" />
+        <p className="font-mono text-sm text-zinc-600 uppercase tracking-widest animate-blink">
+          [ LOADING_PLAYLISTS ]
+        </p>
       </div>
     );
   }
@@ -41,10 +43,10 @@ const PlaylistsPage = () => {
           </div>
           <button 
             onClick={() => setIsModalOpen(true)}
-            className="flex items-center gap-2 bg-white text-black px-6 py-3 rounded-sm font-bold text-sm hover:bg-zinc-200 transition-all shrink-0 mb-1"
+            className="flex items-center gap-2 bg-white text-black px-6 py-3 rounded-none font-bold text-sm uppercase tracking-widest hover:bg-zinc-200 transition-colors shrink-0 mb-1"
           >
              <Plus className="size-4" />
-             Create Playlist
+             [ CREATE_PLAYLIST ]
           </button>
         </div>
       </div>
@@ -56,14 +58,14 @@ const PlaylistsPage = () => {
               <Link
                 key={playlist.id}
                 to={`/playlist/${playlist.id}`}
-                className="group relative bg-[#090909] border border-zinc-800 rounded-sm p-6 hover:border-zinc-700 hover:bg-[#0d0d0d] transition-all duration-300"
+                className="group relative bg-[#090909] border border-zinc-800 rounded-none p-6 hover:border-zinc-700 hover:bg-[#0c0c0c] transition-colors"
               >
                 <div className="flex flex-col h-full">
                   <div className="flex justify-between items-start mb-4">
-                    <div className="size-10 bg-zinc-900 border border-zinc-800 rounded-sm flex items-center justify-center group-hover:bg-white group-hover:text-black transition-all duration-500">
+                    <div className="size-10 bg-zinc-900 border border-zinc-800 rounded-none flex items-center justify-center group-hover:bg-white group-hover:text-black transition-colors">
                       <ListMusic className="size-5" />
                     </div>
-                    <span className="px-2.5 py-1 rounded-sm bg-zinc-900 border border-zinc-800 text-[10px] font-bold text-zinc-500 uppercase tracking-widest group-hover:bg-zinc-800 group-hover:text-zinc-400 transition-colors">
+                    <span className="px-2.5 py-1 rounded-none bg-zinc-900 border border-zinc-800 text-[10px] font-bold text-zinc-500 uppercase tracking-widest group-hover:bg-zinc-800 group-hover:text-zinc-400 transition-colors">
                       {playlist.problems?.length || 0} Challenges
                     </span>
                   </div>
@@ -85,18 +87,15 @@ const PlaylistsPage = () => {
             ))}
           </div>
         ) : (
-          <div className="flex flex-col items-center justify-center py-24 border border-dashed border-zinc-800 rounded-sm bg-zinc-900/10">
-            <ListMusic className="size-12 text-zinc-800 mb-4" />
-            <h3 className="text-zinc-400 font-bold text-lg">No Playlists Yet</h3>
-            <p className="text-zinc-600 text-sm mt-1 mb-8 text-center max-w-xs">
-              Start by creating a playlist to organize your favorite problems
-              and study tracks.
-            </p>
+          <div className="flex flex-col items-center justify-center py-24 border border-zinc-900 bg-[#080808]">
+                <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-zinc-600">
+                  [ STATUS: NO_PLAYLISTS_FOUND ]
+                </p>
             <button 
               onClick={() => setIsModalOpen(true)}
-              className="bg-white text-black px-8 py-3 rounded-sm font-bold text-sm hover:bg-zinc-200 transition-all"
+              className="mt-6 text-emerald-500 font-mono text-[10px] hover:text-emerald-400 uppercase tracking-widest transition-colors"
             >
-              Create Your First Playlist
+              [ INITIALIZE_PLAYLIST ]
             </button>
           </div>
         )}

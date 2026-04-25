@@ -214,7 +214,9 @@ const ProblemPage = () => {
   if (isProblemLoading || !problem) {
     return (
       <div className="flex items-center justify-center h-screen bg-[#0a0a0a]">
-        <Loader2 className="size-8 animate-spin text-zinc-600" />
+        <p className="font-mono text-sm text-zinc-600 uppercase tracking-widest animate-blink">
+          [ LOADING_WORKSPACE ]
+        </p>
       </div>
     );
   }
@@ -291,7 +293,7 @@ const ProblemPage = () => {
         {isLeftPaneVisible && (
           <div
             style={{ width: `${leftPaneWidth}%` }}
-            className="flex flex-col bg-black border border-zinc-800 rounded-sm overflow-hidden"
+            className="flex flex-col bg-black border border-zinc-800 rounded-none overflow-hidden"
           >
             <div className="flex items-center gap-1 p-1 bg-[#111] border-b border-zinc-800 shrink-0">
               {[
@@ -326,7 +328,7 @@ const ProblemPage = () => {
             className="w-2 hover:w-2 group cursor-col-resize flex items-center justify-center transition-all"
           >
             <div className="w-1px h-full bg-zinc-800 group-hover:bg-zinc-700 transition-colors" />
-            <div className="absolute bg-zinc-950 border border-zinc-800 p-1 rounded-sm">
+            <div className="absolute bg-zinc-950 border border-zinc-800 p-1 rounded-none">
               <GripVertical className="size-3 text-zinc-500" />
             </div>
           </div>
@@ -368,9 +370,9 @@ const ProblemPage = () => {
       {/* Submission Details */}
       {selectedSubmission && (
         <div className="fixed inset-0 z-100 bg-black/80 flex items-center justify-center p-4">
-          <div className="bg-[#0a0a0a] border border-zinc-800 rounded-sm w-full max-w-4xl max-h-[90vh] overflow-y-auto relative animate-in zoom-in-95 duration-200 shadow-2xl">
+          <div className="bg-[#0a0a0a] border border-zinc-800 rounded-none w-full max-w-4xl max-h-[90vh] overflow-y-auto relative">
             <button
-              className="absolute top-4 right-4 p-2 text-zinc-600 hover:text-white hover:bg-zinc-900 rounded-sm transition-all"
+              className="absolute top-4 right-4 p-2 text-zinc-600 hover:text-white hover:bg-zinc-900 rounded-none transition-colors"
               onClick={() => setSelectedSubmission(null)}
             >
               <XCircle className="size-6" />

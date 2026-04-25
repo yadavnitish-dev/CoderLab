@@ -73,7 +73,7 @@ const ProblemsTable: React.FC<ProblemsTableProps> = ({
             <input
               type="text"
               placeholder="Search problems..."
-              className="w-full bg-black border border-zinc-800 rounded-sm pl-10 pr-4 py-2.5 text-sm text-zinc-200 focus:outline-none focus:border-emerald-500/50 transition-colors placeholder:text-zinc-700"
+              className="w-full bg-black border border-zinc-800 rounded-none pl-10 pr-4 py-2.5 text-sm text-zinc-200 focus:outline-none focus:border-emerald-500/50 transition-colors placeholder:text-zinc-700"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
@@ -96,7 +96,7 @@ const ProblemsTable: React.FC<ProblemsTableProps> = ({
         <div className="flex gap-2">
           <button
             onClick={() => setIsCreateModalOpen(true)}
-            className="flex items-center gap-2 bg-white text-black px-4 py-2.5 rounded-sm text-sm font-semibold hover:bg-zinc-200 transition-colors"
+            className="flex items-center gap-2 bg-white text-black px-4 py-2.5 rounded-none text-sm font-bold uppercase tracking-widest hover:bg-zinc-200 transition-colors"
           >
             <Plus className="size-4" />
             New Playlist
@@ -104,8 +104,7 @@ const ProblemsTable: React.FC<ProblemsTableProps> = ({
         </div>
       </div>
 
-      {/* Table Shell */}
-      <div className="bg-black border border-zinc-800 rounded-sm overflow-hidden shadow-2xl">
+      <div className="bg-black border border-zinc-800 rounded-none overflow-hidden">
         <table className="w-full text-left border-collapse">
           <thead>
             <tr className="border-b border-zinc-800 bg-[#0d0d0d]">
@@ -157,7 +156,7 @@ const ProblemsTable: React.FC<ProblemsTableProps> = ({
                       </Link>
                     </td>
                     <td className="px-6 py-5">
-                      <span className={`px-3 py-1 text-[10px] font-bold uppercase tracking-widest rounded-sm ${difficultyClass}`}>
+                      <span className={`px-3 py-1 text-[10px] font-bold uppercase tracking-widest rounded-none ${difficultyClass}`}>
                         {problem.difficulty}
                       </span>
                     </td>
@@ -167,13 +166,13 @@ const ProblemsTable: React.FC<ProblemsTableProps> = ({
                           <>
                             <Link
                               to={`/problem/${problem.id}/edit`}
-                              className="p-2 text-zinc-500 hover:text-white hover:bg-zinc-900 rounded-sm transition-all"
+                              className="p-2 text-zinc-500 hover:text-white hover:bg-zinc-900 rounded-none transition-colors"
                             >
                               <PencilIcon className="size-4" />
                             </Link>
                             <button
                               onClick={() => onDeleteProblem(problem.id)}
-                              className="p-2 text-zinc-500 hover:text-rose-400 hover:bg-rose-500/10 rounded-sm transition-all"
+                              className="p-2 text-zinc-500 hover:text-rose-400 hover:bg-rose-500/10 rounded-none transition-colors"
                             >
                               <Trash2 className="size-4" />
                             </button>
@@ -184,7 +183,7 @@ const ProblemsTable: React.FC<ProblemsTableProps> = ({
                             setSelectedProblemId(problem.id);
                             setIsAddToPlaylistModalOpen(true);
                           }}
-                          className="p-2 text-zinc-500 hover:text-zinc-200 hover:bg-zinc-900 rounded-sm transition-all"
+                          className="p-2 text-zinc-500 hover:text-zinc-200 hover:bg-zinc-900 rounded-none transition-colors"
                         >
                           <Bookmark className="size-4" />
                         </button>
@@ -197,9 +196,11 @@ const ProblemsTable: React.FC<ProblemsTableProps> = ({
               <tr>
                 <td
                   colSpan={4}
-                  className="px-6 py-20 text-center text-zinc-600 italic"
+                  className="px-6 py-20 text-center bg-[#080808]"
                 >
-                  No matching challenges found.
+                  <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-zinc-600">
+                    [ STATUS: NO_MATCHING_CHALLENGES ]
+                  </p>
                 </td>
               </tr>
             )}
@@ -226,17 +227,17 @@ const ProblemsTable: React.FC<ProblemsTableProps> = ({
             <button
               disabled={currentPage === 1}
               onClick={() => setCurrentPage((p) => p - 1)}
-              className="p-2 border border-zinc-800 rounded-sm text-zinc-500 hover:text-white hover:bg-zinc-900 disabled:opacity-30 disabled:hover:bg-transparent transition-all"
+              className="p-2 border border-zinc-800 rounded-none text-zinc-500 hover:text-white hover:bg-zinc-900 disabled:opacity-30 disabled:hover:bg-transparent transition-colors"
             >
               <ChevronLeft className="size-4" />
             </button>
-            <div className="flex items-center px-4 h-9 border border-zinc-800 rounded-sm bg-black text-xs font-bold text-zinc-300">
+            <div className="flex items-center px-4 h-9 border border-zinc-800 rounded-none bg-black text-xs font-bold text-zinc-300">
               {currentPage} / {totalPages}
             </div>
             <button
               disabled={currentPage === totalPages}
               onClick={() => setCurrentPage((p) => p + 1)}
-              className="p-2 border border-zinc-800 rounded-sm text-zinc-500 hover:text-white hover:bg-zinc-900 disabled:opacity-30 disabled:hover:bg-transparent transition-all"
+              className="p-2 border border-zinc-800 rounded-none text-zinc-500 hover:text-white hover:bg-zinc-900 disabled:opacity-30 disabled:hover:bg-transparent transition-colors"
             >
               <ChevronRight className="size-4" />
             </button>

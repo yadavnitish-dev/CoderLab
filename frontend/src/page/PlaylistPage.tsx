@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { usePlaylistStore } from "../store/usePlaylistStore";
-import { Loader2, Trash2, ArrowLeft, ListMusic, Layers } from "lucide-react";
+import { Trash2, ArrowLeft, ListMusic } from "lucide-react";
 import ProblemTable from "../components/ProblemTable";
 
 const PlaylistPage = () => {
@@ -41,7 +41,9 @@ const PlaylistPage = () => {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-[calc(100vh-64px)]">
-        <Loader2 className="size-8 animate-spin text-zinc-600" />
+        <p className="font-mono text-sm text-zinc-600 uppercase tracking-widest animate-blink">
+          [ LOADING_PLAYLIST ]
+        </p>
       </div>
     );
   }
@@ -52,9 +54,9 @@ const PlaylistPage = () => {
         <p className="text-zinc-500 font-medium mb-4">Playlist not found</p>
         <Link
           to="/playlists"
-          className="text-white bg-zinc-900 border border-zinc-800 px-6 py-2 rounded-sm text-sm font-bold"
+          className="text-white bg-zinc-900 border border-zinc-800 px-6 py-2 rounded-none text-sm font-bold uppercase tracking-widest hover:bg-zinc-800 transition-colors"
         >
-          Back to Playlists
+          [ BACK_TO_PLAYLISTS ]
         </Link>
       </div>
     );
@@ -76,7 +78,7 @@ const PlaylistPage = () => {
           <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
             <div className="flex-1">
               <div className="flex items-center gap-3 mb-4">
-                <div className="size-8 bg-zinc-900 border border-zinc-800 flex items-center justify-center rounded-sm text-zinc-400">
+                <div className="size-8 bg-zinc-900 border border-zinc-800 flex items-center justify-center rounded-none text-zinc-400">
                   <ListMusic className="size-4" />
                 </div>
                 <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-500">
@@ -93,7 +95,7 @@ const PlaylistPage = () => {
             </div>
 
             <div className="flex gap-3 shrink-0">
-              <div className="bg-black border border-zinc-800 px-4 py-2 rounded-sm text-center min-w-25">
+              <div className="bg-black border border-zinc-800 px-4 py-2 rounded-none text-center min-w-25">
                 <p className="text-[10px] font-bold uppercase tracking-widest text-zinc-600 mb-0.5">
                   Challenges
                 </p>
@@ -103,7 +105,7 @@ const PlaylistPage = () => {
               </div>
               <button
                 onClick={handleDeletePlaylist}
-                className="bg-rose-500/10 hover:bg-rose-500/20 text-rose-500 border border-rose-500/20 px-4 py-2 rounded-sm transition-all"
+                className="bg-rose-500/10 hover:bg-rose-500/20 text-rose-500 border border-rose-500/20 px-4 py-2 rounded-none transition-colors"
                 title="Delete Playlist"
               >
                 <Trash2 className="size-5" />
@@ -124,20 +126,15 @@ const PlaylistPage = () => {
             onRemove={handleRemoveProblem}
           />
         ) : (
-          <div className="flex flex-col items-center justify-center py-24 border border-dashed border-zinc-800 rounded-sm bg-zinc-900/10">
-            <Layers className="size-12 text-zinc-800 mb-4" />
-            <h3 className="text-zinc-400 font-bold text-lg">
-              Empty Study Track
-            </h3>
-            <p className="text-zinc-600 text-sm mt-1 mb-8 text-center max-w-xs">
-              This playlist doesn't have any challenges yet. Start browsing the
-              library to add problems.
+          <div className="flex flex-col items-center justify-center py-24 border border-zinc-900 bg-[#080808]">
+            <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-zinc-600">
+              [ STATUS: PLAYLIST_EMPTY ]
             </p>
             <Link
               to="/roadmap"
-              className="bg-white text-black px-8 py-3 rounded-sm font-bold text-sm hover:bg-zinc-200 transition-all"
+              className="mt-6 text-emerald-500 font-mono text-[10px] hover:text-emerald-400 uppercase tracking-widest transition-colors"
             >
-              Browse Problems
+              [ BROWSE_PROBLEMS ]
             </Link>
           </div>
         )}

@@ -9,12 +9,6 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import BrutalistButton from "../components/BrutalistButton";
 import { useRef } from "react";
 
-const stats = [
-  { value: "12,000+", label: "Engineers training daily" },
-  { value: "2.1M+", label: "Submissions executed" },
-  { value: "150+", label: "Curated FAANG-level problems" }
-];
-
 export default function HomePage() {
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
@@ -168,217 +162,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* SOCIAL PROOF STRIP */}
-      <section className="border-b border-zinc-900 py-16 bg-[#090909]">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-24">
-            {stats.map((item, idx) => (
-              <motion.div
-                key={item.label}
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.1 }}
-                className="flex flex-col gap-2 border-l border-zinc-800 pl-8"
-              >
-                <p className="text-4xl font-bold font-mono text-white tracking-tighter">
-                  {item.value}
-                </p>
-                <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-zinc-600 font-bold">
-                  {item.label}
-                </p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* PHILOSOPHY SECTION */}
-      <section className="py-40 relative border-b border-zinc-900 overflow-hidden">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[20vw] font-bold text-white/[0.01] pointer-events-none select-none uppercase tracking-tighter whitespace-nowrap">
-          Discipline Over Motivation
-        </div>
-
-        <div className="max-w-4xl mx-auto px-6 text-center relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-          >
-            <p className="font-mono text-[10px] uppercase tracking-[0.5em] text-emerald-500 mb-10 font-bold">
-              [ Core Philosophy ]
-            </p>
-            <h2 className="text-5xl md:text-7xl font-bold text-white tracking-tighter mb-12 uppercase leading-[0.9]">
-              We don’t believe in motivation.
-            </h2>
-            <div className="space-y-8 text-xl md:text-2xl text-zinc-500 leading-relaxed font-medium">
-              <p>
-                Motivation fades.{" "}
-                <span className="text-white px-2 bg-zinc-900 border border-zinc-800">
-                  Systems don’t.
-                </span>
-              </p>
-              <p>
-                AlgoPrep is built around deliberate repetition, measurable
-                progress, and brutal honesty.
-              </p>
-              <p className="text-zinc-600 italic">
-                "You either improve, or the data shows you didn’t."
-              </p>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* CORE ADVANTAGES (OUTCOMES) */}
-      <section className="py-32 border-b border-zinc-900 bg-[#080808]">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="mb-24">
-            <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-zinc-600 mb-6 font-bold">
-              Architectural Advantages
-            </p>
-            <h2 className="text-5xl md:text-7xl font-bold text-white tracking-tighter uppercase">
-              Built for outcomes.
-            </h2>
-          </div>
-
-          <div className="grid lg:grid-cols-3 gap-px bg-zinc-900 border border-zinc-900">
-            {/* Advantage 1: Decision Fatigue */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="bg-[#0a0a0a] p-10 group relative overflow-hidden"
-            >
-              <div className="relative z-10">
-                <p className="font-mono text-[9px] text-emerald-500 uppercase tracking-widest mb-6">[ 0x01_ELIMINATE_FATIGUE ]</p>
-                <h3 className="text-white text-2xl font-bold uppercase tracking-tighter mb-4">
-                  Decision-Free <br />Progression
-                </h3>
-                <p className="text-zinc-500 leading-relaxed text-sm mb-12">
-                  A rigid, non-negotiable path from Arrays to Graphs. No guessing what to solve next—just execution.
-                </p>
-                
-                {/* Visual: Roadmap Schematic */}
-                <div className="mt-12 border border-zinc-900 bg-zinc-900/20 p-4 font-mono text-[9px] space-y-3 opacity-60 group-hover:opacity-100 transition-opacity">
-                  <div className="flex items-center gap-3">
-                    <div className="size-1.5 rounded-full bg-emerald-500" />
-                    <span className="text-zinc-400">01_ARRAYS_AND_HASHING</span>
-                    <span className="text-emerald-500 ml-auto">COMPLETED</span>
-                  </div>
-                  <div className="flex items-center gap-3 border-l-2 border-zinc-800 ml-[2.5px] pl-3 py-1">
-                    <div className="size-1.5 rounded-full bg-amber-500 animate-pulse" />
-                    <span className="text-white font-bold">02_TWO_POINTERS</span>
-                    <span className="text-amber-500 ml-auto">ACTIVE</span>
-                  </div>
-                  <div className="flex items-center gap-3 opacity-40">
-                    <div className="size-1.5 rounded-full bg-zinc-800" />
-                    <span className="text-zinc-600">03_SLIDING_WINDOW</span>
-                    <span className="text-zinc-800 ml-auto">LOCKED</span>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Advantage 2: Feedback Loops */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1 }}
-              className="bg-[#0a0a0a] p-10 group relative overflow-hidden"
-            >
-              <div className="relative z-10">
-                <p className="font-mono text-[9px] text-emerald-500 uppercase tracking-widest mb-6">[ 0x02_REALTIME_VALIDATION ]</p>
-                <h3 className="text-white text-2xl font-bold uppercase tracking-tighter mb-4">
-                  Instant Feedback <br />Loops
-                </h3>
-                <p className="text-zinc-500 leading-relaxed text-sm mb-12">
-                  Run code, validate logic, and identify mistakes immediately with high-signal execution feedback.
-                </p>
-                
-                {/* Visual: Code Execution Logs */}
-                <div className="mt-12 border border-zinc-900 bg-zinc-900/20 p-4 font-mono text-[9px] space-y-2 opacity-60 group-hover:opacity-100 transition-opacity overflow-hidden">
-                  <div className="flex justify-between text-zinc-600">
-                    <span>BUILD_LOG: v1.02</span>
-                    <span>256ms</span>
-                  </div>
-                  <div className="h-[1px] bg-zinc-900 w-full mb-2" />
-                  <p className="text-emerald-500/80">&gt; RUNNING TEST_CASE_01: PASSED</p>
-                  <p className="text-emerald-500/80">&gt; RUNNING TEST_CASE_02: PASSED</p>
-                  <p className="text-rose-500/80">&gt; RUNNING TEST_CASE_03: LOGIC_ERR</p>
-                  <p className="text-zinc-500 animate-blink">&gt; _</p>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Advantage 3: Tracking */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.2 }}
-              className="bg-[#0a0a0a] p-10 group relative overflow-hidden"
-            >
-              <div className="relative z-10">
-                <p className="font-mono text-[9px] text-emerald-500 uppercase tracking-widest mb-6">[ 0x03_DISCIPLINE_METRICS ]</p>
-                <h3 className="text-white text-2xl font-bold uppercase tracking-tighter mb-4">
-                  Track what actually matters
-                </h3>
-                <p className="text-zinc-500 leading-relaxed text-sm mb-12">
-                  Consistency, weak areas, and problem-solving depth—measured with architectural precision.
-                </p>
-                
-                {/* Visual: Performance Radar & Metrics */}
-                <div className="mt-12 space-y-6 opacity-60 group-hover:opacity-100 transition-opacity">
-                  <div className="relative h-32 w-full flex items-center justify-center">
-                    {/* Mock Radar Chart SVG */}
-                    <svg className="size-32 overflow-visible" viewBox="0 0 100 100">
-                      {/* Background Polygons */}
-                      <polygon points="50,5 95,35 80,85 20,85 5,35" fill="none" stroke="#18181b" strokeWidth="1" />
-                      <polygon points="50,25 75,45 65,70 35,70 25,45" fill="none" stroke="#18181b" strokeWidth="1" />
-                      {/* Data Polygon */}
-                      <polygon 
-                        points="50,15 85,40 70,80 30,75 15,45" 
-                        fill="rgba(16, 185, 129, 0.1)" 
-                        stroke="#10b981" 
-                        strokeWidth="1.5"
-                        className="animate-pulse"
-                      />
-                      {/* Axis Lines */}
-                      <line x1="50" y1="50" x2="50" y2="5" stroke="#18181b" strokeWidth="1" />
-                      <line x1="50" y1="50" x2="95" y2="35" stroke="#18181b" strokeWidth="1" />
-                      <line x1="50" y1="50" x2="80" y2="85" stroke="#18181b" strokeWidth="1" />
-                      <line x1="50" y1="50" x2="20" y2="85" stroke="#18181b" strokeWidth="1" />
-                      <line x1="50" y1="50" x2="5" y2="35" stroke="#18181b" strokeWidth="1" />
-                    </svg>
-                    
-                    {/* Labels around radar */}
-                    <div className="absolute top-0 font-mono text-[7px] text-zinc-600">RUNTIME</div>
-                    <div className="absolute right-0 top-1/3 font-mono text-[7px] text-zinc-600">SPACE</div>
-                    <div className="absolute right-4 bottom-0 font-mono text-[7px] text-zinc-600">DISCIPLINE</div>
-                    <div className="absolute left-4 bottom-0 font-mono text-[7px] text-zinc-600">LOGIC</div>
-                    <div className="absolute left-0 top-1/3 font-mono text-[7px] text-zinc-600">SPEED</div>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-3 pt-4 border-t border-zinc-900">
-                    <div className="space-y-1">
-                      <p className="font-mono text-[8px] text-zinc-600 uppercase">Mastery Delta</p>
-                      <p className="font-mono text-xs text-emerald-500 font-bold">+14.2%</p>
-                    </div>
-                    <div className="space-y-1 text-right">
-                      <p className="font-mono text-[8px] text-zinc-600 uppercase">Percentile</p>
-                      <p className="font-mono text-xs text-white font-bold">98.4th</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* INTERFACE SHOWCASE (PRODUCT MOCKS) */}
+            {/* INTERFACE SHOWCASE (PRODUCT MOCKS) */}
       <section className="py-40 bg-[#070707]">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex flex-col md:flex-row items-end justify-between mb-24 gap-8">
@@ -391,7 +175,7 @@ export default function HomePage() {
               </h2>
             </div>
             <p className="text-zinc-500 font-mono text-sm uppercase tracking-widest pb-2">
-              [ 0x01_VISUAL_AUDIT ]
+              [ VISUAL_AUDIT ]
             </p>
           </div>
 
@@ -589,6 +373,191 @@ export default function HomePage() {
               </motion.div>
             </div>
           </div>
+        </div>
+      </section>
+
+            {/* CORE ADVANTAGES (OUTCOMES) */}
+      <section className="py-32 border-b border-zinc-900 bg-[#080808]">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="mb-24">
+            <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-zinc-600 mb-6 font-bold">
+              Architectural Advantages
+            </p>
+            <h2 className="text-5xl md:text-7xl font-bold text-white tracking-tighter uppercase">
+              Built for outcomes.
+            </h2>
+          </div>
+
+          <div className="grid lg:grid-cols-3 gap-px bg-zinc-900 border border-zinc-900">
+            {/* Advantage 1: Decision Fatigue */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="bg-[#0a0a0a] p-10 group relative overflow-hidden"
+            >
+              <div className="relative z-10">
+                <p className="font-mono text-[9px] text-emerald-500 uppercase tracking-widest mb-6">[ ELIMINATE_FATIGUE ]</p>
+                <h3 className="text-white text-2xl font-bold uppercase tracking-tighter mb-4">
+                  Decision-Free <br />Progression
+                </h3>
+                <p className="text-zinc-500 leading-relaxed text-sm mb-12">
+                  A rigid, non-negotiable path from Arrays to Graphs. No guessing what to solve next—just execution.
+                </p>
+                
+                {/* Visual: Roadmap Schematic */}
+                <div className="mt-12 border border-zinc-900 bg-zinc-900/20 p-4 font-mono text-[9px] space-y-3 opacity-60 group-hover:opacity-100 transition-opacity">
+                  <div className="flex items-center gap-3">
+                    <div className="size-1.5 rounded-full bg-emerald-500" />
+                    <span className="text-zinc-400">01_ARRAYS_AND_HASHING</span>
+                    <span className="text-emerald-500 ml-auto">COMPLETED</span>
+                  </div>
+                  <div className="flex items-center gap-3 border-l-2 border-zinc-800 ml-[2.5px] pl-3 py-1">
+                    <div className="size-1.5 rounded-full bg-amber-500 animate-pulse" />
+                    <span className="text-white font-bold">02_TWO_POINTERS</span>
+                    <span className="text-amber-500 ml-auto">ACTIVE</span>
+                  </div>
+                  <div className="flex items-center gap-3 opacity-40">
+                    <div className="size-1.5 rounded-full bg-zinc-800" />
+                    <span className="text-zinc-600">03_SLIDING_WINDOW</span>
+                    <span className="text-zinc-800 ml-auto">LOCKED</span>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Advantage 2: Feedback Loops */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="bg-[#0a0a0a] p-10 group relative overflow-hidden"
+            >
+              <div className="relative z-10">
+                <p className="font-mono text-[9px] text-emerald-500 uppercase tracking-widest mb-6">[ REALTIME_VALIDATION ]</p>
+                <h3 className="text-white text-2xl font-bold uppercase tracking-tighter mb-4">
+                  Instant Feedback <br />Loops
+                </h3>
+                <p className="text-zinc-500 leading-relaxed text-sm mb-12">
+                  Run code, validate logic, and identify mistakes immediately with high-signal execution feedback.
+                </p>
+                
+                {/* Visual: Code Execution Logs */}
+                <div className="mt-12 border border-zinc-900 bg-zinc-900/20 p-4 font-mono text-[9px] space-y-2 opacity-60 group-hover:opacity-100 transition-opacity overflow-hidden">
+                  <div className="flex justify-between text-zinc-600">
+                    <span>BUILD_LOG: v1.02</span>
+                    <span>256ms</span>
+                  </div>
+                  <div className="h-[1px] bg-zinc-900 w-full mb-2" />
+                  <p className="text-emerald-500/80">&gt; RUNNING TEST_CASE_01: PASSED</p>
+                  <p className="text-emerald-500/80">&gt; RUNNING TEST_CASE_02: PASSED</p>
+                  <p className="text-rose-500/80">&gt; RUNNING TEST_CASE_03: LOGIC_ERR</p>
+                  <p className="text-zinc-500 animate-blink">&gt; _</p>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Advantage 3: Tracking */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              className="bg-[#0a0a0a] p-10 group relative overflow-hidden"
+            >
+              <div className="relative z-10">
+                <p className="font-mono text-[9px] text-emerald-500 uppercase tracking-widest mb-6">[ DISCIPLINE_METRICS ]</p>
+                <h3 className="text-white text-2xl font-bold uppercase tracking-tighter mb-4">
+                  Track what actually matters
+                </h3>
+                <p className="text-zinc-500 leading-relaxed text-sm mb-12">
+                  Consistency, weak areas, and problem-solving depth—measured with architectural precision.
+                </p>
+                
+                {/* Visual: Performance Radar & Metrics */}
+                <div className="mt-12 space-y-6 opacity-60 group-hover:opacity-100 transition-opacity">
+                  <div className="relative h-32 w-full flex items-center justify-center">
+                    {/* Mock Radar Chart SVG */}
+                    <svg className="size-32 overflow-visible" viewBox="0 0 100 100">
+                      {/* Background Polygons */}
+                      <polygon points="50,5 95,35 80,85 20,85 5,35" fill="none" stroke="#18181b" strokeWidth="1" />
+                      <polygon points="50,25 75,45 65,70 35,70 25,45" fill="none" stroke="#18181b" strokeWidth="1" />
+                      {/* Data Polygon */}
+                      <polygon 
+                        points="50,15 85,40 70,80 30,75 15,45" 
+                        fill="rgba(16, 185, 129, 0.1)" 
+                        stroke="#10b981" 
+                        strokeWidth="1.5"
+                        className="animate-pulse"
+                      />
+                      {/* Axis Lines */}
+                      <line x1="50" y1="50" x2="50" y2="5" stroke="#18181b" strokeWidth="1" />
+                      <line x1="50" y1="50" x2="95" y2="35" stroke="#18181b" strokeWidth="1" />
+                      <line x1="50" y1="50" x2="80" y2="85" stroke="#18181b" strokeWidth="1" />
+                      <line x1="50" y1="50" x2="20" y2="85" stroke="#18181b" strokeWidth="1" />
+                      <line x1="50" y1="50" x2="5" y2="35" stroke="#18181b" strokeWidth="1" />
+                    </svg>
+                    
+                    {/* Labels around radar */}
+                    <div className="absolute top-0 font-mono text-[7px] text-zinc-600">RUNTIME</div>
+                    <div className="absolute right-0 top-1/3 font-mono text-[7px] text-zinc-600">SPACE</div>
+                    <div className="absolute right-4 bottom-0 font-mono text-[7px] text-zinc-600">DISCIPLINE</div>
+                    <div className="absolute left-4 bottom-0 font-mono text-[7px] text-zinc-600">LOGIC</div>
+                    <div className="absolute left-0 top-1/3 font-mono text-[7px] text-zinc-600">SPEED</div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3 pt-4 border-t border-zinc-900">
+                    <div className="space-y-1">
+                      <p className="font-mono text-[8px] text-zinc-600 uppercase">Mastery Delta</p>
+                      <p className="font-mono text-xs text-emerald-500 font-bold">+14.2%</p>
+                    </div>
+                    <div className="space-y-1 text-right">
+                      <p className="font-mono text-[8px] text-zinc-600 uppercase">Percentile</p>
+                      <p className="font-mono text-xs text-white font-bold">98.4th</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* PHILOSOPHY SECTION */}
+      <section className="py-40 relative border-b border-zinc-900 overflow-hidden">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[20vw] font-bold text-white/[0.01] pointer-events-none select-none uppercase tracking-tighter whitespace-nowrap">
+          Discipline Over Motivation
+        </div>
+
+        <div className="max-w-4xl mx-auto px-6 text-center relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+          >
+            <p className="font-mono text-[10px] uppercase tracking-[0.5em] text-emerald-500 mb-10 font-bold">
+              [ Core Philosophy ]
+            </p>
+            <h2 className="text-5xl md:text-7xl font-bold text-white tracking-tighter mb-12 uppercase leading-[0.9]">
+              We don’t believe in motivation.
+            </h2>
+            <div className="space-y-8 text-xl md:text-2xl text-zinc-500 leading-relaxed font-medium">
+              <p>
+                Motivation fades.{" "}
+                <span className="text-white px-2 bg-zinc-900 border border-zinc-800">
+                  Systems don’t.
+                </span>
+              </p>
+              <p>
+                AlgoPrep is built around deliberate repetition, measurable
+                progress, and brutal honesty.
+              </p>
+              <p className="text-zinc-600 italic">
+                "You either improve, or the data shows you didn’t."
+              </p>
+            </div>
+          </motion.div>
         </div>
       </section>
 

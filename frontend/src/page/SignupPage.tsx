@@ -52,7 +52,7 @@ const SignUpPage = () => {
         {/* Brand/Header */}
         <div className="text-center mb-10">
           <Link to="/" className="inline-flex items-center gap-2 mb-8 group">
-            <div className="bg-zinc-900 border border-zinc-800 p-2 rounded-sm group-hover:border-zinc-500 transition-all duration-300">
+            <div className="bg-zinc-900 border border-zinc-800 p-2 rounded-none group-hover:border-zinc-500 transition-colors">
               <Code2 className="size-6 text-white" />
             </div>
             <span className="text-xl font-bold tracking-tighter text-white uppercase font-display">
@@ -68,7 +68,7 @@ const SignUpPage = () => {
         </div>
 
         {/* Form */}
-        <div className="bg-[#0d0d0d] border border-zinc-800 p-8 rounded-sm shadow-2xl">
+        <div className="bg-black border border-zinc-800 p-8 rounded-none">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
             <div className="space-y-2">
               <label className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-zinc-500 ml-1">
@@ -79,7 +79,7 @@ const SignUpPage = () => {
                 <input
                   type="text"
                   {...register("name")}
-                  className={`w-full bg-[#050505] border ${errors.name ? "border-rose-500/50" : "border-zinc-800"} rounded-sm py-2.5 pl-10 pr-4 text-sm text-zinc-200 focus:outline-none focus:border-emerald-500/50 transition-all placeholder:text-zinc-700 font-mono`}
+                  className={`w-full bg-[#050505] border ${errors.name ? "border-rose-500/50" : "border-zinc-800"} rounded-none py-2.5 pl-10 pr-4 text-sm text-zinc-200 focus:outline-none focus:border-emerald-500/50 transition-colors placeholder:text-zinc-700 font-mono`}
                   placeholder="John Doe"
                 />
               </div>
@@ -99,7 +99,7 @@ const SignUpPage = () => {
                 <input
                   type="email"
                   {...register("email")}
-                  className={`w-full bg-[#050505] border ${errors.email ? "border-rose-500/50" : "border-zinc-800"} rounded-sm py-2.5 pl-10 pr-4 text-sm text-zinc-200 focus:outline-none focus:border-emerald-500/50 transition-all placeholder:text-zinc-700 font-mono`}
+                  className={`w-full bg-[#050505] border ${errors.email ? "border-rose-500/50" : "border-zinc-800"} rounded-none py-2.5 pl-10 pr-4 text-sm text-zinc-200 focus:outline-none focus:border-emerald-500/50 transition-colors placeholder:text-zinc-700 font-mono`}
                   placeholder="name@example.com"
                 />
               </div>
@@ -119,7 +119,7 @@ const SignUpPage = () => {
                 <input
                   type={showPassword ? "text" : "password"}
                   {...register("password")}
-                  className={`w-full bg-[#050505] border ${errors.password ? "border-rose-500/50" : "border-zinc-800"} rounded-sm py-2.5 pl-10 pr-10 text-sm text-zinc-200 focus:outline-none focus:border-emerald-500/50 transition-all placeholder:text-zinc-700 font-mono`}
+                  className={`w-full bg-[#050505] border ${errors.password ? "border-rose-500/50" : "border-zinc-800"} rounded-none py-2.5 pl-10 pr-10 text-sm text-zinc-200 focus:outline-none focus:border-emerald-500/50 transition-colors placeholder:text-zinc-700 font-mono`}
                   placeholder="••••••••"
                 />
                 <button

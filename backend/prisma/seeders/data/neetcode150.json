@@ -1,0 +1,447 @@
+[
+  {
+    "title": "Contains Duplicate",
+    "description": "Given an integer array `nums`, return `true` if any value appears at least twice in the array, and return `false` if every element is distinct.",
+    "difficulty": "EASY",
+    "tags": ["Array", "Hash Table"],
+    "functionSignature": {
+      "name": "containsDuplicate",
+      "inputs": [{ "name": "nums", "type": "number[]" }],
+      "output": "boolean"
+    },
+    "examples": {
+      "CPP": "Input: nums = [1,2,3,1]\nOutput: true",
+      "JAVA": "Input: nums = [1,2,3,1]\nOutput: true",
+      "PYTHON": "Input: nums = [1,2,3,1]\nOutput: true",
+      "JAVASCRIPT": "Input: nums = [1,2,3,1]\nOutput: true"
+    },
+    "constraints": "- `1 <= nums.length <= 10^5`\n- `-10^9 <= nums[i] <= 10^9`",
+    "hints": "Sort the array. Use a hash set.",
+    "testcases": [
+      { "input": "4\n1\n2\n3\n1", "output": "true" },
+      { "input": "4\n1\n2\n3\n4", "output": "false" },
+      { "input": "10\n1\n1\n1\n3\n3\n4\n3\n2\n4\n2", "output": "true" }
+    ],
+    "referenceSolutions": {
+      "CPP": "class Solution {\npublic:\n    bool containsDuplicate(vector<int>& nums) {\n        unordered_set<int> s(nums.begin(), nums.end());\n        return s.size() < nums.size();\n    }\n};",
+      "JAVA": "class Solution {\n    public boolean containsDuplicate(int[] nums) {\n        Set<Integer> uniques = new HashSet<>();\n        for (int i = 0; i < nums.length; i++) {\n            if (uniques.contains(nums[i])) {\n                return true;\n            }\n            uniques.add(nums[i]);\n        }\n        return false;\n    }\n}",
+      "PYTHON": "class Solution:\n    def containsDuplicate(self, nums: List[int]) -> bool:\n        return len(set(nums)) < len(nums)",
+      "JAVASCRIPT": "var containsDuplicate = function(nums) {\n    return new Set(nums).size < nums.length;\n};"
+    }
+  },
+  {
+    "title": "Valid Anagram",
+    "description": "Given two strings `s` and `t`, return `true` if `t` is an anagram of `s`, and `false` otherwise.",
+    "difficulty": "EASY",
+    "tags": ["String", "Hash Table", "Sorting"],
+    "functionSignature": {
+      "name": "isAnagram",
+      "inputs": [
+        { "name": "s", "type": "string" },
+        { "name": "t", "type": "string" }
+      ],
+      "output": "boolean"
+    },
+    "examples": {
+      "CPP": "Input: s = \"anagram\", t = \"nagaram\"\nOutput: true",
+      "JAVA": "Input: s = \"anagram\", t = \"nagaram\"\nOutput: true",
+      "PYTHON": "Input: s = \"anagram\", t = \"nagaram\"\nOutput: true",
+      "JAVASCRIPT": "Input: s = \"anagram\", t = \"nagaram\"\nOutput: true"
+    },
+    "constraints": "- `1 <= s.length, t.length <= 5 * 10^4`\n- `s` and `t` consist of lowercase English letters.",
+    "hints": "Count the frequency of characters.",
+    "testcases": [
+      { "input": "anagram\nnagaram", "output": "true" },
+      { "input": "rat\ncar", "output": "false" }
+    ],
+    "referenceSolutions": {
+      "CPP": "class Solution {\npublic:\n    bool isAnagram(string s, string t) {\n        if (s.length() != t.length()) return false;\n        int counts[26] = {0};\n        for (int i = 0; i < s.length(); i++) {\n            counts[s[i] - 'a']++;\n            counts[t[i] - 'a']--;\n        }\n        for (int i = 0; i < 26; i++) {\n            if (counts[i] != 0) return false;\n        }\n        return true;\n    }\n};",
+      "JAVA": "class Solution {\n    public boolean isAnagram(String s, String t) {\n        if (s.length() != t.length()) return false;\n        int[] counts = new int[26];\n        for (int i = 0; i < s.length(); i++) {\n            counts[s.charAt(i) - 'a']++;\n            counts[t.charAt(i) - 'a']--;\n        }\n        for (int i : counts) {\n            if (i != 0) return false;\n        }\n        return true;\n    }\n}",
+      "PYTHON": "class Solution:\n    def isAnagram(self, s: str, t: str) -> bool:\n        if len(s) != len(t): return False\n        return sorted(s) == sorted(t)",
+      "JAVASCRIPT": "var isAnagram = function(s, t) {\n    if (s.length !== t.length) return false;\n    let counts = new Array(26).fill(0);\n    for (let i = 0; i < s.length; i++) {\n        counts[s.charCodeAt(i) - 97]++;\n        counts[t.charCodeAt(i) - 97]--;\n    }\n    return counts.every(count => count === 0);\n};"
+    }
+  },
+  {
+    "title": "Two Sum",
+    "description": "Given an array of integers `nums` and an integer `target`, return indices of the two numbers such that they add up to `target`.\n\nYou may assume that each input would have exactly one solution, and you may not use the same element twice.",
+    "difficulty": "EASY",
+    "tags": ["Array", "Hash Table"],
+    "functionSignature": {
+      "name": "twoSum",
+      "inputs": [
+        { "name": "nums", "type": "number[]" },
+        { "name": "target", "type": "number" }
+      ],
+      "output": "number[]"
+    },
+    "examples": {
+      "CPP": "Input: nums = [2,7,11,15], target = 9\nOutput: [0,1]",
+      "JAVA": "Input: nums = [2,7,11,15], target = 9\nOutput: [0,1]",
+      "PYTHON": "Input: nums = [2,7,11,15], target = 9\nOutput: [0,1]",
+      "JAVASCRIPT": "Input: nums = [2,7,11,15], target = 9\nOutput: [0,1]"
+    },
+    "constraints": "- `2 <= nums.length <= 10^4`\n- `-10^9 <= nums[i] <= 10^9`\n- `-10^9 <= target <= 10^9`",
+    "hints": "A really brute force way would be to search for all possible pairs of numbers but that would be too slow. Again, it's best to try out brute force solutions for just for completeness. It is from these brute force solutions that you can come up with optimizations.",
+    "testcases": [
+      { "input": "4\n2\n7\n11\n15\n9", "output": "[0, 1]" },
+      { "input": "3\n3\n2\n4\n6", "output": "[1, 2]" },
+      { "input": "2\n3\n3\n6", "output": "[0, 1]" }
+    ],
+    "referenceSolutions": {
+      "CPP": "class Solution {\npublic:\n    vector<int> twoSum(vector<int>& nums, int target) {\n        unordered_map<int, int> numMap;\n        int n = nums.size();\n        for (int i = 0; i < n; i++) {\n            int complement = target - nums[i];\n            if (numMap.count(complement)) {\n                return {numMap[complement], i};\n            }\n            numMap[nums[i]] = i;\n        }\n        return {};\n    }\n};",
+      "JAVA": "class Solution {\n    public int[] twoSum(int[] nums, int target) {\n        Map<Integer, Integer> numMap = new HashMap<>();\n        for (int i = 0; i < nums.length; i++) {\n            int complement = target - nums[i];\n            if (numMap.containsKey(complement)) {\n                return new int[] { numMap.get(complement), i };\n            }\n            numMap.put(nums[i], i);\n        }\n        return new int[] {};\n    }\n}",
+      "PYTHON": "class Solution:\n    def twoSum(self, nums: List[int], target: int) -> List[int]:\n        numMap = {}\n        for i, n in enumerate(nums):\n            diff = target - n\n            if diff in numMap:\n                return [numMap[diff], i]\n            numMap[n] = i\n        return []",
+      "JAVASCRIPT": "var twoSum = function(nums, target) {\n    let numMap = new Map();\n    for (let i = 0; i < nums.length; i++) {\n        let complement = target - nums[i];\n        if (numMap.has(complement)) {\n            return [numMap.get(complement), i];\n        }\n        numMap.set(nums[i], i);\n    }\n    return [];\n};"
+    }
+  },
+  {
+    "title": "Group Anagrams",
+    "description": "Given an array of strings `strs`, group the anagrams together. You can return the answer in any order.",
+    "difficulty": "MEDIUM",
+    "tags": ["Array", "Hash Table", "String", "Sorting"],
+    "functionSignature": {
+      "name": "groupAnagrams",
+      "inputs": [{ "name": "strs", "type": "string[]" }],
+      "output": "string[][]"
+    },
+    "examples": {
+      "CPP": "Input: strs = [\"eat\",\"tea\",\"tan\",\"ate\",\"nat\",\"bat\"]\nOutput: [[\"bat\"],[\"nat\",\"tan\"],[\"ate\",\"eat\",\"tea\"]]",
+      "JAVA": "Input: strs = [\"eat\",\"tea\",\"tan\",\"ate\",\"nat\",\"bat\"]\nOutput: [[\"bat\"],[\"nat\",\"tan\"],[\"ate\",\"eat\",\"tea\"]]",
+      "PYTHON": "Input: strs = [\"eat\",\"tea\",\"tan\",\"ate\",\"nat\",\"bat\"]\nOutput: [[\"bat\"],[\"nat\",\"tan\"],[\"ate\",\"eat\",\"tea\"]]",
+      "JAVASCRIPT": "Input: strs = [\"eat\",\"tea\",\"tan\",\"ate\",\"nat\",\"bat\"]\nOutput: [[\"bat\"],[\"nat\",\"tan\"],[\"ate\",\"eat\",\"tea\"]]"
+    },
+    "constraints": "- `1 <= strs.length <= 10^4`\n- `0 <= strs[i].length <= 100`\n- `strs[i]` consists of lowercase English letters.",
+    "hints": "Two strings are anagrams if and only if their character counts are the same. Use a hash map where the key is the sorted string or character count tuple.",
+    "testcases": [
+      {
+        "input": "6\neat\ntea\ntan\nate\nnat\nbat",
+        "output": "[[\"ate\",\"eat\",\"tea\"],[\"nat\",\"tan\"],[\"bat\"]]"
+      },
+      { "input": "1\n", "output": "[[\"\"]]" },
+      { "input": "1\na", "output": "[[\"a\"]]" }
+    ],
+    "referenceSolutions": {
+      "CPP": "class Solution {\npublic:\n    vector<vector<string>> groupAnagrams(vector<string>& strs) {\n        unordered_map<string, vector<string>> mp;\n        for (string& s : strs) {\n            string key = s;\n            sort(key.begin(), key.end());\n            mp[key].push_back(s);\n        }\n        vector<vector<string>> result;\n        for (auto& p : mp) result.push_back(p.second);\n        return result;\n    }\n};",
+      "JAVA": "class Solution {\n    public List<List<String>> groupAnagrams(String[] strs) {\n        Map<String, List<String>> mp = new HashMap<>();\n        for (String s : strs) {\n            char[] ca = s.toCharArray();\n            Arrays.sort(ca);\n            String key = new String(ca);\n            mp.computeIfAbsent(key, k -> new ArrayList<>()).add(s);\n        }\n        return new ArrayList<>(mp.values());\n    }\n}",
+      "PYTHON": "class Solution:\n    def groupAnagrams(self, strs: List[str]) -> List[List[str]]:\n        mp = collections.defaultdict(list)\n        for s in strs:\n            mp[tuple(sorted(s))].append(s)\n        return list(mp.values())",
+      "JAVASCRIPT": "var groupAnagrams = function(strs) {\n    const mp = new Map();\n    for (const s of strs) {\n        const key = s.split('').sort().join('');\n        if (!mp.has(key)) mp.set(key, []);\n        mp.get(key).push(s);\n    }\n    return Array.from(mp.values());\n};"
+    }
+  },
+  {
+    "title": "Top K Frequent Elements",
+    "description": "Given an integer array `nums` and an integer `k`, return the `k` most frequent elements. You may return the answer in any order.",
+    "difficulty": "MEDIUM",
+    "tags": ["Array", "Hash Table", "Sorting", "Heap"],
+    "functionSignature": {
+      "name": "topKFrequent",
+      "inputs": [
+        { "name": "nums", "type": "number[]" },
+        { "name": "k", "type": "number" }
+      ],
+      "output": "number[]"
+    },
+    "examples": {
+      "CPP": "Input: nums = [1,1,1,2,2,3], k = 2\nOutput: [1,2]",
+      "JAVA": "Input: nums = [1,1,1,2,2,3], k = 2\nOutput: [1,2]",
+      "PYTHON": "Input: nums = [1,1,1,2,2,3], k = 2\nOutput: [1,2]",
+      "JAVASCRIPT": "Input: nums = [1,1,1,2,2,3], k = 2\nOutput: [1,2]"
+    },
+    "constraints": "- `1 <= nums.length <= 10^5`\n- `-10^4 <= nums[i] <= 10^4`\n- `k` is in the range `[1, the number of unique elements in the array]`\n- It is guaranteed that the answer is unique.",
+    "hints": "Use a hash map to count frequencies, then use bucket sort or a heap to find the top k elements.",
+    "testcases": [
+      { "input": "6\n1\n1\n1\n2\n2\n3\n2", "output": "[1, 2]" },
+      { "input": "1\n1\n1", "output": "[1]" }
+    ],
+    "referenceSolutions": {
+      "CPP": "class Solution {\npublic:\n    vector<int> topKFrequent(vector<int>& nums, int k) {\n        unordered_map<int,int> freq;\n        for (int n : nums) freq[n]++;\n        vector<vector<int>> buckets(nums.size() + 1);\n        for (auto& [num, cnt] : freq) buckets[cnt].push_back(num);\n        vector<int> result;\n        for (int i = buckets.size() - 1; i >= 0 && result.size() < k; i--)\n            for (int n : buckets[i]) if (result.size() < k) result.push_back(n);\n        return result;\n    }\n};",
+      "JAVA": "class Solution {\n    public int[] topKFrequent(int[] nums, int k) {\n        Map<Integer,Integer> freq = new HashMap<>();\n        for (int n : nums) freq.merge(n, 1, Integer::sum);\n        List<Integer>[] buckets = new List[nums.length + 1];\n        for (int key : freq.keySet()) {\n            int cnt = freq.get(key);\n            if (buckets[cnt] == null) buckets[cnt] = new ArrayList<>();\n            buckets[cnt].add(key);\n        }\n        int[] result = new int[k];\n        int idx = 0;\n        for (int i = buckets.length - 1; i >= 0 && idx < k; i--)\n            if (buckets[i] != null)\n                for (int n : buckets[i]) if (idx < k) result[idx++] = n;\n        return result;\n    }\n}",
+      "PYTHON": "class Solution:\n    def topKFrequent(self, nums: List[int], k: int) -> List[int]:\n        freq = Counter(nums)\n        buckets = [[] for _ in range(len(nums) + 1)]\n        for num, cnt in freq.items():\n            buckets[cnt].append(num)\n        result = []\n        for i in range(len(buckets) - 1, 0, -1):\n            for num in buckets[i]:\n                result.append(num)\n                if len(result) == k:\n                    return result",
+      "JAVASCRIPT": "var topKFrequent = function(nums, k) {\n    const freq = new Map();\n    for (const n of nums) freq.set(n, (freq.get(n) || 0) + 1);\n    const buckets = Array.from({length: nums.length + 1}, () => []);\n    for (const [num, cnt] of freq) buckets[cnt].push(num);\n    const result = [];\n    for (let i = buckets.length - 1; i >= 0 && result.length < k; i--)\n        for (const n of buckets[i]) if (result.length < k) result.push(n);\n    return result;\n};"
+    }
+  },
+  {
+    "title": "Product of Array Except Self",
+    "description": "Given an integer array `nums`, return an array `answer` such that `answer[i]` is equal to the product of all the elements of `nums` except `nums[i]`.\n\nThe product of any prefix or suffix of `nums` is guaranteed to fit in a 32-bit integer.\n\nYou must write an algorithm that runs in O(n) time and without using the division operation.",
+    "difficulty": "MEDIUM",
+    "tags": ["Array", "Prefix Sum"],
+    "functionSignature": {
+      "name": "productExceptSelf",
+      "inputs": [{ "name": "nums", "type": "number[]" }],
+      "output": "number[]"
+    },
+    "examples": {
+      "CPP": "Input: nums = [1,2,3,4]\nOutput: [24,12,8,6]",
+      "JAVA": "Input: nums = [1,2,3,4]\nOutput: [24,12,8,6]",
+      "PYTHON": "Input: nums = [1,2,3,4]\nOutput: [24,12,8,6]",
+      "JAVASCRIPT": "Input: nums = [1,2,3,4]\nOutput: [24,12,8,6]"
+    },
+    "constraints": "- `2 <= nums.length <= 10^5`\n- `-30 <= nums[i] <= 30`\n- The product of any prefix or suffix of nums is guaranteed to fit in a 32-bit integer.",
+    "hints": "Use prefix and suffix product arrays. The answer for index i is prefix[i-1] * suffix[i+1].",
+    "testcases": [
+      { "input": "4\n1\n2\n3\n4", "output": "[24, 12, 8, 6]" },
+      { "input": "5\n-1\n1\n0\n-3\n3", "output": "[0, 0, 9, 0, 0]" }
+    ],
+    "referenceSolutions": {
+      "CPP": "class Solution {\npublic:\n    vector<int> productExceptSelf(vector<int>& nums) {\n        int n = nums.size();\n        vector<int> result(n, 1);\n        int prefix = 1;\n        for (int i = 0; i < n; i++) { result[i] = prefix; prefix *= nums[i]; }\n        int suffix = 1;\n        for (int i = n - 1; i >= 0; i--) { result[i] *= suffix; suffix *= nums[i]; }\n        return result;\n    }\n};",
+      "JAVA": "class Solution {\n    public int[] productExceptSelf(int[] nums) {\n        int n = nums.length;\n        int[] result = new int[n];\n        int prefix = 1;\n        for (int i = 0; i < n; i++) { result[i] = prefix; prefix *= nums[i]; }\n        int suffix = 1;\n        for (int i = n - 1; i >= 0; i--) { result[i] *= suffix; suffix *= nums[i]; }\n        return result;\n    }\n}",
+      "PYTHON": "class Solution:\n    def productExceptSelf(self, nums: List[int]) -> List[int]:\n        n = len(nums)\n        result = [1] * n\n        prefix = 1\n        for i in range(n):\n            result[i] = prefix\n            prefix *= nums[i]\n        suffix = 1\n        for i in range(n - 1, -1, -1):\n            result[i] *= suffix\n            suffix *= nums[i]\n        return result",
+      "JAVASCRIPT": "var productExceptSelf = function(nums) {\n    const n = nums.length;\n    const result = new Array(n).fill(1);\n    let prefix = 1;\n    for (let i = 0; i < n; i++) { result[i] = prefix; prefix *= nums[i]; }\n    let suffix = 1;\n    for (let i = n - 1; i >= 0; i--) { result[i] *= suffix; suffix *= nums[i]; }\n    return result;\n};"
+    }
+  },
+  {
+    "title": "Valid Sudoku",
+    "description": "Determine if a `9 x 9` Sudoku board is valid. Only the filled cells need to be validated according to the following rules:\n\n1. Each row must contain the digits `1-9` without repetition.\n2. Each column must contain the digits `1-9` without repetition.\n3. Each of the nine `3 x 3` sub-boxes of the grid must contain the digits `1-9` without repetition.\n\nNote: A Sudoku board (partially filled) could be valid but is not necessarily solvable. Only the filled cells need to be validated.",
+    "difficulty": "MEDIUM",
+    "tags": ["Array", "Hash Table", "Matrix"],
+    "functionSignature": {
+      "name": "isValidSudoku",
+      "inputs": [{ "name": "board", "type": "string[][]" }],
+      "output": "boolean"
+    },
+    "examples": {
+      "CPP": "Input: board = [[\"5\",\"3\",\".\",\".\",\"7\",\".\",\".\",\".\",\".\"],[\"6\",\".\",\".\",\"1\",\"9\",\"5\",\".\",\".\",\".\"],[\".\",\"9\",\"8\",\".\",\".\",\".\",\".\",\"6\",\".\"],[\"8\",\".\",\".\",\".\",\"6\",\".\",\".\",\".\",\"3\"],[\"4\",\".\",\".\",\"8\",\".\",\"3\",\".\",\".\",\"1\"],[\"7\",\".\",\".\",\".\",\"2\",\".\",\".\",\".\",\"6\"],[\".\",\"6\",\".\",\".\",\".\",\".\",\"2\",\"8\",\".\"],[\".\",\".\",\".\",\"4\",\"1\",\"9\",\".\",\".\",\"5\"],[\".\",\".\",\".\",\".\",\"8\",\".\",\".\",\"7\",\"9\"]]\nOutput: true",
+      "JAVA": "Input: board = [[\"5\",\"3\",\".\",\".\",\"7\",\".\",\".\",\".\",\".\"],[\"6\",\".\",\".\",\"1\",\"9\",\"5\",\".\",\".\",\".\"],[\".\",\"9\",\"8\",\".\",\".\",\".\",\".\",\"6\",\".\"],[\"8\",\".\",\".\",\".\",\"6\",\".\",\".\",\".\",\"3\"],[\"4\",\".\",\".\",\"8\",\".\",\"3\",\".\",\".\",\"1\"],[\"7\",\".\",\".\",\".\",\"2\",\".\",\".\",\".\",\"6\"],[\".\",\"6\",\".\",\".\",\".\",\".\",\"2\",\"8\",\".\"],[\".\",\".\",\".\",\"4\",\"1\",\"9\",\".\",\".\",\"5\"],[\".\",\".\",\".\",\".\",\"8\",\".\",\".\",\"7\",\"9\"]]\nOutput: true",
+      "PYTHON": "Input: board = [[\"5\",\"3\",\".\",\".\",\"7\",\".\",\".\",\".\",\".\"],[\"6\",\".\",\".\",\"1\",\"9\",\"5\",\".\",\".\",\".\"],[\".\",\"9\",\"8\",\".\",\".\",\".\",\".\",\"6\",\".\"],[\"8\",\".\",\".\",\".\",\"6\",\".\",\".\",\".\",\"3\"],[\"4\",\".\",\".\",\"8\",\".\",\"3\",\".\",\".\",\"1\"],[\"7\",\".\",\".\",\".\",\"2\",\".\",\".\",\".\",\"6\"],[\".\",\"6\",\".\",\".\",\".\",\".\",\"2\",\"8\",\".\"],[\".\",\".\",\".\",\"4\",\"1\",\"9\",\".\",\".\",\"5\"],[\".\",\".\",\".\",\".\",\"8\",\".\",\".\",\"7\",\"9\"]]\nOutput: true",
+      "JAVASCRIPT": "Input: board = [[\"5\",\"3\",\".\",\".\",\"7\",\".\",\".\",\".\",\".\"],[\"6\",\".\",\".\",\"1\",\"9\",\"5\",\".\",\".\",\".\"],[\".\",\"9\",\"8\",\".\",\".\",\".\",\".\",\"6\",\".\"],[\"8\",\".\",\".\",\".\",\"6\",\".\",\".\",\".\",\"3\"],[\"4\",\".\",\".\",\"8\",\".\",\"3\",\".\",\".\",\"1\"],[\"7\",\".\",\".\",\".\",\"2\",\".\",\".\",\".\",\"6\"],[\".\",\"6\",\".\",\".\",\".\",\".\",\"2\",\"8\",\".\"],[\".\",\".\",\".\",\"4\",\"1\",\"9\",\".\",\".\",\"5\"],[\".\",\".\",\".\",\".\",\"8\",\".\",\".\",\"7\",\"9\"]]\nOutput: true"
+    },
+    "constraints": "- `board.length == 9`\n- `board[i].length == 9`\n- `board[i][j]` is a digit `1-9` or `'.'`.",
+    "hints": "Use three sets: one for rows, one for columns, one for 3x3 boxes. The box index can be computed as (row/3)*3 + col/3.",
+    "testcases": [
+      {
+        "input": "5 3 . . 7 . . . .\n6 . . 1 9 5 . . .\n. 9 8 . . . . 6 .\n8 . . . 6 . . . 3\n4 . . 8 . 3 . . 1\n7 . . . 2 . . . 6\n. 6 . . . . 2 8 .\n. . . 4 1 9 . . 5\n. . . . 8 . . 7 9",
+        "output": "true"
+      },
+      {
+        "input": "8 3 . . 7 . . . .\n6 . . 1 9 5 . . .\n. 9 8 . . . . 6 .\n8 . . . 6 . . . 3\n4 . . 8 . 3 . . 1\n7 . . . 2 . . . 6\n. 6 . . . . 2 8 .\n. . . 4 1 9 . . 5\n. . . . 8 . . 7 9",
+        "output": "false"
+      }
+    ],
+    "referenceSolutions": {
+      "CPP": "class Solution {\npublic:\n    bool isValidSudoku(vector<vector<char>>& board) {\n        set<string> seen;\n        for (int i = 0; i < 9; i++) {\n            for (int j = 0; j < 9; j++) {\n                char c = board[i][j];\n                if (c == '.') continue;\n                string row = to_string(i) + 'r' + c;\n                string col = to_string(j) + 'c' + c;\n                string box = to_string(i/3) + 'b' + to_string(j/3) + c;\n                if (!seen.insert(row).second || !seen.insert(col).second || !seen.insert(box).second)\n                    return false;\n            }\n        }\n        return true;\n    }\n};",
+      "JAVA": "class Solution {\n    public boolean isValidSudoku(char[][] board) {\n        Set<String> seen = new HashSet<>();\n        for (int i = 0; i < 9; i++) {\n            for (int j = 0; j < 9; j++) {\n                char c = board[i][j];\n                if (c == '.') continue;\n                if (!seen.add(i + \"r\" + c) || !seen.add(j + \"c\" + c) || !seen.add((i/3) + \"b\" + (j/3) + c))\n                    return false;\n            }\n        }\n        return true;\n    }\n}",
+      "PYTHON": "class Solution:\n    def isValidSudoku(self, board: List[List[str]]) -> bool:\n        rows = collections.defaultdict(set)\n        cols = collections.defaultdict(set)\n        boxes = collections.defaultdict(set)\n        for r in range(9):\n            for c in range(9):\n                val = board[r][c]\n                if val == '.':\n                    continue\n                if val in rows[r] or val in cols[c] or val in boxes[(r//3, c//3)]:\n                    return False\n                rows[r].add(val)\n                cols[c].add(val)\n                boxes[(r//3, c//3)].add(val)\n        return True",
+      "JAVASCRIPT": "var isValidSudoku = function(board) {\n    const seen = new Set();\n    for (let i = 0; i < 9; i++) {\n        for (let j = 0; j < 9; j++) {\n            const c = board[i][j];\n            if (c === '.') continue;\n            const row = `${i}r${c}`, col = `${j}c${c}`, box = `${Math.floor(i/3)}b${Math.floor(j/3)}${c}`;\n            if (seen.has(row) || seen.has(col) || seen.has(box)) return false;\n            seen.add(row); seen.add(col); seen.add(box);\n        }\n    }\n    return true;\n};"
+    }
+  },
+  {
+    "title": "Encode and Decode Strings",
+    "description": "Design an algorithm to encode a list of strings to a single string. The encoded string is then sent over the network and is decoded back to the original list of strings.\n\nPlease implement `encode` and `decode`.\n\n- `encode(strs)`: Encodes a list of strings to a single string.\n- `decode(s)`: Decodes a single string to a list of strings.",
+    "difficulty": "MEDIUM",
+    "tags": ["Array", "String", "Design"],
+    "functionSignature": {
+      "name": "encode",
+      "inputs": [{ "name": "strs", "type": "string[]" }],
+      "output": "string"
+    },
+    "examples": {
+      "CPP": "Input: [\"lint\",\"code\",\"love\",\"you\"]\nOutput: [\"lint\",\"code\",\"love\",\"you\"]",
+      "JAVA": "Input: [\"lint\",\"code\",\"love\",\"you\"]\nOutput: [\"lint\",\"code\",\"love\",\"you\"]",
+      "PYTHON": "Input: [\"lint\",\"code\",\"love\",\"you\"]\nOutput: [\"lint\",\"code\",\"love\",\"you\"]",
+      "JAVASCRIPT": "Input: [\"lint\",\"code\",\"love\",\"you\"]\nOutput: [\"lint\",\"code\",\"love\",\"you\"]"
+    },
+    "constraints": "- `0 <= strs.length <= 200`\n- `0 <= strs[i].length <= 200`\n- `strs[i]` contains any possible characters out of 256 valid ASCII characters.",
+    "hints": "Prefix each string with its length followed by a delimiter character like '#'. Then during decode, read the length, skip the delimiter, and read that many characters.",
+    "testcases": [
+      {
+        "input": "4\nlint\ncode\nlove\nyou",
+        "output": "[\"lint\",\"code\",\"love\",\"you\"]"
+      },
+      {
+        "input": "2\nwe\nsay\n:\nyes",
+        "output": "[\"we\",\"say\",\":\",\"yes\"]"
+      }
+    ],
+    "referenceSolutions": {
+      "CPP": "class Codec {\npublic:\n    string encode(vector<string>& strs) {\n        string res;\n        for (auto& s : strs) res += to_string(s.size()) + '#' + s;\n        return res;\n    }\n    vector<string> decode(string s) {\n        vector<string> res;\n        int i = 0;\n        while (i < s.size()) {\n            int j = s.find('#', i);\n            int len = stoi(s.substr(i, j - i));\n            res.push_back(s.substr(j + 1, len));\n            i = j + 1 + len;\n        }\n        return res;\n    }\n};",
+      "JAVA": "public class Codec {\n    public String encode(List<String> strs) {\n        StringBuilder sb = new StringBuilder();\n        for (String s : strs) sb.append(s.length()).append('#').append(s);\n        return sb.toString();\n    }\n    public List<String> decode(String s) {\n        List<String> res = new ArrayList<>();\n        int i = 0;\n        while (i < s.length()) {\n            int j = s.indexOf('#', i);\n            int len = Integer.parseInt(s.substring(i, j));\n            res.add(s.substring(j + 1, j + 1 + len));\n            i = j + 1 + len;\n        }\n        return res;\n    }\n}",
+      "PYTHON": "class Codec:\n    def encode(self, strs: List[str]) -> str:\n        return ''.join(f'{len(s)}#{s}' for s in strs)\n    def decode(self, s: str) -> List[str]:\n        res, i = [], 0\n        while i < len(s):\n            j = s.index('#', i)\n            length = int(s[i:j])\n            res.append(s[j+1:j+1+length])\n            i = j + 1 + length\n        return res",
+      "JAVASCRIPT": "var encode = function(strs) {\n    return strs.map(s => `${s.length}#${s}`).join('');\n};\nvar decode = function(s) {\n    const res = [];\n    let i = 0;\n    while (i < s.length) {\n        const j = s.indexOf('#', i);\n        const len = parseInt(s.slice(i, j));\n        res.push(s.slice(j + 1, j + 1 + len));\n        i = j + 1 + len;\n    }\n    return res;\n};"
+    }
+  },
+  {
+    "title": "Longest Consecutive Sequence",
+    "description": "Given an unsorted array of integers `nums`, return the length of the longest consecutive elements sequence.\n\nYou must write an algorithm that runs in O(n) time.",
+    "difficulty": "MEDIUM",
+    "tags": ["Array", "Hash Table", "Union Find"],
+    "functionSignature": {
+      "name": "longestConsecutive",
+      "inputs": [{ "name": "nums", "type": "number[]" }],
+      "output": "number"
+    },
+    "examples": {
+      "CPP": "Input: nums = [100,4,200,1,3,2]\nOutput: 4",
+      "JAVA": "Input: nums = [100,4,200,1,3,2]\nOutput: 4",
+      "PYTHON": "Input: nums = [100,4,200,1,3,2]\nOutput: 4",
+      "JAVASCRIPT": "Input: nums = [100,4,200,1,3,2]\nOutput: 4"
+    },
+    "constraints": "- `0 <= nums.length <= 10^5`\n- `-10^9 <= nums[i] <= 10^9`",
+    "hints": "Put all numbers in a hash set. For each number, check if it's the start of a sequence (i.e., num-1 is not in the set). If so, count the length of the sequence from there.",
+    "testcases": [
+      { "input": "6\n100\n4\n200\n1\n3\n2", "output": "4" },
+      { "input": "10\n0\n3\n7\n2\n5\n8\n4\n6\n0\n1", "output": "9" }
+    ],
+    "referenceSolutions": {
+      "CPP": "class Solution {\npublic:\n    int longestConsecutive(vector<int>& nums) {\n        unordered_set<int> s(nums.begin(), nums.end());\n        int best = 0;\n        for (int n : s) {\n            if (!s.count(n - 1)) {\n                int cur = n, streak = 1;\n                while (s.count(cur + 1)) { cur++; streak++; }\n                best = max(best, streak);\n            }\n        }\n        return best;\n    }\n};",
+      "JAVA": "class Solution {\n    public int longestConsecutive(int[] nums) {\n        Set<Integer> s = new HashSet<>();\n        for (int n : nums) s.add(n);\n        int best = 0;\n        for (int n : s) {\n            if (!s.contains(n - 1)) {\n                int cur = n, streak = 1;\n                while (s.contains(cur + 1)) { cur++; streak++; }\n                best = Math.max(best, streak);\n            }\n        }\n        return best;\n    }\n}",
+      "PYTHON": "class Solution:\n    def longestConsecutive(self, nums: List[int]) -> int:\n        s = set(nums)\n        best = 0\n        for n in s:\n            if n - 1 not in s:\n                cur, streak = n, 1\n                while cur + 1 in s:\n                    cur += 1\n                    streak += 1\n                best = max(best, streak)\n        return best",
+      "JAVASCRIPT": "var longestConsecutive = function(nums) {\n    const s = new Set(nums);\n    let best = 0;\n    for (const n of s) {\n        if (!s.has(n - 1)) {\n            let cur = n, streak = 1;\n            while (s.has(cur + 1)) { cur++; streak++; }\n            best = Math.max(best, streak);\n        }\n    }\n    return best;\n};"
+    }
+  },
+  {
+    "title": "Valid Palindrome",
+    "description": "A phrase is a palindrome if, after converting all uppercase letters into lowercase letters and removing all non-alphanumeric characters, it reads the same forward and backward. Alphanumeric characters include letters and numbers.\n\nGiven a string `s`, return `true` if it is a palindrome, or `false` otherwise.",
+    "difficulty": "EASY",
+    "tags": ["Two Pointers", "String"],
+    "functionSignature": {
+      "name": "isPalindrome",
+      "inputs": [{ "name": "s", "type": "string" }],
+      "output": "boolean"
+    },
+    "examples": {
+      "CPP": "Input: s = \"A man, a plan, a canal: Panama\"\nOutput: true",
+      "JAVA": "Input: s = \"A man, a plan, a canal: Panama\"\nOutput: true",
+      "PYTHON": "Input: s = \"A man, a plan, a canal: Panama\"\nOutput: true",
+      "JAVASCRIPT": "Input: s = \"A man, a plan, a canal: Panama\"\nOutput: true"
+    },
+    "constraints": "- `1 <= s.length <= 2 * 10^5`\n- `s` consists only of printable ASCII characters.",
+    "hints": "Use two pointers starting from both ends. Skip non-alphanumeric characters and compare lowercase versions.",
+    "testcases": [
+      { "input": "A man, a plan, a canal: Panama", "output": "true" },
+      { "input": "race a car", "output": "false" },
+      { "input": " ", "output": "true" }
+    ],
+    "referenceSolutions": {
+      "CPP": "class Solution {\npublic:\n    bool isPalindrome(string s) {\n        int l = 0, r = s.size() - 1;\n        while (l < r) {\n            while (l < r && !isalnum(s[l])) l++;\n            while (l < r && !isalnum(s[r])) r--;\n            if (tolower(s[l]) != tolower(s[r])) return false;\n            l++; r--;\n        }\n        return true;\n    }\n};",
+      "JAVA": "class Solution {\n    public boolean isPalindrome(String s) {\n        int l = 0, r = s.length() - 1;\n        while (l < r) {\n            while (l < r && !Character.isLetterOrDigit(s.charAt(l))) l++;\n            while (l < r && !Character.isLetterOrDigit(s.charAt(r))) r--;\n            if (Character.toLowerCase(s.charAt(l)) != Character.toLowerCase(s.charAt(r))) return false;\n            l++; r--;\n        }\n        return true;\n    }\n}",
+      "PYTHON": "class Solution:\n    def isPalindrome(self, s: str) -> bool:\n        l, r = 0, len(s) - 1\n        while l < r:\n            while l < r and not s[l].isalnum(): l += 1\n            while l < r and not s[r].isalnum(): r -= 1\n            if s[l].lower() != s[r].lower(): return False\n            l += 1; r -= 1\n        return True",
+      "JAVASCRIPT": "var isPalindrome = function(s) {\n    let l = 0, r = s.length - 1;\n    while (l < r) {\n        while (l < r && !/[a-zA-Z0-9]/.test(s[l])) l++;\n        while (l < r && !/[a-zA-Z0-9]/.test(s[r])) r--;\n        if (s[l].toLowerCase() !== s[r].toLowerCase()) return false;\n        l++; r--;\n    }\n    return true;\n};"
+    }
+  },
+  {
+    "title": "Two Sum II - Input Array Is Sorted",
+    "description": "Given a 1-indexed array of integers `numbers` that is already sorted in non-decreasing order, find two numbers such that they add up to a specific `target` number. Let these two numbers be `numbers[index1]` and `numbers[index2]` where `1 <= index1 < index2 <= numbers.length`.\n\nReturn the indices of the two numbers, `index1` and `index2`, added by one as an integer array `[index1, index2]` of length 2.\n\nYou may not use the same element twice. You must use only constant extra space.",
+    "difficulty": "MEDIUM",
+    "tags": ["Array", "Two Pointers", "Binary Search"],
+    "functionSignature": {
+      "name": "twoSum",
+      "inputs": [
+        { "name": "numbers", "type": "number[]" },
+        { "name": "target", "type": "number" }
+      ],
+      "output": "number[]"
+    },
+    "examples": {
+      "CPP": "Input: numbers = [2,7,11,15], target = 9\nOutput: [1,2]",
+      "JAVA": "Input: numbers = [2,7,11,15], target = 9\nOutput: [1,2]",
+      "PYTHON": "Input: numbers = [2,7,11,15], target = 9\nOutput: [1,2]",
+      "JAVASCRIPT": "Input: numbers = [2,7,11,15], target = 9\nOutput: [1,2]"
+    },
+    "constraints": "- `2 <= numbers.length <= 3 * 10^4`\n- `-1000 <= numbers[i] <= 1000`\n- `numbers` is sorted in non-decreasing order.\n- `-1000 <= target <= 1000`\n- The tests are generated such that there is exactly one solution.",
+    "hints": "Use two pointers at both ends. If the sum is too large move the right pointer left, if too small move the left pointer right.",
+    "testcases": [
+      { "input": "4\n2\n7\n11\n15\n9", "output": "[1, 2]" },
+      { "input": "2\n2\n3\n6", "output": "[1, 2]" },
+      { "input": "3\n-1\n0\n1\n0", "output": "[1, 3]" }
+    ],
+    "referenceSolutions": {
+      "CPP": "class Solution {\npublic:\n    vector<int> twoSum(vector<int>& numbers, int target) {\n        int l = 0, r = numbers.size() - 1;\n        while (l < r) {\n            int sum = numbers[l] + numbers[r];\n            if (sum == target) return {l + 1, r + 1};\n            else if (sum < target) l++;\n            else r--;\n        }\n        return {};\n    }\n};",
+      "JAVA": "class Solution {\n    public int[] twoSum(int[] numbers, int target) {\n        int l = 0, r = numbers.length - 1;\n        while (l < r) {\n            int sum = numbers[l] + numbers[r];\n            if (sum == target) return new int[]{l + 1, r + 1};\n            else if (sum < target) l++;\n            else r--;\n        }\n        return new int[]{};\n    }\n}",
+      "PYTHON": "class Solution:\n    def twoSum(self, numbers: List[int], target: int) -> List[int]:\n        l, r = 0, len(numbers) - 1\n        while l < r:\n            s = numbers[l] + numbers[r]\n            if s == target: return [l + 1, r + 1]\n            elif s < target: l += 1\n            else: r -= 1\n        return []",
+      "JAVASCRIPT": "var twoSum = function(numbers, target) {\n    let l = 0, r = numbers.length - 1;\n    while (l < r) {\n        const sum = numbers[l] + numbers[r];\n        if (sum === target) return [l + 1, r + 1];\n        else if (sum < target) l++;\n        else r--;\n    }\n    return [];\n};"
+    }
+  },
+  {
+    "title": "3Sum",
+    "description": "Given an integer array `nums`, return all the triplets `[nums[i], nums[j], nums[k]]` such that `i != j`, `i != k`, `j != k`, and `nums[i] + nums[j] + nums[k] == 0`.\n\nNotice that the solution set must not contain duplicate triplets.",
+    "difficulty": "MEDIUM",
+    "tags": ["Array", "Two Pointers", "Sorting"],
+    "functionSignature": {
+      "name": "threeSum",
+      "inputs": [{ "name": "nums", "type": "number[]" }],
+      "output": "number[][]"
+    },
+    "examples": {
+      "CPP": "Input: nums = [-1,0,1,2,-1,-4]\nOutput: [[-1,-1,2],[-1,0,1]]",
+      "JAVA": "Input: nums = [-1,0,1,2,-1,-4]\nOutput: [[-1,-1,2],[-1,0,1]]",
+      "PYTHON": "Input: nums = [-1,0,1,2,-1,-4]\nOutput: [[-1,-1,2],[-1,0,1]]",
+      "JAVASCRIPT": "Input: nums = [-1,0,1,2,-1,-4]\nOutput: [[-1,-1,2],[-1,0,1]]"
+    },
+    "constraints": "- `3 <= nums.length <= 3000`\n- `-10^5 <= nums[i] <= 10^5`",
+    "hints": "Sort the array first. Fix one element and use two pointers for the remaining two. Skip duplicates carefully.",
+    "testcases": [
+      { "input": "6\n-1\n0\n1\n2\n-1\n-4", "output": "[[-1,-1,2],[-1,0,1]]" },
+      { "input": "3\n0\n1\n1", "output": "[]" },
+      { "input": "3\n0\n0\n0", "output": "[[0,0,0]]" }
+    ],
+    "referenceSolutions": {
+      "CPP": "class Solution {\npublic:\n    vector<vector<int>> threeSum(vector<int>& nums) {\n        sort(nums.begin(), nums.end());\n        vector<vector<int>> res;\n        for (int i = 0; i < nums.size() - 2; i++) {\n            if (i > 0 && nums[i] == nums[i-1]) continue;\n            int l = i + 1, r = nums.size() - 1;\n            while (l < r) {\n                int s = nums[i] + nums[l] + nums[r];\n                if (s == 0) {\n                    res.push_back({nums[i], nums[l], nums[r]});\n                    while (l < r && nums[l] == nums[l+1]) l++;\n                    while (l < r && nums[r] == nums[r-1]) r--;\n                    l++; r--;\n                } else if (s < 0) l++;\n                else r--;\n            }\n        }\n        return res;\n    }\n};",
+      "JAVA": "class Solution {\n    public List<List<Integer>> threeSum(int[] nums) {\n        Arrays.sort(nums);\n        List<List<Integer>> res = new ArrayList<>();\n        for (int i = 0; i < nums.length - 2; i++) {\n            if (i > 0 && nums[i] == nums[i-1]) continue;\n            int l = i + 1, r = nums.length - 1;\n            while (l < r) {\n                int s = nums[i] + nums[l] + nums[r];\n                if (s == 0) {\n                    res.add(Arrays.asList(nums[i], nums[l], nums[r]));\n                    while (l < r && nums[l] == nums[l+1]) l++;\n                    while (l < r && nums[r] == nums[r-1]) r--;\n                    l++; r--;\n                } else if (s < 0) l++;\n                else r--;\n            }\n        }\n        return res;\n    }\n}",
+      "PYTHON": "class Solution:\n    def threeSum(self, nums: List[int]) -> List[List[int]]:\n        nums.sort()\n        res = []\n        for i in range(len(nums) - 2):\n            if i > 0 and nums[i] == nums[i-1]:\n                continue\n            l, r = i + 1, len(nums) - 1\n            while l < r:\n                s = nums[i] + nums[l] + nums[r]\n                if s == 0:\n                    res.append([nums[i], nums[l], nums[r]])\n                    while l < r and nums[l] == nums[l+1]: l += 1\n                    while l < r and nums[r] == nums[r-1]: r -= 1\n                    l += 1; r -= 1\n                elif s < 0: l += 1\n                else: r -= 1\n        return res",
+      "JAVASCRIPT": "var threeSum = function(nums) {\n    nums.sort((a, b) => a - b);\n    const res = [];\n    for (let i = 0; i < nums.length - 2; i++) {\n        if (i > 0 && nums[i] === nums[i-1]) continue;\n        let l = i + 1, r = nums.length - 1;\n        while (l < r) {\n            const s = nums[i] + nums[l] + nums[r];\n            if (s === 0) {\n                res.push([nums[i], nums[l], nums[r]]);\n                while (l < r && nums[l] === nums[l+1]) l++;\n                while (l < r && nums[r] === nums[r-1]) r--;\n                l++; r--;\n            } else if (s < 0) l++;\n            else r--;\n        }\n    }\n    return res;\n};"
+    }
+  },
+  {
+    "title": "Container With Most Water",
+    "description": "You are given an integer array `height` of length `n`. There are `n` vertical lines drawn such that the two endpoints of the `i`th line are `(i, 0)` and `(i, height[i])`.\n\nFind two lines that together with the x-axis form a container, such that the container contains the most water.\n\nReturn the maximum amount of water a container can store.\n\nNotice that you may not slant the container.",
+    "difficulty": "MEDIUM",
+    "tags": ["Array", "Two Pointers", "Greedy"],
+    "functionSignature": {
+      "name": "maxArea",
+      "inputs": [{ "name": "height", "type": "number[]" }],
+      "output": "number"
+    },
+    "examples": {
+      "CPP": "Input: height = [1,8,6,2,5,4,8,3,7]\nOutput: 49",
+      "JAVA": "Input: height = [1,8,6,2,5,4,8,3,7]\nOutput: 49",
+      "PYTHON": "Input: height = [1,8,6,2,5,4,8,3,7]\nOutput: 49",
+      "JAVASCRIPT": "Input: height = [1,8,6,2,5,4,8,3,7]\nOutput: 49"
+    },
+    "constraints": "- `n == height.length`\n- `2 <= n <= 10^5`\n- `0 <= height[i] <= 10^4`",
+    "hints": "Use two pointers at both ends. Always move the pointer pointing to the shorter line inward, since moving the taller one can only decrease the area.",
+    "testcases": [
+      { "input": "9\n1\n8\n6\n2\n5\n4\n8\n3\n7", "output": "49" },
+      { "input": "2\n1\n1", "output": "1" }
+    ],
+    "referenceSolutions": {
+      "CPP": "class Solution {\npublic:\n    int maxArea(vector<int>& height) {\n        int l = 0, r = height.size() - 1, maxW = 0;\n        while (l < r) {\n            maxW = max(maxW, min(height[l], height[r]) * (r - l));\n            if (height[l] < height[r]) l++;\n            else r--;\n        }\n        return maxW;\n    }\n};",
+      "JAVA": "class Solution {\n    public int maxArea(int[] height) {\n        int l = 0, r = height.length - 1, maxW = 0;\n        while (l < r) {\n            maxW = Math.max(maxW, Math.min(height[l], height[r]) * (r - l));\n            if (height[l] < height[r]) l++;\n            else r--;\n        }\n        return maxW;\n    }\n}",
+      "PYTHON": "class Solution:\n    def maxArea(self, height: List[int]) -> int:\n        l, r, max_w = 0, len(height) - 1, 0\n        while l < r:\n            max_w = max(max_w, min(height[l], height[r]) * (r - l))\n            if height[l] < height[r]: l += 1\n            else: r -= 1\n        return max_w",
+      "JAVASCRIPT": "var maxArea = function(height) {\n    let l = 0, r = height.length - 1, maxW = 0;\n    while (l < r) {\n        maxW = Math.max(maxW, Math.min(height[l], height[r]) * (r - l));\n        if (height[l] < height[r]) l++;\n        else r--;\n    }\n    return maxW;\n};"
+    }
+  },
+  {
+    "title": "Trapping Rain Water",
+    "description": "Given `n` non-negative integers representing an elevation map where the width of each bar is `1`, compute how much water it can trap after raining.",
+    "difficulty": "HARD",
+    "tags": [
+      "Array",
+      "Two Pointers",
+      "Dynamic Programming",
+      "Stack",
+      "Monotonic Stack"
+    ],
+    "functionSignature": {
+      "name": "trap",
+      "inputs": [{ "name": "height", "type": "number[]" }],
+      "output": "number"
+    },
+    "examples": {
+      "CPP": "Input: height = [0,1,0,2,1,0,1,3,2,1,2,1]\nOutput: 6",
+      "JAVA": "Input: height = [0,1,0,2,1,0,1,3,2,1,2,1]\nOutput: 6",
+      "PYTHON": "Input: height = [0,1,0,2,1,0,1,3,2,1,2,1]\nOutput: 6",
+      "JAVASCRIPT": "Input: height = [0,1,0,2,1,0,1,3,2,1,2,1]\nOutput: 6"
+    },
+    "constraints": "- `n == height.length`\n- `1 <= n <= 2 * 10^4`\n- `0 <= height[i] <= 10^5`",
+    "hints": "Use two pointers. Track the max height seen from left and right. Water at each position is determined by min(maxLeft, maxRight) - height[i].",
+    "testcases": [
+      { "input": "12\n0\n1\n0\n2\n1\n0\n1\n3\n2\n1\n2\n1", "output": "6" },
+      { "input": "4\n4\n2\n0\n3\n2\n5", "output": "9" }
+    ],
+    "referenceSolutions": {
+      "CPP": "class Solution {\npublic:\n    int trap(vector<int>& height) {\n        int l = 0, r = height.size() - 1;\n        int maxL = height[l], maxR = height[r], water = 0;\n        while (l < r) {\n            if (maxL <= maxR) {\n                l++;\n                maxL = max(maxL, height[l]);\n                water += maxL - height[l];\n            } else {\n                r--;\n                maxR = max(maxR, height[r]);\n                water += maxR - height[r];\n            }\n        }\n        return water;\n    }\n};",
+      "JAVA": "class Solution {\n    public int trap(int[] height) {\n        int l = 0, r = height.length - 1;\n        int maxL = height[l], maxR = height[r], water = 0;\n        while (l < r) {\n            if (maxL <= maxR) {\n                l++;\n                maxL = Math.max(maxL, height[l]);\n                water += maxL - height[l];\n            } else {\n                r--;\n                maxR = Math.max(maxR, height[r]);\n                water += maxR - height[r];\n            }\n        }\n        return water;\n    }\n}",
+      "PYTHON": "class Solution:\n    def trap(self, height: List[int]) -> int:\n        l, r = 0, len(height) - 1\n        maxL, maxR = height[l], height[r]\n        water = 0\n        while l < r:\n            if maxL <= maxR:\n                l += 1\n                maxL = max(maxL, height[l])\n                water += maxL - height[l]\n            else:\n                r -= 1\n                maxR = max(maxR, height[r])\n                water += maxR - height[r]\n        return water",
+      "JAVASCRIPT": "var trap = function(height) {\n    let l = 0, r = height.length - 1;\n    let maxL = height[l], maxR = height[r], water = 0;\n    while (l < r) {\n        if (maxL <= maxR) {\n            l++;\n            maxL = Math.max(maxL, height[l]);\n            water += maxL - height[l];\n        } else {\n            r--;\n            maxR = Math.max(maxR, height[r]);\n            water += maxR - height[r];\n        }\n    }\n    return water;\n};"
+    }
+  }
+]

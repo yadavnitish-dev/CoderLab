@@ -115,7 +115,9 @@ const RoadmapPage = () => {
   if (isProblemsLoading) {
     return (
       <div className="flex items-center justify-center h-[calc(100vh-64px)]">
-        <Loader2 className="size-8 animate-spin text-zinc-500" />
+        <p className="font-mono text-sm text-zinc-600 uppercase tracking-widest animate-blink">
+          [ LOADING_ROADMAP ]
+        </p>
       </div>
     );
   }
@@ -127,7 +129,7 @@ const RoadmapPage = () => {
         <div className="workspace-container relative z-10">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div>
-              <div className="inline-flex items-center gap-2 px-2 py-0.5 rounded-sm bg-zinc-900 border border-zinc-800 mb-4">
+              <div className="inline-flex items-center gap-2 px-2 py-0.5 rounded-none bg-zinc-900 border border-zinc-800 mb-4">
                 <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-emerald-500">Roadmap</span>
               </div>
               <h1 className="text-4xl md:text-6xl font-bold tracking-tighter mb-4 text-white uppercase">
@@ -143,23 +145,22 @@ const RoadmapPage = () => {
             {selectedCategory && (
               <button 
                 onClick={() => setSelectedCategory(null)}
-                className="flex items-center gap-2 px-4 py-2 bg-zinc-900 border border-zinc-800 hover:border-zinc-600 transition-all rounded-sm text-sm font-bold text-zinc-400 hover:text-white group"
+                className="flex items-center gap-2 px-4 py-2 bg-zinc-900 border border-zinc-800 hover:border-zinc-600 transition-colors rounded-none text-sm font-bold text-zinc-400 hover:text-white group"
               >
-                <ArrowLeft className="size-4 group-hover:-translate-x-1 transition-transform" />
+                <ArrowLeft className="size-4" />
                 Back to Roadmap
               </button>
             )}
           </div>
         </div>
         
-        {/* Subtle background glow */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-500/5 blur-[120px] rounded-full pointer-events-none"></div>
+        {/* Subdued Background overlay instead of glow */}
+        <div className="absolute top-0 right-0 w-96 h-96 pointer-events-none"></div>
       </div>
 
       <div className="workspace-container">
         {/* Mastery Header Stats: High-density visualization of solved problems, streaks, and difficulty distribution */}
-        <div className="mb-12 bg-black border border-zinc-800 p-6 rounded-sm flex flex-wrap items-center justify-between gap-8 relative overflow-hidden">
-          <div className="absolute top-0 right-0 h-full w-48 bg-emerald-500/5 blur-3xl pointer-events-none"></div>
+        <div className="mb-12 bg-black border border-zinc-800 p-6 rounded-none flex flex-wrap items-center justify-between gap-8 relative overflow-hidden">
           
           <div className="flex flex-wrap items-center gap-x-12 gap-y-6">
             {/* Solved & Rank */}
@@ -239,7 +240,7 @@ const RoadmapPage = () => {
         </div>
 
         {!selectedCategory ? (
-          <div className="space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-500">
+          <div className="space-y-8">
             <NC150Roadmap 
               problems={nc150Problems}
               solvedProblemIds={solvedIds}
@@ -248,20 +249,19 @@ const RoadmapPage = () => {
             />
           </div>
         ) : (
-          <div className="animate-in fade-in slide-in-from-right-2 duration-500">
+          <div>
             {filteredByCategory.length > 0 ? (
               <ProblemTable problems={filteredByCategory} />
             ) : (
-              <div className="flex flex-col items-center justify-center py-24 border border-dashed border-zinc-800 rounded-sm bg-[#0a0a0a]">
-                  No Problems Found
-                <p className="text-zinc-600 text-sm mt-2">
-                  No core challenges have been deployed for this category yet.
+              <div className="flex flex-col items-center justify-center py-24 border border-zinc-900 bg-[#080808]">
+                <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-zinc-600">
+                  [ STATUS: NO_CORE_CHALLENGES_DEPLOYED ]
                 </p>
                 <button 
                   onClick={() => setSelectedCategory(null)}
-                  className="mt-6 text-emerald-500 font-mono text-xs hover:underline uppercase tracking-widest"
+                  className="mt-6 text-emerald-500 font-mono text-[10px] hover:text-emerald-400 uppercase tracking-widest transition-colors"
                 >
-                  Return to Roadmap
+                  [ RETURN_TO_ROADMAP ]
                 </button>
               </div>
             )}

@@ -29,13 +29,13 @@ describe("BrutalistButton", () => {
     expect(link).toHaveAttribute("href", "/dashboard");
   });
 
-  it("should show loading spinner and be disabled when isLoading is true", () => {
+  it("should show blinking cursor and be disabled when isLoading is true", () => {
     render(<BrutalistButton isLoading>Submit</BrutalistButton>);
     
     const button = screen.getByRole("button");
     expect(button).toBeDisabled();
     // Lucide-react icons are rendered as SVGs
-    expect(document.querySelector(".animate-spin")).toBeInTheDocument();
+    expect(document.querySelector(".animate-blink")).toBeInTheDocument();
   });
 
   it("should render an icon when provided", () => {

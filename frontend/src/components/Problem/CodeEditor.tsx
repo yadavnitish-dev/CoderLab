@@ -19,7 +19,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
   isResizing,
 }) => {
   return (
-    <div className="flex-1 bg-black border border-zinc-800 rounded-sm overflow-hidden flex flex-col">
+    <div className="flex-1 bg-black border border-zinc-800 rounded-none overflow-hidden flex flex-col relative group">
       <div className="px-4 py-2.5 bg-[#111] border-b border-zinc-800 flex items-center justify-between shrink-0">
         <div className="flex items-center gap-2">
           <Code2 className="size-3.5 text-zinc-500" />
@@ -40,6 +40,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
         {isResizing && (
           <div className="absolute inset-0 z-50 cursor-col-resize" />
         )}
+        <div className="absolute inset-0 pointer-events-none opacity-[0.03] bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] z-10 bg-[length:100%_2px,3px_100%]" />
         <Editor
           height="100%"
           language={selectedLanguage.toLowerCase()}

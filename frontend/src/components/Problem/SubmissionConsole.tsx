@@ -46,12 +46,14 @@ const SubmissionConsole: React.FC<SubmissionConsoleProps> = ({
   submission,
 }) => {
   return (
-    <div className="bg-[#090909] border border-zinc-800 rounded-sm shrink-0 transition-all">
+    <div className="bg-[#090909] border border-zinc-800 rounded-none shrink-0 transition-colors relative overflow-hidden group">
+      {/* CRT Scanline Overlay for the entire console */}
+      <div className="absolute inset-0 pointer-events-none opacity-[0.03] bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] z-10 bg-[length:100%_2px,3px_100%]" />
       <div className="p-3 flex items-center justify-between">
         <div className="flex items-center gap-1">
           <button
             onClick={() => setIsConsoleOpen(!isConsoleOpen)}
-            className="flex items-center gap-2 px-3 py-1.5 rounded-sm text-xs font-bold text-zinc-500 hover:text-zinc-200 hover:bg-zinc-900 transition-all border border-transparent hover:border-zinc-800"
+            className="flex items-center gap-2 px-3 py-1.5 rounded-none text-xs font-bold text-zinc-500 hover:text-zinc-200 hover:bg-zinc-900 transition-colors border border-transparent hover:border-zinc-800 relative z-20"
           >
             <Code2 className="size-3.5" />
             Console
@@ -68,7 +70,7 @@ const SubmissionConsole: React.FC<SubmissionConsoleProps> = ({
             onClick={handleRunCode}
             disabled={isRunning || isSubmitting || !authUser?.isVerified}
             title={!authUser?.isVerified ? "Verify your email to run code" : ""}
-            className="flex items-center gap-2 px-4 py-1.5 rounded-sm text-xs font-bold text-zinc-400 hover:text-white border border-zinc-800 bg-black hover:bg-zinc-900 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+            className="flex items-center gap-2 px-4 py-1.5 rounded-none text-xs font-bold text-zinc-400 hover:text-white border border-zinc-800 bg-black hover:bg-zinc-900 transition-colors disabled:opacity-30 disabled:cursor-not-allowed relative z-20"
           >
             {isRunning ? (
               <Loader2 className="size-3.5 animate-spin" />
@@ -81,7 +83,7 @@ const SubmissionConsole: React.FC<SubmissionConsoleProps> = ({
           {nextProblemId && (
             <button
               onClick={handleNextChallenge}
-              className="flex items-center gap-2 px-4 py-1.5 rounded-sm text-xs font-bold text-zinc-500 hover:text-white border border-zinc-800 bg-black hover:bg-zinc-900 transition-all group"
+              className="flex items-center gap-2 px-4 py-1.5 rounded-none text-xs font-bold text-zinc-500 hover:text-white border border-zinc-800 bg-black hover:bg-zinc-900 transition-colors group relative z-20"
             >
               Next Challenge
               <ChevronRight className="size-3.5 group-hover:translate-x-0.5 transition-transform" />
@@ -92,7 +94,7 @@ const SubmissionConsole: React.FC<SubmissionConsoleProps> = ({
             onClick={handleSubmit}
             disabled={isRunning || isSubmitting || !authUser?.isVerified}
             title={!authUser?.isVerified ? "Verify your email to submit code" : ""}
-            className="flex items-center justify-center gap-2 px-6 py-1.5 rounded-sm text-xs font-bold bg-white text-black hover:bg-zinc-200 transition-all disabled:opacity-30 disabled:cursor-not-allowed min-w-20"
+            className="flex items-center justify-center gap-2 px-6 py-1.5 rounded-none text-xs font-bold bg-white text-black hover:bg-zinc-200 transition-colors disabled:opacity-30 disabled:cursor-not-allowed min-w-20 relative z-20"
           >
             {isSubmitting ? (
               <Loader2 className="size-3.5 animate-spin" />
@@ -108,7 +110,7 @@ const SubmissionConsole: React.FC<SubmissionConsoleProps> = ({
           <div className="flex items-center gap-4 px-4 border-b border-zinc-800 shrink-0">
             <button
               onClick={() => setConsoleTab("testcases")}
-              className={`py-3 text-[10px] font-bold uppercase tracking-widest transition-all border-b-2 ${
+              className={`py-3 text-[10px] font-bold uppercase tracking-widest transition-colors border-b-2 relative z-20 ${
                 consoleTab === "testcases"
                   ? "border-white text-white"
                   : "border-transparent text-zinc-600 hover:text-zinc-400"
@@ -118,7 +120,7 @@ const SubmissionConsole: React.FC<SubmissionConsoleProps> = ({
             </button>
             <button
               onClick={() => setConsoleTab("results")}
-              className={`py-3 text-[10px] font-bold uppercase tracking-widest transition-all border-b-2 ${
+              className={`py-3 text-[10px] font-bold uppercase tracking-widest transition-colors border-b-2 relative z-20 ${
                 consoleTab === "results"
                   ? "border-white text-white"
                   : "border-transparent text-zinc-600 hover:text-zinc-400"
@@ -146,7 +148,7 @@ const SubmissionConsole: React.FC<SubmissionConsoleProps> = ({
                         };
                         setUserTestCases(newCases);
                       }}
-                      className="w-full bg-black border border-zinc-900 shadow-inner rounded-sm p-3 text-xs font-mono text-zinc-300 focus:outline-none focus:border-zinc-700 min-h-20 resize-none"
+                      className="w-full bg-black border border-zinc-900 rounded-none p-3 text-xs font-mono text-zinc-300 focus:outline-none focus:border-zinc-700 min-h-20 resize-none relative z-20"
                       placeholder="Enter stdin..."
                     />
                   </div>
@@ -158,7 +160,7 @@ const SubmissionConsole: React.FC<SubmissionConsoleProps> = ({
                       { input: "", output: "" },
                     ])
                   }
-                  className="text-[10px] font-bold text-zinc-500 hover:text-white uppercase tracking-widest flex items-center gap-2"
+                  className="text-[10px] font-bold text-zinc-500 hover:text-white uppercase tracking-widest flex items-center gap-2 relative z-20"
                 >
                   <Plus className="size-3" /> Add Test Case
                 </button>
@@ -168,7 +170,7 @@ const SubmissionConsole: React.FC<SubmissionConsoleProps> = ({
                 {isRunning || isSubmitting ? (
                   <div className="flex flex-col items-center justify-center py-[6.4rem] gap-6 animate-in fade-in duration-500">
                     <div className="relative">
-                      <div className="size-14 border border-zinc-800 rounded-sm animate-spin [animation-duration:3s]" />
+                      <div className="size-14 border border-zinc-800 rounded-none animate-spin [animation-duration:3s]" />
                       <div className="absolute inset-0 flex items-center justify-center">
                         <div className="size-2 bg-emerald-500 rounded-full animate-pulse shadow-[0_0_12px_rgba(16,185,129,0.5)]" />
                       </div>
@@ -211,7 +213,7 @@ const SubmissionConsole: React.FC<SubmissionConsoleProps> = ({
                             {key === "stdout" ? "Output" : key}
                           </span>
                           <pre
-                            className={`bg-black border border-zinc-900 p-3 rounded-sm text-xs font-mono whitespace-pre-wrap ${
+                            className={`bg-black border border-zinc-900 p-3 rounded-none text-xs font-mono whitespace-pre-wrap relative z-20 ${
                               key !== "stdout"
                                 ? "text-rose-400/80"
                                 : "text-zinc-300"

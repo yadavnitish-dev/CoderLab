@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { LucideIcon, Loader2 } from 'lucide-react';
+import { LucideIcon } from 'lucide-react';
 
 interface BrutalistButtonProps {
   children: React.ReactNode;
@@ -53,7 +53,7 @@ const BrutalistButton: React.FC<BrutalistButtonProps> = ({
   const content = (
     <>
       <div className="relative z-10 flex items-center gap-2">
-        {isLoading ? <Loader2 className="animate-spin size-4" /> : Icon && <Icon className="size-4" />}
+        {isLoading ? <span className="animate-blink font-mono font-bold">_</span> : Icon && <Icon className="size-4" />}
         {children}
       </div>
       <div className={`absolute inset-0 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ${slideBgStyles[variant]}`}></div>

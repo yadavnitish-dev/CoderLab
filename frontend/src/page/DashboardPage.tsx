@@ -14,7 +14,6 @@ import { Link } from "react-router-dom";
 import {
   Mail,
   Calendar,
-  ListMusic,
   ChevronRight,
   Zap,
   Target,
@@ -177,7 +176,7 @@ const DashboardPage = () => {
                   )}&background=09090b&color=fff&rounded=false`
                 }
                 alt="Profile"
-                className="size-32 rounded-sm object-cover border border-zinc-800 shadow-2xl relative z-10"
+                className="size-32 rounded-none object-cover border border-zinc-800 relative z-10"
               />
             </motion.div>
 
@@ -219,23 +218,19 @@ const DashboardPage = () => {
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
           variants={containerVariants}
-          className="grid grid-cols-1 lg:grid-cols-3 gap-6"
+          className="grid grid-cols-1 lg:grid-cols-3 gap-px bg-zinc-900 border border-zinc-900"
         >
           {/* Bento Stats Grid */}
-          <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-px bg-zinc-900">
             {/* Main Solve Stat */}
             <motion.div
               variants={itemVariants}
               whileHover={{ y: -4, transition: { duration: 0.3 } }}
-              className="bg-black border border-zinc-800 p-8 rounded-sm relative overflow-hidden group shadow-lg hover:border-zinc-700 hover:shadow-xl transition-all"
+              className="bg-[#0a0a0a] p-8 relative overflow-hidden group transition-colors hover:bg-[#0c0c0c]"
             >
-              <motion.div
-                className="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10"
-                animate={{ rotate: 360 }}
-                transition={{ duration: 20, repeat: Infinity }}
-              >
+              <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 transition-opacity">
                 <Target className="size-24" />
-              </motion.div>
+              </div>
               <p className="text-[10px] font-bold text-zinc-600 uppercase tracking-[0.2em] mb-4">
                 Total Progress
               </p>
@@ -253,7 +248,7 @@ const DashboardPage = () => {
                   Problems Solved
                 </span>
               </div>
-              <div className="w-full bg-zinc-900 border border-zinc-800 h-2 rounded-sm mt-6 overflow-hidden">
+              <div className="w-full bg-zinc-900 border border-zinc-800 h-2 mt-6 overflow-hidden">
                 <motion.div
                   className="bg-emerald-500 h-full"
                   initial={{ width: 0 }}
@@ -268,12 +263,10 @@ const DashboardPage = () => {
             <motion.div
               variants={itemVariants}
               whileHover={{ y: -4, transition: { duration: 0.3 } }}
-              className="bg-black border border-zinc-800 p-8 rounded-sm flex flex-col group shadow-lg hover:border-zinc-700 hover:shadow-xl transition-all"
+              className="bg-[#0a0a0a] p-8 flex flex-col group transition-colors hover:bg-[#0c0c0c]"
             >
               <h3 className="text-sm font-bold uppercase tracking-widest text-zinc-500 flex items-center gap-2 mb-6">
-                <motion.div animate={{ rotate: [0, 10, -10, 0] }} transition={{ duration: 3, repeat: Infinity }}>
-                  <Target className="size-4" />
-                </motion.div>
+                <Target className="size-4" />
                 Skill Radar
               </h3>
               <motion.div
@@ -306,13 +299,11 @@ const DashboardPage = () => {
             <motion.div
               variants={itemVariants}
               whileHover={{ y: -4, transition: { duration: 0.3 } }}
-              className="md:col-span-2 bg-black border border-zinc-800 p-8 rounded-sm overflow-x-auto shadow-lg hover:border-zinc-700 hover:shadow-xl transition-all"
+              className="md:col-span-2 bg-[#0a0a0a] p-8 overflow-x-auto transition-colors hover:bg-[#0c0c0c]"
             >
               <div className="flex items-center justify-between mb-8">
                 <h3 className="text-sm font-bold uppercase tracking-widest text-zinc-500 flex items-center gap-2">
-                  <motion.div animate={{ y: [0, -2, 0] }} transition={{ duration: 2, repeat: Infinity }}>
-                    <TrendingUp className="size-4" />
-                  </motion.div>
+                  <TrendingUp className="size-4" />
                   Activity Heatmap
                 </h3>
               </div>
@@ -339,7 +330,7 @@ const DashboardPage = () => {
             variants={itemVariants}
             className="lg:col-span-1 space-y-6 h-full"
           >
-            <div className="bg-black border border-zinc-800 p-6 rounded-sm h-full flex flex-col shadow-lg hover:border-zinc-700 hover:shadow-xl transition-all">
+            <div className="bg-[#0a0a0a] p-6 h-full flex flex-col transition-colors hover:bg-[#0c0c0c]">
               <div className="flex items-center justify-between mb-6">
                 <h3 className="text-sm font-bold uppercase tracking-widest text-zinc-500">
                   Playlists
@@ -377,7 +368,7 @@ const DashboardPage = () => {
                   >
                     <Link
                       to={`/playlist/${playlist.id}`}
-                      className="flex items-center justify-between p-4 bg-zinc-900/50 border border-zinc-800 rounded-sm hover:border-zinc-700 transition-all group"
+                      className="flex items-center justify-between p-4 bg-[#080808] border border-zinc-900 rounded-none hover:border-zinc-700 transition-colors group"
                     >
                       <div className="flex-1 min-w-0 mr-4">
                         <p className="text-sm font-bold text-zinc-200 truncate group-hover:text-white transition-colors">
@@ -387,46 +378,33 @@ const DashboardPage = () => {
                           {playlist.problems?.length || 0} Challenges
                         </p>
                       </div>
-                      <motion.div
-                        animate={{ x: [0, 2, 0] }}
-                        transition={{ duration: 2, repeat: Infinity }}
-                        className="text-zinc-700 group-hover:text-zinc-400"
-                      >
+                      <div className="text-zinc-700 group-hover:text-emerald-500 transition-colors">
                         <ChevronRight className="size-4" />
-                      </motion.div>
+                      </div>
                     </Link>
                   </motion.div>
                 ))}
 
                 {playlists.length === 0 && (
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.5 }}
-                    className="flex flex-col items-center justify-center py-12 text-center"
+                  <div
+                    className="flex flex-col items-center justify-center py-12 text-center border border-zinc-900 bg-[#080808]"
                   >
-                    <ListMusic className="size-8 text-zinc-800 mb-2" />
-                    <p className="text-xs text-zinc-600 italic">
-                      No playlists created yet.
+                    <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-zinc-600">
+                      [ STATUS: NO_DATA_FOUND ]
                     </p>
-                  </motion.div>
+                  </div>
                 )}
               </motion.div>
 
-              <motion.div
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-              >
+              <div className="mt-8">
                 <Link
                   to="/roadmap"
-                  className="mt-8 flex items-center justify-center gap-2 w-full py-4 bg-white text-black rounded-sm text-xs font-bold hover:bg-zinc-200 transition-all"
+                  className="flex items-center justify-center gap-2 w-full py-4 bg-white text-black text-xs font-bold uppercase tracking-widest hover:bg-zinc-200 transition-colors active:bg-zinc-300"
                 >
-                  <motion.div animate={{ rotate: [0, 20, 0] }} transition={{ duration: 0.8, repeat: Infinity }}>
-                    <Zap className="size-3.5" />
-                  </motion.div>
+                  <Zap className="size-3.5" />
                   Solve More Problems
                 </Link>
-              </motion.div>
+              </div>
             </div>
           </motion.div>
         </motion.div>

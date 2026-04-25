@@ -51,10 +51,10 @@ const NC150Roadmap: FC<NC150RoadmapProps> = ({
           <Fragment key={category}>
             <button
               onClick={() => onCategoryClick(category)}
-              className={`flex flex-col md:flex-row md:items-center justify-between p-6 border transition-all duration-300 group text-left rounded-sm relative z-10 ${
+              className={`flex flex-col md:flex-row md:items-center justify-between p-6 border transition-colors duration-300 group text-left rounded-none relative z-10 ${
                 isSelected 
-                  ? 'bg-zinc-900 border-zinc-500 shadow-[0_0_20px_rgba(39,39,42,0.5)]' 
-                  : 'bg-black border-zinc-900 hover:border-zinc-800'
+                  ? 'bg-zinc-900 border-zinc-500' 
+                  : 'bg-black border-zinc-900 hover:border-zinc-800 hover:bg-[#0c0c0c]'
               }`}
             >
               <div className="flex items-center gap-6 mb-4 md:mb-0">
@@ -86,7 +86,9 @@ const NC150Roadmap: FC<NC150RoadmapProps> = ({
                 <div className="flex items-center justify-between md:justify-end gap-4 w-full h-fit">
                   <div className="flex items-center gap-4">
                     <div className="hidden sm:flex flex-col items-end">
-                      <span className="text-[9px] font-mono text-zinc-600 uppercase">Completed</span>
+                      <span className="text-[9px] font-mono text-zinc-600 uppercase">
+                        {isCompleted ? '[ COMPLETED ]' : '[ ACTIVE ]'}
+                      </span>
                       <span className="text-[11px] font-mono text-zinc-400">{percentage.toFixed(0)}%</span>
                     </div>
                     <div className="w-24 h-1.5 bg-zinc-900 border border-zinc-800 rounded-none overflow-hidden">
@@ -99,7 +101,7 @@ const NC150Roadmap: FC<NC150RoadmapProps> = ({
                     </div>
                   </div>
                   
-                  <ChevronRight className={`size-5 text-zinc-700 group-hover:text-zinc-400 transition-all ${isSelected ? 'rotate-90 text-white' : ''}`} />
+                  <ChevronRight className={`size-5 text-zinc-700 group-hover:text-zinc-400 transition-transform ${isSelected ? 'rotate-90 text-white' : ''}`} />
                 </div>
               </div>
             </button>
