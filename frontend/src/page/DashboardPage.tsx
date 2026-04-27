@@ -232,7 +232,7 @@ const DashboardPage = () => {
                 <Target className="size-24" />
               </div>
               <p className="text-[10px] font-mono font-bold text-zinc-400 uppercase tracking-[0.3em] mb-4">
-                [ SYSTEM_PROGRESS ]
+                Progress
               </p>
               <div className="flex items-end gap-3 mb-2">
                 <motion.span
@@ -245,7 +245,7 @@ const DashboardPage = () => {
                   {solvedProblems?.length || 0}
                 </motion.span>
                 <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-[0.2em] mb-2">
-                  [ TOTAL_RESOLVED ]
+                  Solved
                 </span>
               </div>
               <div className="w-full bg-zinc-900 border border-zinc-800 h-2 mt-6 overflow-hidden">
@@ -269,7 +269,7 @@ const DashboardPage = () => {
               </div>
               <h3 className="text-[10px] font-mono font-bold uppercase tracking-[0.3em] text-zinc-400 flex items-center gap-2 mb-6">
                 <Target className="size-4" />
-                [ SKILL_TELEMETRY ]
+                Skill Radar
               </h3>
               <motion.div
                 className="flex-1 min-h-62.5 w-full mt-4"
@@ -314,7 +314,7 @@ const DashboardPage = () => {
                 <div className="flex items-center justify-between mb-8">
                   <h3 className="text-[10px] font-mono font-bold uppercase tracking-[0.3em] text-zinc-400 flex items-center gap-2">
                     <TrendingUp className="size-4" />
-                    [ EXECUTION_HEATMAP ]
+                    Activity
                   </h3>
                 </div>
                 <motion.div
@@ -344,7 +344,7 @@ const DashboardPage = () => {
             <div className="bg-[#0a0a0a] p-6 h-full flex flex-col transition-colors hover:bg-[#0c0c0c]">
               <div className="flex items-center justify-between mb-6">
                 <h3 className="text-[10px] font-mono font-bold uppercase tracking-[0.3em] text-zinc-400">
-                  [ PLAYLISTS ]
+                  Playlists
                 </h3>
                 <Link
                   to="/playlists"
@@ -401,7 +401,7 @@ const DashboardPage = () => {
                     className="flex flex-col items-center justify-center py-12 text-center border border-zinc-900 bg-[#080808]"
                   >
                     <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-zinc-500">
-                      [ STATUS: NO_DATA_FOUND ]
+                      No playlists found
                     </p>
                   </div>
                 )}

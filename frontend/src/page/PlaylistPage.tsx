@@ -59,7 +59,7 @@ const PlaylistPage = () => {
           to="/playlists"
           className="text-white bg-zinc-900 border border-zinc-800 px-6 py-2 rounded-none text-sm font-bold uppercase tracking-widest hover:bg-zinc-800 transition-colors"
         >
-          [ BACK_TO_PLAYLISTS ]
+          Back to Playlists
         </Link>
       </div>
     );
@@ -131,13 +131,13 @@ const PlaylistPage = () => {
         ) : (
           <div className="flex flex-col items-center justify-center py-24 border border-zinc-900 bg-[#080808]">
             <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-zinc-500">
-              [ STATUS: PLAYLIST_EMPTY ]
+              This playlist is empty
             </p>
             <Link
               to="/roadmap"
               className="mt-6 text-emerald-500 font-mono text-[10px] hover:text-emerald-400 uppercase tracking-widest transition-colors"
             >
-              [ BROWSE_PROBLEMS ]
+              Browse Problems
             </Link>
           </div>
         )}

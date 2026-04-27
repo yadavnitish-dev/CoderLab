@@ -55,7 +55,7 @@ const PlaylistsPage = () => {
             className="flex items-center gap-2 bg-white text-black px-6 py-3 rounded-none font-bold text-sm uppercase tracking-widest hover:bg-zinc-200 transition-colors shrink-0 mb-1"
           >
              <Plus className="size-4" />
-             [ CREATE_PLAYLIST ]
+             Create Playlist
           </button>
         </div>
       </div>
@@ -98,13 +98,13 @@ const PlaylistsPage = () => {
         ) : (
           <div className="flex flex-col items-center justify-center py-24 border border-zinc-900 bg-[#080808]">
                 <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-zinc-500">
-                  [ STATUS: NO_PLAYLISTS_FOUND ]
+                  No playlists found
                 </p>
             <button 
               onClick={() => setIsModalOpen(true)}
               className="mt-6 text-emerald-500 font-mono text-[10px] hover:text-emerald-400 uppercase tracking-widest transition-colors"
             >
-              [ INITIALIZE_PLAYLIST ]
+              Create your first playlist
             </button>
           </div>
         )}

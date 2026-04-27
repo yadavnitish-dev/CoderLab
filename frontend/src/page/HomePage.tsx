@@ -100,7 +100,7 @@ export default function HomePage() {
                     </p>
                   </div>
                   <div className="flex gap-4 font-mono text-[9px] text-zinc-500">
-                    <span>[ CORE_PROTOCOL_v4.2 ]</span>
+                    <span>[ PLATFORM v4.2 ]</span>
                   </div>
                 </div>
 
@@ -175,7 +175,7 @@ export default function HomePage() {
               </h2>
             </div>
             <p className="text-zinc-400 font-mono text-sm uppercase tracking-widest pb-2">
-              [ VISUAL_AUDIT ]
+              [ Platform Preview ]
             </p>
           </div>
 
@@ -397,7 +397,7 @@ export default function HomePage() {
               className="bg-[#0a0a0a] p-10 group relative overflow-hidden"
             >
               <div className="relative z-10">
-                <p className="font-mono text-[9px] text-emerald-500 uppercase tracking-widest mb-6">[ ELIMINATE_FATIGUE ]</p>
+                <p className="font-mono text-[9px] text-emerald-500 uppercase tracking-widest mb-6">Roadmap</p>
                 <h3 className="text-white text-2xl font-bold uppercase tracking-tighter mb-4">
                   Decision-Free <br />Progression
                 </h3>
@@ -435,7 +435,7 @@ export default function HomePage() {
               className="bg-[#0a0a0a] p-10 group relative overflow-hidden"
             >
               <div className="relative z-10">
-                <p className="font-mono text-[9px] text-emerald-500 uppercase tracking-widest mb-6">[ REALTIME_VALIDATION ]</p>
+                <p className="font-mono text-[9px] text-emerald-500 uppercase tracking-widest mb-6">Compiler</p>
                 <h3 className="text-white text-2xl font-bold uppercase tracking-tighter mb-4">
                   Instant Feedback <br />Loops
                 </h3>
@@ -467,7 +467,7 @@ export default function HomePage() {
               className="bg-[#0a0a0a] p-10 group relative overflow-hidden"
             >
               <div className="relative z-10">
-                <p className="font-mono text-[9px] text-emerald-500 uppercase tracking-widest mb-6">[ DISCIPLINE_METRICS ]</p>
+                <p className="font-mono text-[9px] text-emerald-500 uppercase tracking-widest mb-6">Progress</p>
                 <h3 className="text-white text-2xl font-bold uppercase tracking-tighter mb-4">
                   Track what actually matters
                 </h3>

@@ -181,7 +181,7 @@ const RoadmapPage = () => {
           
           {/* Main Progress Block */}
           <div className="flex-1 bg-[#050505] p-8 flex flex-col justify-between relative group">
-            <p className="text-[10px] font-mono font-bold text-zinc-400 uppercase tracking-[0.3em] mb-4">[ OVERALL_PROGRESS ]</p>
+            <p className="text-[10px] font-mono font-bold text-zinc-400 uppercase tracking-[0.3em] mb-4">Progress</p>
             <div className="flex items-end gap-4 mb-8">
               <span className="text-6xl font-mono font-bold text-white leading-none tracking-tighter">{solvedIds.size}</span>
               <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-[0.2em] mb-1.5">/ 150 RESOLVED</span>
@@ -194,7 +194,7 @@ const RoadmapPage = () => {
           
           {/* Streak Block */}
           <div className="flex-1 bg-[#050505] p-8 flex flex-col justify-between relative group">
-            <p className="text-[10px] font-mono font-bold text-zinc-400 uppercase tracking-[0.3em] mb-4">[ TELEMETRY_STREAK ]</p>
+            <p className="text-[10px] font-mono font-bold text-zinc-400 uppercase tracking-[0.3em] mb-4">Streak</p>
             <div className="flex items-end gap-16 mb-2">
               <div>
                 <span className="block text-[10px] font-mono font-bold text-zinc-500 uppercase tracking-[0.2em] mb-2">CURRENT_RUN</span>
@@ -212,7 +212,7 @@ const RoadmapPage = () => {
 
           {/* Difficulty Block */}
           <div className="flex-1 bg-[#050505] p-8 flex flex-col justify-between relative group">
-            <p className="text-[10px] font-mono font-bold text-zinc-400 uppercase tracking-[0.3em] mb-4">[ DIFFICULTY_SPREAD ]</p>
+            <p className="text-[10px] font-mono font-bold text-zinc-400 uppercase tracking-[0.3em] mb-4">Difficulty</p>
             <div className="flex justify-between items-center w-full gap-4 mt-auto mb-2">
               <div className="flex flex-col bg-zinc-900/30 px-4 py-3 border border-zinc-800/50 flex-1">
                 <span className="text-[10px] font-mono font-bold text-emerald-500 uppercase tracking-widest mb-2">EASY</span>
@@ -246,13 +246,13 @@ const RoadmapPage = () => {
             ) : (
               <div className="flex flex-col items-center justify-center py-24 border border-zinc-900 bg-[#080808]">
                 <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-zinc-500">
-                  [ STATUS: NO_CORE_CHALLENGES_DEPLOYED ]
+                  No challenges found
                 </p>
                 <button 
                   onClick={() => setSelectedCategory(null)}
                   className="mt-6 text-emerald-500 font-mono text-[10px] hover:text-emerald-400 uppercase tracking-widest transition-colors"
                 >
-                  [ RETURN_TO_ROADMAP ]
+                  Back to Roadmap
                 </button>
               </div>
             )}
