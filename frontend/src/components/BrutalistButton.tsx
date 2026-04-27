@@ -27,7 +27,7 @@ const BrutalistButton: React.FC<BrutalistButtonProps> = ({
   icon: Icon,
   type = 'button',
 }) => {
-  const baseStyles = "relative inline-flex items-center justify-center gap-2 rounded-none font-mono font-bold uppercase tracking-[0.2em] transition-none disabled:opacity-50 disabled:pointer-events-none active:translate-y-[2px] active:border-b-0 border-b-[3px]";
+  const baseStyles = "relative inline-flex items-center justify-center gap-2 rounded-none font-mono font-bold uppercase tracking-[0.2em] transition-none disabled:opacity-50 disabled:pointer-events-none active:translate-y-[2px] active:border-b-0 border-b-[3px] focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 focus:ring-offset-black";
   
   const sizeStyles = {
     sm: "px-4 py-1.5 text-[10px]",
@@ -40,7 +40,7 @@ const BrutalistButton: React.FC<BrutalistButtonProps> = ({
     primary: "bg-white border-zinc-400 text-black hover:bg-zinc-200",
     secondary: "bg-zinc-900 border-black text-white hover:bg-zinc-800",
     outline: "bg-black border-zinc-800 text-zinc-400 hover:text-white hover:border-zinc-600",
-    danger: "bg-rose-950 border-black text-rose-500 hover:bg-rose-900 hover:text-white",
+    danger: "bg-rose-950 border-black text-rose-400 hover:bg-rose-900 hover:text-white",
   };
 
   const content = (

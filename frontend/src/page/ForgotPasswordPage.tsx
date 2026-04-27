@@ -1,8 +1,9 @@
 
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
-import { Mail, ArrowLeft, Loader2, Send } from "lucide-react";
+import { Mail, ArrowLeft, Send } from "lucide-react";
 import { useAuthStore } from "../store/useAuthStore";
+import Skeleton from "../components/Skeleton";
 
 /**
  * Forgot Password Page
@@ -21,11 +22,11 @@ const ForgotPasswordPage = () => {
       <div className="w-full max-w-sm space-y-8">
         {/* Header */}
         <div className="text-center space-y-2">
-          <div className="text-[10px] font-bold uppercase tracking-[0.3em] text-zinc-600 mb-6">
+          <div className="text-[10px] font-bold uppercase tracking-[0.3em] text-zinc-500 mb-6">
             AlgoPrep // Forgot Password
           </div>
           <h1 className="text-3xl font-bold tracking-tight text-white mb-2">Reset <span className="text-rose-500">Password</span></h1>
-          <p className="text-zinc-500 text-sm">
+          <p className="text-zinc-400 text-sm">
             Enter your email address to receive a password reset link.
           </p>
         </div>
@@ -34,16 +35,16 @@ const ForgotPasswordPage = () => {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           <div className="space-y-4">
             <div className="form-control">
-              <label className="text-[10px] font-bold uppercase tracking-widest text-zinc-600 mb-2 block">
+              <label className="text-[10px] font-bold uppercase tracking-widest text-zinc-500 mb-2 block">
                 Email Address
               </label>
               <div className="relative group">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-zinc-600 group-focus-within:text-white transition-colors">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-zinc-500 group-focus-within:text-white transition-colors">
                   <Mail className="size-4" />
                 </div>
                 <input
                   type="email"
-                  className="w-full bg-black border border-zinc-800 rounded-none pl-10 pr-4 py-2.5 text-sm text-white focus:outline-none focus:border-rose-500/50 transition-none placeholder:text-zinc-800"
+                  className="w-full bg-black border border-zinc-800 rounded-none pl-10 pr-4 py-2.5 text-sm text-white focus:outline-none focus:border-rose-500/50 transition-none placeholder:text-zinc-500"
                   placeholder="name@example.com"
                   {...register("email", { required: "Email address required" })}
                 />
@@ -62,7 +63,7 @@ const ForgotPasswordPage = () => {
             className="w-full bg-white text-black py-3 rounded-none text-sm font-bold hover:bg-zinc-200 transition-none flex items-center justify-center gap-2 disabled:opacity-50"
           >
             {isLoggingIn ? (
-              <Loader2 className="size-4 animate-spin" />
+              <Skeleton width={16} height={16} className="inline-block" />
             ) : (
               <Send className="size-4" />
             )}
@@ -74,7 +75,7 @@ const ForgotPasswordPage = () => {
         <div className="text-center">
           <Link
             to="/login"
-            className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-zinc-600 hover:text-white transition-colors"
+            className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-zinc-500 hover:text-white transition-colors"
           >
             <ArrowLeft className="size-3" />
             Return to Login

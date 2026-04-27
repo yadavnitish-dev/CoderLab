@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
 import { db } from "../libs/db.js";
+import { cacheManager } from "../libs/redis.lib.js";
 import { generateToken, generateRefreshToken, verifyToken } from "../libs/jwt.util.js";
 import { sendVerificationEmail, sendPasswordResetEmail } from "../libs/email.util.js";
 import { UserRole } from "../generated/prisma/index.js";
@@ -179,6 +180,8 @@ export class AuthService {
       data: { name: input.name },
     });
 
+    await cacheManager.invalidate(`user:profile:${userId}`);
+
     return this.formatUserResponse(updatedUser);
   }
 
@@ -242,6 +245,8 @@ export class AuthService {
         verificationTokenExpires: null,
       },
     });
+
+    await cacheManager.invalidate(`user:profile:${user.id}`);
 
     return {
       user: this.formatUserResponse(updatedUser),
@@ -335,6 +340,8 @@ export class AuthService {
     await db.user.delete({
       where: { id: userId },
     });
+
+    await cacheManager.invalidate(`user:profile:${userId}`);
   }
 
   /**
@@ -360,8 +367,13 @@ export class AuthService {
         where: { id: decoded.id },
       });
 
-      if (!user || user.refreshToken !== token || !user.refreshTokenExpiry || user.refreshTokenExpiry < new Date()) {
+      if (!user || !user.refreshToken || !user.refreshTokenExpiry || user.refreshTokenExpiry < new Date()) {
         throw new UnauthorizedError("Invalid or expired refresh token");
+      }
+
+      const isValid = await bcrypt.compare(token, user.refreshToken);
+      if (!isValid) {
+        throw new UnauthorizedError("Invalid refresh token");
       }
 
       // Generate new tokens (Rotation)
@@ -372,6 +384,7 @@ export class AuthService {
         ...tokens,
       };
     } catch (error) {
+      if (error instanceof UnauthorizedError) throw error;
       throw new UnauthorizedError("Invalid refresh token");
     }
   }
@@ -395,10 +408,12 @@ export class AuthService {
     const refreshToken = generateRefreshToken(userId);
     const refreshTokenExpiry = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 days
 
+    const hashedRefreshToken = await bcrypt.hash(refreshToken, 10);
+
     await db.user.update({
       where: { id: userId },
       data: {
-        refreshToken,
+        refreshToken: hashedRefreshToken,
         refreshTokenExpiry,
       },
     });

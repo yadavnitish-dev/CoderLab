@@ -42,7 +42,7 @@ const WorkspaceHeader: React.FC<WorkspaceHeaderProps> = ({
       <div className="flex items-center gap-4">
         <Link
           to="/roadmap"
-          className="p-2 text-zinc-500 hover:text-white hover:bg-zinc-800 rounded-sm transition-all border border-transparent hover:border-zinc-700"
+          className="p-2 text-zinc-400 hover:text-white hover:bg-zinc-800 rounded-sm transition-all border border-transparent hover:border-zinc-700"
         >
           <ArrowLeft className="size-4" />
         </Link>
@@ -67,19 +67,19 @@ const WorkspaceHeader: React.FC<WorkspaceHeaderProps> = ({
         <div className="flex items-center gap-1 bg-black border border-zinc-800 rounded-sm p-1">
           <button
             onClick={() => setFontSize(Math.max(12, fontSize - 1))}
-            className="p-1.5 text-zinc-500 hover:text-white hover:bg-zinc-800 rounded-sm transition-all"
+            className="p-1.5 text-zinc-400 hover:text-white hover:bg-zinc-800 rounded-sm transition-all"
           >
             <Minus className="size-3" />
           </button>
           <div className="flex items-center gap-1.5 px-2">
-            <Type className="size-3 text-zinc-500" />
+            <Type className="size-3 text-zinc-400" />
             <span className="text-[10px] font-bold text-zinc-400 w-4 text-center">
               {fontSize}
             </span>
           </div>
           <button
             onClick={() => setFontSize(Math.min(24, fontSize + 1))}
-            className="p-1.5 text-zinc-500 hover:text-white hover:bg-zinc-800 rounded-sm transition-all"
+            className="p-1.5 text-zinc-400 hover:text-white hover:bg-zinc-800 rounded-sm transition-all"
           >
             <Plus className="size-3" />
           </button>
@@ -100,7 +100,7 @@ const WorkspaceHeader: React.FC<WorkspaceHeaderProps> = ({
 
         <button
           onClick={() => setIsLeftPaneVisible(!isLeftPaneVisible)}
-          className="p-2 text-zinc-500 hover:text-white hover:bg-zinc-800 rounded-sm transition-all border border-transparent hover:border-zinc-700"
+          className="p-2 text-zinc-400 hover:text-white hover:bg-zinc-800 rounded-sm transition-all border border-transparent hover:border-zinc-700"
         >
           {isLeftPaneVisible ? (
             <PanelLeftClose className="size-4" />

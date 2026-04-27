@@ -4,7 +4,6 @@ import {
   Code2,
   ChevronDown,
   ChevronUp,
-  Loader2,
   Play,
   ChevronRight,
   Plus,
@@ -53,7 +52,7 @@ const SubmissionConsole: React.FC<SubmissionConsoleProps> = ({
         <div className="flex items-center gap-1">
           <button
             onClick={() => setIsConsoleOpen(!isConsoleOpen)}
-            className="flex items-center gap-2 px-3 py-1.5 rounded-none text-xs font-bold text-zinc-500 hover:text-zinc-200 hover:bg-zinc-900 transition-colors border border-transparent hover:border-zinc-800 relative z-20"
+            className="flex items-center gap-2 px-3 py-1.5 rounded-none text-xs font-bold text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900 transition-colors border border-transparent hover:border-zinc-800 relative z-20"
           >
             <Code2 className="size-3.5" />
             Console
@@ -73,7 +72,7 @@ const SubmissionConsole: React.FC<SubmissionConsoleProps> = ({
             className="flex items-center gap-2 px-4 py-1.5 rounded-none text-xs font-bold text-zinc-400 hover:text-white border border-zinc-800 bg-black hover:bg-zinc-900 transition-colors disabled:opacity-30 disabled:cursor-not-allowed relative z-20"
           >
             {isRunning ? (
-              <Loader2 className="size-3.5 animate-spin" />
+              <span className="animate-blink font-mono font-bold text-emerald-500">_</span>
             ) : (
               <Play className="size-3.5" />
             )}
@@ -83,7 +82,7 @@ const SubmissionConsole: React.FC<SubmissionConsoleProps> = ({
           {nextProblemId && (
             <button
               onClick={handleNextChallenge}
-              className="flex items-center gap-2 px-4 py-1.5 rounded-none text-xs font-bold text-zinc-500 hover:text-white border border-zinc-800 bg-black hover:bg-zinc-900 transition-colors group relative z-20"
+              className="flex items-center gap-2 px-4 py-1.5 rounded-none text-xs font-bold text-zinc-400 hover:text-white border border-zinc-800 bg-black hover:bg-zinc-900 transition-colors group relative z-20"
             >
               Next Challenge
               <ChevronRight className="size-3.5 group-hover:translate-x-0.5 transition-transform" />
@@ -97,7 +96,7 @@ const SubmissionConsole: React.FC<SubmissionConsoleProps> = ({
             className="flex items-center justify-center gap-2 px-6 py-1.5 rounded-none text-xs font-bold bg-white text-black hover:bg-zinc-200 transition-colors disabled:opacity-30 disabled:cursor-not-allowed min-w-20 relative z-20"
           >
             {isSubmitting ? (
-              <Loader2 className="size-3.5 animate-spin" />
+              <span className="animate-blink font-mono font-bold text-emerald-500">_</span>
             ) : (
               "Submit"
             )}
@@ -113,7 +112,7 @@ const SubmissionConsole: React.FC<SubmissionConsoleProps> = ({
               className={`py-3 text-[10px] font-bold uppercase tracking-widest transition-colors border-b-2 relative z-20 ${
                 consoleTab === "testcases"
                   ? "border-white text-white"
-                  : "border-transparent text-zinc-600 hover:text-zinc-400"
+                  : "border-transparent text-zinc-500 hover:text-zinc-400"
               }`}
             >
               Test Cases
@@ -123,7 +122,7 @@ const SubmissionConsole: React.FC<SubmissionConsoleProps> = ({
               className={`py-3 text-[10px] font-bold uppercase tracking-widest transition-colors border-b-2 relative z-20 ${
                 consoleTab === "results"
                   ? "border-white text-white"
-                  : "border-transparent text-zinc-600 hover:text-zinc-400"
+                  : "border-transparent text-zinc-500 hover:text-zinc-400"
               }`}
             >
               Results
@@ -135,7 +134,7 @@ const SubmissionConsole: React.FC<SubmissionConsoleProps> = ({
               <div className="space-y-4">
                 {userTestCases.map((tc, idx) => (
                   <div key={idx} className="space-y-2">
-                    <p className="text-[10px] font-bold text-zinc-600 uppercase tracking-widest">
+                    <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">
                       Test Case {idx + 1}
                     </p>
                     <textarea
@@ -160,7 +159,7 @@ const SubmissionConsole: React.FC<SubmissionConsoleProps> = ({
                       { input: "", output: "" },
                     ])
                   }
-                  className="text-[10px] font-bold text-zinc-500 hover:text-white uppercase tracking-widest flex items-center gap-2 relative z-20"
+                  className="text-[10px] font-bold text-zinc-400 hover:text-white uppercase tracking-widest flex items-center gap-2 relative z-20"
                 >
                   <Plus className="size-3" /> Add Test Case
                 </button>
@@ -209,7 +208,7 @@ const SubmissionConsole: React.FC<SubmissionConsoleProps> = ({
                       if (!val) return null;
                       return (
                         <div key={key} className="space-y-1.5">
-                          <span className="text-[10px] font-bold text-zinc-600 uppercase tracking-widest">
+                          <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">
                             {key === "stdout" ? "Output" : key}
                           </span>
                           <pre
@@ -233,7 +232,7 @@ const SubmissionConsole: React.FC<SubmissionConsoleProps> = ({
                     })}
                   </div>
                 ) : (
-                  <div className="h-full flex flex-col items-center justify-center py-10 text-zinc-600">
+                  <div className="h-full flex flex-col items-center justify-center py-10 text-zinc-500">
                     <Code2 className="size-8 mb-2 opacity-20" />
                     <p className="text-sm italic">
                       No results yet. Run code to see output.

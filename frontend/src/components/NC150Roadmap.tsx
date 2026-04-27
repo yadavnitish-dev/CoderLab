@@ -64,7 +64,7 @@ const NC150Roadmap: FC<NC150RoadmapProps> = ({
                     ? 'bg-emerald-500/10 border-emerald-500 text-emerald-500' 
                     : isSelected 
                       ? 'bg-white border-white text-black' 
-                      : 'bg-zinc-900 border-zinc-800 text-zinc-600'
+                      : 'bg-zinc-900 border-zinc-800 text-zinc-500'
                 }`}>
                   {isCompleted ? (
                     <CheckCircle2 className="size-5" />
@@ -86,7 +86,7 @@ const NC150Roadmap: FC<NC150RoadmapProps> = ({
                 <div className="flex items-center justify-between md:justify-end gap-4 w-full h-fit">
                   <div className="flex items-center gap-4">
                     <div className="hidden sm:flex flex-col items-end">
-                      <span className="text-[9px] font-mono text-zinc-600 uppercase">
+                      <span className="text-[9px] font-mono text-zinc-500 uppercase">
                         {isCompleted ? '[ COMPLETED ]' : '[ ACTIVE ]'}
                       </span>
                       <span className="text-[11px] font-mono text-zinc-400">{percentage.toFixed(0)}%</span>
@@ -101,7 +101,7 @@ const NC150Roadmap: FC<NC150RoadmapProps> = ({
                     </div>
                   </div>
                   
-                  <ChevronRight className={`size-5 text-zinc-700 group-hover:text-zinc-400 transition-transform ${isSelected ? 'rotate-90 text-white' : ''}`} />
+                  <ChevronRight className={`size-5 text-zinc-500 group-hover:text-zinc-400 transition-transform ${isSelected ? 'rotate-90 text-white' : ''}`} />
                 </div>
               </div>
             </button>

@@ -47,13 +47,13 @@ const BrutalistSelect: React.FC<BrutalistSelectProps> = ({
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className={`flex items-center gap-2 w-full bg-black border border-zinc-800 hover:border-zinc-700 px-3 py-1.5 rounded-none transition-none text-sm font-semibold text-zinc-300 focus:outline-none ${isOpen ? 'border-zinc-500' : ''}`}
+        className={`flex items-center gap-2 w-full bg-black border border-zinc-800 hover:border-zinc-700 px-3 py-1.5 rounded-none transition-none text-sm font-semibold text-zinc-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 focus:ring-offset-black ${isOpen ? 'border-zinc-500' : ''}`}
       >
-        {Icon && <Icon className="size-4 text-zinc-500 shrink-0" />}
+        {Icon && <Icon className="size-4 text-zinc-400 shrink-0" />}
         <span className="flex-1 text-left truncate">
           {selectedOption ? selectedOption.label : placeholder}
         </span>
-        <ChevronDown className={`size-4 text-zinc-500 transition-none ${isOpen ? 'rotate-180' : ''}`} />
+        <ChevronDown className={`size-4 text-zinc-400 transition-none ${isOpen ? 'rotate-180' : ''}`} />
       </button>
 
       {/* Dropdown Menu */}
@@ -73,7 +73,7 @@ const BrutalistSelect: React.FC<BrutalistSelectProps> = ({
                   className={`w-full text-left px-4 py-2 text-[13px] font-medium transition-none flex items-center justify-between group ${
                     isSelected
                       ? 'bg-emerald-500/10 text-emerald-500 border-l-2 border-emerald-500'
-                      : 'text-zinc-500 hover:text-white hover:bg-zinc-900 border-l-2 border-transparent'
+                      : 'text-zinc-400 hover:text-white hover:bg-zinc-900 border-l-2 border-transparent'
                   }`}
                 >
                   <span className="truncate">{option.label}</span>

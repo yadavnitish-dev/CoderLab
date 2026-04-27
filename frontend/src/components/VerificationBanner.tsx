@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ShieldAlert, Send, Loader2, X } from "lucide-react";
+import { ShieldAlert, Send, X } from "lucide-react";
 import { useAuthStore } from "../store/useAuthStore";
 
 /**
@@ -32,7 +32,7 @@ const VerificationBanner: React.FC = () => {
             <ShieldAlert className="size-4" />
           </div>
           <div>
-            <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-500 block leading-none mb-1">
+            <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-400 block leading-none mb-1">
               Email Verification Required
             </span>
             <p className="text-sm text-zinc-300 leading-tight">
@@ -49,7 +49,7 @@ const VerificationBanner: React.FC = () => {
             className="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-white text-black px-4 py-1.5 rounded-sm text-xs font-bold hover:bg-zinc-200 transition-all disabled:opacity-50"
           >
             {isSending ? (
-              <Loader2 className="size-3.5 animate-spin" />
+              <span className="animate-blink font-mono font-bold text-emerald-500">_</span>
             ) : (
               <Send className="size-3.5" />
             )}
@@ -58,7 +58,7 @@ const VerificationBanner: React.FC = () => {
           
           <button 
             onClick={() => setIsVisible(false)}
-            className="p-1.5 text-zinc-600 hover:text-white transition-colors"
+            className="p-1.5 text-zinc-500 hover:text-white transition-colors"
             title="Dismiss"
           >
             <X className="size-4" />

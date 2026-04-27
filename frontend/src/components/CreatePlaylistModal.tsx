@@ -44,7 +44,7 @@ const CreatePlaylistModal: React.FC<CreatePlaylistModalProps> = ({isOpen , onClo
             </label>
             <input
               type="text"
-              className="w-full bg-black border border-zinc-800 rounded-none px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500/50 transition-none placeholder:text-zinc-700"
+              className="w-full bg-black border border-zinc-800 rounded-none px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500/50 transition-none placeholder:text-zinc-500"
               placeholder="e.g. Dynamic Programming Patterns"
               {...register('name', { required: 'Playlist name is required' })}
             />
@@ -58,7 +58,7 @@ const CreatePlaylistModal: React.FC<CreatePlaylistModalProps> = ({isOpen , onClo
               Description
             </label>
             <textarea
-              className="w-full bg-black border border-zinc-800 rounded-none px-4 py-2.5 text-sm text-white h-28 focus:outline-none focus:border-emerald-500/50 transition-none resize-none placeholder:text-zinc-700"
+              className="w-full bg-black border border-zinc-800 rounded-none px-4 py-2.5 text-sm text-white h-28 focus:outline-none focus:border-emerald-500/50 transition-none resize-none placeholder:text-zinc-500"
               placeholder="What kind of problems will this playlist contain?"
               {...register('description')}
             />

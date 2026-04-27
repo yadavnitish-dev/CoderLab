@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { usePlaylistStore } from "../store/usePlaylistStore";
 import { Plus, ListMusic, ChevronRight } from "lucide-react";
 import CreatePlaylistModal from "../components/CreatePlaylistModal";
+import Skeleton, { SkeletonCard, SkeletonButton } from "../components/Skeleton";
 
 const PlaylistsPage = () => {
   const { getAllPlaylists, playlists, isLoading, createPlaylist } = usePlaylistStore();
@@ -14,10 +15,18 @@ const PlaylistsPage = () => {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center h-[calc(100vh-64px)]">
-        <p className="font-mono text-sm text-zinc-600 uppercase tracking-widest animate-blink">
-          [ LOADING_PLAYLISTS ]
-        </p>
+      <div className="min-h-screen pb-20 p-6">
+        <div className="max-w-4xl mx-auto space-y-6">
+          <div className="flex justify-between items-center mb-8">
+            <Skeleton width={200} height={32} />
+            <SkeletonButton />
+          </div>
+          <div className="grid gap-4 md:grid-cols-2">
+            {[1, 2, 3, 4].map((i) => (
+              <SkeletonCard key={i} />
+            ))}
+          </div>
+        </div>
       </div>
     );
   }
@@ -36,7 +45,7 @@ const PlaylistsPage = () => {
             <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">
               My Playlists
             </h1>
-            <p className="text-zinc-500 text-lg max-w-2xl">
+            <p className="text-zinc-400 text-lg max-w-2xl">
               Organize your challenges into custom collections to track your
               progress and master specific topics.
             </p>
@@ -65,7 +74,7 @@ const PlaylistsPage = () => {
                     <div className="size-10 bg-zinc-900 border border-zinc-800 rounded-none flex items-center justify-center group-hover:bg-white group-hover:text-black transition-colors">
                       <ListMusic className="size-5" />
                     </div>
-                    <span className="px-2.5 py-1 rounded-none bg-zinc-900 border border-zinc-800 text-[10px] font-bold text-zinc-500 uppercase tracking-widest group-hover:bg-zinc-800 group-hover:text-zinc-400 transition-colors">
+                    <span className="px-2.5 py-1 rounded-none bg-zinc-900 border border-zinc-800 text-[10px] font-bold text-zinc-400 uppercase tracking-widest group-hover:bg-zinc-800 group-hover:text-zinc-400 transition-colors">
                       {playlist.problems?.length || 0} Challenges
                     </span>
                   </div>
@@ -74,11 +83,11 @@ const PlaylistsPage = () => {
                     {playlist.name}
                   </h3>
 
-                  <p className="text-zinc-500 text-sm line-clamp-2 mb-8 flex-1">
+                  <p className="text-zinc-400 text-sm line-clamp-2 mb-8 flex-1">
                     {playlist.description || "A custom collection of algorithmic problems."}
                   </p>
 
-                  <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest text-zinc-600 group-hover:text-zinc-400 transition-colors">
+                  <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest text-zinc-500 group-hover:text-zinc-400 transition-colors">
                     View Contents
                     <ChevronRight className="size-3 group-hover:translate-x-0.5 transition-transform" />
                   </div>
@@ -88,7 +97,7 @@ const PlaylistsPage = () => {
           </div>
         ) : (
           <div className="flex flex-col items-center justify-center py-24 border border-zinc-900 bg-[#080808]">
-                <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-zinc-600">
+                <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-zinc-500">
                   [ STATUS: NO_PLAYLISTS_FOUND ]
                 </p>
             <button 

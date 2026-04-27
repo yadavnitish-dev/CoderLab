@@ -6,9 +6,9 @@ import {
   MemoryStick as Memory,
   Calendar,
   ChevronRight,
-  Loader2,
 } from "lucide-react";
 import { Submission } from "../types";
+import Skeleton from "./Skeleton";
 
 interface SubmissionsListProps {
   submissions: Submission[] | null;
@@ -54,8 +54,8 @@ const SubmissionsList: React.FC<SubmissionsListProps> = ({
 
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center py-20">
-        <Loader2 className="size-6 animate-spin text-zinc-600" />
+      <div className="py-20">
+        <SkeletonTable rows={5} cols={4} />
       </div>
     );
   }
@@ -63,7 +63,7 @@ const SubmissionsList: React.FC<SubmissionsListProps> = ({
   if (!submissions?.length) {
     return (
       <div className="flex flex-col items-center justify-center py-20 bg-black border border-zinc-800 rounded-none">
-        <p className="text-zinc-600 text-sm font-medium">
+        <p className="text-zinc-500 text-sm font-medium">
           No submission history found
         </p>
       </div>
@@ -97,7 +97,7 @@ const SubmissionsList: React.FC<SubmissionsListProps> = ({
                     >
                       {submission.status}
                     </p>
-                    <p className="text-[10px] text-zinc-600 font-bold uppercase tracking-widest">
+                    <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest">
                       {submission.language}
                     </p>
                   </div>
@@ -105,9 +105,9 @@ const SubmissionsList: React.FC<SubmissionsListProps> = ({
 
                 <div className="h-8 w-px bg-zinc-800 hidden md:block" />
 
-                <div className="hidden md:flex items-center gap-6 text-zinc-500">
+                <div className="hidden md:flex items-center gap-6 text-zinc-400">
                   <div className="space-y-0.5">
-                    <p className="text-[10px] font-bold uppercase tracking-widest text-zinc-600">
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-zinc-500">
                       Runtime
                     </p>
                     <div className="flex items-center gap-1.5 text-xs font-semibold text-zinc-300">
@@ -116,7 +116,7 @@ const SubmissionsList: React.FC<SubmissionsListProps> = ({
                     </div>
                   </div>
                   <div className="space-y-0.5">
-                    <p className="text-[10px] font-bold uppercase tracking-widest text-zinc-600">
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-zinc-500">
                       Memory
                     </p>
                     <div className="flex items-center gap-1.5 text-xs font-semibold text-zinc-300">
@@ -129,7 +129,7 @@ const SubmissionsList: React.FC<SubmissionsListProps> = ({
 
               <div className="flex items-center gap-4">
                 <div className="text-right space-y-0.5 hidden sm:block">
-                  <p className="text-[10px] font-bold uppercase tracking-widest text-zinc-600">
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-zinc-500">
                     Submitted
                   </p>
                   <div className="flex items-center gap-1.5 text-xs font-semibold text-zinc-400">
@@ -137,7 +137,7 @@ const SubmissionsList: React.FC<SubmissionsListProps> = ({
                     {new Date(submission.createdAt || "").toLocaleDateString()}
                   </div>
                 </div>
-                <ChevronRight className="size-4 text-zinc-700 group-hover:text-zinc-400 transition-none" />
+                <ChevronRight className="size-4 text-zinc-500 group-hover:text-zinc-400 transition-none" />
               </div>
             </div>
           </div>

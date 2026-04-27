@@ -56,7 +56,7 @@ const LoginPage = () => {
           <h1 className="text-3xl font-bold text-white tracking-tight mb-2">
             Welcome back
           </h1>
-          <p className="text-zinc-500 text-sm">
+          <p className="text-zinc-400 text-sm">
             Enter your credentials to access your workspace
           </p>
         </div>
@@ -65,15 +65,15 @@ const LoginPage = () => {
         <div className="bg-black border border-zinc-800 p-8 rounded-none">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
             <div className="space-y-2">
-              <label className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-zinc-500 ml-1">
+              <label className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-zinc-400 ml-1">
                 Email Address
               </label>
               <div className="relative group">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-zinc-600 group-focus-within:text-emerald-500/50 transition-colors" />
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-zinc-500 group-focus-within:text-emerald-500/50 transition-colors" />
                 <input
                   type="email"
                   {...register("email")}
-                  className={`w-full bg-[#050505] border ${errors.email ? "border-rose-500/50" : "border-zinc-800"} rounded-none py-2.5 pl-10 pr-4 text-sm text-zinc-200 focus:outline-none focus:border-emerald-500/50 transition-colors placeholder:text-zinc-700 font-mono`}
+                  className={`w-full bg-[#050505] border ${errors.email ? "border-rose-500/50" : "border-zinc-800"} rounded-none py-2.5 pl-10 pr-4 text-sm text-zinc-200 focus:outline-none focus:border-emerald-500/50 transition-colors placeholder:text-zinc-500 font-mono`}
                   placeholder="name@example.com"
                 />
               </div>
@@ -85,20 +85,21 @@ const LoginPage = () => {
             </div>
 
             <div className="space-y-2">
-              <label className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-zinc-500 ml-1">
+              <label className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-zinc-400 ml-1">
                 Password
               </label>
               <div className="relative group">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-zinc-600 group-focus-within:text-emerald-500/50 transition-colors" />
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-zinc-500 group-focus-within:text-emerald-500/50 transition-colors" />
                 <input
                   type={showPassword ? "text" : "password"}
                   {...register("password")}
-                  className={`w-full bg-[#050505] border ${errors.password ? "border-rose-500/50" : "border-zinc-800"} rounded-none py-2.5 pl-10 pr-10 text-sm text-zinc-200 focus:outline-none focus:border-emerald-500/50 transition-colors placeholder:text-zinc-700 font-mono`}
+                  className={`w-full bg-[#050505] border ${errors.password ? "border-rose-500/50" : "border-zinc-800"} rounded-none py-2.5 pl-10 pr-10 text-sm text-zinc-200 focus:outline-none focus:border-emerald-500/50 transition-colors placeholder:text-zinc-500 font-mono`}
                   placeholder="••••••••"
                 />
                 <button
                   type="button"
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-600 hover:text-zinc-400 transition-colors"
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-400 transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500"
                   onClick={() => setShowPassword(!showPassword)}
                 >
                   {showPassword ? (
@@ -118,7 +119,7 @@ const LoginPage = () => {
                 )}
                 <Link
                   to="/forgot-password"
-                  className="text-[10px] font-mono font-bold uppercase tracking-widest text-zinc-600 hover:text-white transition-colors"
+                  className="text-[10px] font-mono font-bold uppercase tracking-widest text-zinc-500 hover:text-white transition-colors"
                 >
                   Forgot Password?
                 </Link>
@@ -139,7 +140,7 @@ const LoginPage = () => {
           <SocialAuthButtons />
 
           <div className="mt-8 text-center">
-            <p className="text-zinc-500 text-sm">
+            <p className="text-zinc-400 text-sm">
               New here?{" "}
               <Link
                 to="/signup"
@@ -155,7 +156,7 @@ const LoginPage = () => {
         <div className="mt-12 text-center">
           <Link
             to="/"
-            className="text-xs font-bold uppercase tracking-widest text-zinc-700 hover:text-zinc-500 transition-colors"
+            className="text-xs font-bold uppercase tracking-widest text-zinc-500 hover:text-zinc-400 transition-colors"
           >
             &larr; Back to home
           </Link>

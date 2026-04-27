@@ -20,7 +20,7 @@ const SocialAuthButtons = () => {
     <div className="space-y-3 w-full">
       <div className="relative flex items-center justify-center my-6">
         <div className="flex-grow border-t border-zinc-800"></div>
-        <span className="flex-shrink mx-4 text-[10px] font-mono font-bold text-zinc-600 uppercase tracking-widest">
+        <span className="flex-shrink mx-4 text-[10px] font-mono font-bold text-zinc-500 uppercase tracking-widest">
           or continue with
         </span>
         <div className="flex-grow border-t border-zinc-800"></div>

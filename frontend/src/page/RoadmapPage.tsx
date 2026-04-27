@@ -3,6 +3,7 @@ import { useProblemStore } from "../store/useProblemStore";
 import { ArrowLeft } from "lucide-react";
 import ProblemTable from "../components/ProblemTable";
 import NC150Roadmap from "../components/NC150Roadmap";
+import Skeleton, { SkeletonTable, SkeletonCard } from "../components/Skeleton";
 
 const NC_CATEGORIES = [
   "Arrays & Hashing", "Two Pointers", "Sliding Window", "Stack", "Binary Search",
@@ -114,10 +115,22 @@ const RoadmapPage = () => {
 
   if (isProblemsLoading) {
     return (
-      <div className="flex items-center justify-center h-[calc(100vh-64px)]">
-        <p className="font-mono text-sm text-zinc-600 uppercase tracking-widest animate-blink">
-          [ LOADING_ROADMAP ]
-        </p>
+      <div className="min-h-screen pb-20 p-6">
+        <div className="workspace-container space-y-8">
+          <div className="border-b border-zinc-800 bg-[#0d0d0d] py-16">
+            <div className="space-y-4">
+              <Skeleton width={100} height={24} />
+              <Skeleton width="60%" height={48} />
+              <Skeleton width="40%" height={24} />
+            </div>
+          </div>
+          <div className="grid gap-6 md:grid-cols-3">
+            {[1, 2, 3, 4, 5, 6].map((i) => (
+              <SkeletonCard key={i} />
+            ))}
+          </div>
+          <SkeletonTable rows={8} cols={5} />
+        </div>
       </div>
     );
   }
@@ -135,7 +148,7 @@ const RoadmapPage = () => {
               <h1 className="text-4xl md:text-6xl font-bold tracking-tighter mb-4 text-white uppercase">
                 {selectedCategory ? selectedCategory : "The Roadmap"}
               </h1>
-              <p className="text-zinc-500 text-lg max-w-2xl leading-relaxed">
+              <p className="text-zinc-400 text-lg max-w-2xl leading-relaxed">
                 {selectedCategory 
                   ? `Master every pattern in ${selectedCategory} to build an unbreakable foundation.`
                   : "Master algorithmic patterns with 150 hand-picked challenges designed to bridge the gap between intermediate and elite engineer."}
@@ -168,10 +181,10 @@ const RoadmapPage = () => {
           
           {/* Main Progress Block */}
           <div className="flex-1 bg-[#050505] p-8 flex flex-col justify-between relative group">
-            <p className="text-[10px] font-mono font-bold text-zinc-500 uppercase tracking-[0.3em] mb-4">[ OVERALL_PROGRESS ]</p>
+            <p className="text-[10px] font-mono font-bold text-zinc-400 uppercase tracking-[0.3em] mb-4">[ OVERALL_PROGRESS ]</p>
             <div className="flex items-end gap-4 mb-8">
               <span className="text-6xl font-mono font-bold text-white leading-none tracking-tighter">{solvedIds.size}</span>
-              <span className="text-[10px] font-mono text-zinc-600 uppercase tracking-[0.2em] mb-1.5">/ 150 RESOLVED</span>
+              <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-[0.2em] mb-1.5">/ 150 RESOLVED</span>
             </div>
             
             <div className="w-full h-1 bg-zinc-900 overflow-hidden">
@@ -181,37 +194,37 @@ const RoadmapPage = () => {
           
           {/* Streak Block */}
           <div className="flex-1 bg-[#050505] p-8 flex flex-col justify-between relative group">
-            <p className="text-[10px] font-mono font-bold text-zinc-500 uppercase tracking-[0.3em] mb-4">[ TELEMETRY_STREAK ]</p>
+            <p className="text-[10px] font-mono font-bold text-zinc-400 uppercase tracking-[0.3em] mb-4">[ TELEMETRY_STREAK ]</p>
             <div className="flex items-end gap-16 mb-2">
               <div>
-                <span className="block text-[10px] font-mono font-bold text-zinc-600 uppercase tracking-[0.2em] mb-2">CURRENT_RUN</span>
+                <span className="block text-[10px] font-mono font-bold text-zinc-500 uppercase tracking-[0.2em] mb-2">CURRENT_RUN</span>
                 <div className="flex items-baseline gap-2">
                   <span className="text-4xl font-mono font-bold text-white tracking-tighter">{stats.currentStreak}</span>
-                  <span className="text-[10px] font-mono text-zinc-600 uppercase">DAY</span>
+                  <span className="text-[10px] font-mono text-zinc-500 uppercase">DAY</span>
                 </div>
               </div>
               <div>
-                <span className="block text-[10px] font-mono font-bold text-zinc-600 uppercase tracking-[0.2em] mb-2">MAXIMUM_RUN</span>
-                <span className="text-2xl font-mono font-bold text-zinc-500 tracking-tighter">{stats.bestStreak}</span>
+                <span className="block text-[10px] font-mono font-bold text-zinc-500 uppercase tracking-[0.2em] mb-2">MAXIMUM_RUN</span>
+                <span className="text-2xl font-mono font-bold text-zinc-400 tracking-tighter">{stats.bestStreak}</span>
               </div>
             </div>
           </div>
 
           {/* Difficulty Block */}
           <div className="flex-1 bg-[#050505] p-8 flex flex-col justify-between relative group">
-            <p className="text-[10px] font-mono font-bold text-zinc-500 uppercase tracking-[0.3em] mb-4">[ DIFFICULTY_SPREAD ]</p>
+            <p className="text-[10px] font-mono font-bold text-zinc-400 uppercase tracking-[0.3em] mb-4">[ DIFFICULTY_SPREAD ]</p>
             <div className="flex justify-between items-center w-full gap-4 mt-auto mb-2">
               <div className="flex flex-col bg-zinc-900/30 px-4 py-3 border border-zinc-800/50 flex-1">
                 <span className="text-[10px] font-mono font-bold text-emerald-500 uppercase tracking-widest mb-2">EASY</span>
-                <span className="text-sm font-mono text-white">{stats.easy.solved}<span className="text-zinc-700 mx-1">/</span>{stats.easy.total}</span>
+                <span className="text-sm font-mono text-white">{stats.easy.solved}<span className="text-zinc-500 mx-1">/</span>{stats.easy.total}</span>
               </div>
               <div className="flex flex-col bg-zinc-900/30 px-4 py-3 border border-zinc-800/50 flex-1">
                 <span className="text-[10px] font-mono font-bold text-amber-500 uppercase tracking-widest mb-2">MED</span>
-                <span className="text-sm font-mono text-white">{stats.medium.solved}<span className="text-zinc-700 mx-1">/</span>{stats.medium.total}</span>
+                <span className="text-sm font-mono text-white">{stats.medium.solved}<span className="text-zinc-500 mx-1">/</span>{stats.medium.total}</span>
               </div>
               <div className="flex flex-col bg-zinc-900/30 px-4 py-3 border border-zinc-800/50 flex-1">
                 <span className="text-[10px] font-mono font-bold text-rose-500 uppercase tracking-widest mb-2">HARD</span>
-                <span className="text-sm font-mono text-white">{stats.hard.solved}<span className="text-zinc-700 mx-1">/</span>{stats.hard.total}</span>
+                <span className="text-sm font-mono text-white">{stats.hard.solved}<span className="text-zinc-500 mx-1">/</span>{stats.hard.total}</span>
               </div>
             </div>
           </div>
@@ -232,7 +245,7 @@ const RoadmapPage = () => {
               <ProblemTable problems={filteredByCategory} />
             ) : (
               <div className="flex flex-col items-center justify-center py-24 border border-zinc-900 bg-[#080808]">
-                <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-zinc-600">
+                <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-zinc-500">
                   [ STATUS: NO_CORE_CHALLENGES_DEPLOYED ]
                 </p>
                 <button 

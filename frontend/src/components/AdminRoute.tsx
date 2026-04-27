@@ -1,6 +1,6 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useAuthStore } from "../store/useAuthStore";
-import { Loader2 } from "lucide-react";
+import Skeleton from "./Skeleton";
 
 const AdminRoute = () => {
   const { authUser, isCheckingAuth } = useAuthStore();
@@ -8,7 +8,7 @@ const AdminRoute = () => {
   if (isCheckingAuth) {
     return (
       <div className="flex items-center justify-center h-screen bg-[#0a0a0a]">
-        <Loader2 className="size-8 animate-spin text-zinc-600" />
+        <Skeleton variant="rectangular" width={32} height={32} />
       </div>
     );
   }

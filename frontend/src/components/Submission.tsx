@@ -88,7 +88,7 @@ const SubmissionResults: React.FC<SubmissionResultsProps> = ({
             <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
               <metric.icon className="size-12" />
             </div>
-            <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-1.5">
+            <p className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest mb-1.5">
               {metric.label}
             </p>
             <p className={`text-xl font-bold ${metric.color}`}>
@@ -109,16 +109,16 @@ const SubmissionResults: React.FC<SubmissionResultsProps> = ({
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="bg-zinc-900/10">
-                <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-zinc-500">
+                <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-zinc-400">
                   Result
                 </th>
-                <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-zinc-500">
+                <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-zinc-400">
                   Expected
                 </th>
-                <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-zinc-500">
+                <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-zinc-400">
                   Actual
                 </th>
-                <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-zinc-500">
+                <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-zinc-400">
                   Resource
                 </th>
               </tr>
@@ -149,7 +149,7 @@ const SubmissionResults: React.FC<SubmissionResultsProps> = ({
                   <td className="px-6 py-4 font-mono text-xs text-zinc-200">
                     {testCase.stdout || "—"}
                   </td>
-                  <td className="px-6 py-4 text-[11px] text-zinc-500 font-medium">
+                  <td className="px-6 py-4 text-[11px] text-zinc-400 font-medium">
                     {testCase.time}s • {testCase.memory}KB
                   </td>
                 </tr>

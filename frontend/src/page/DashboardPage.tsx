@@ -190,7 +190,7 @@ const DashboardPage = () => {
                 </h1>
               </div>
 
-              <div className="flex flex-wrap justify-center md:justify-start gap-6 text-sm text-zinc-500">
+              <div className="flex flex-wrap justify-center md:justify-start gap-6 text-sm text-zinc-400">
                 <div className="flex items-center gap-2">
                   <Mail className="size-4" />
                   <span className="font-mono tracking-tight">{authUser.email}</span>
@@ -231,7 +231,7 @@ const DashboardPage = () => {
               <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 transition-opacity">
                 <Target className="size-24" />
               </div>
-              <p className="text-[10px] font-mono font-bold text-zinc-500 uppercase tracking-[0.3em] mb-4">
+              <p className="text-[10px] font-mono font-bold text-zinc-400 uppercase tracking-[0.3em] mb-4">
                 [ SYSTEM_PROGRESS ]
               </p>
               <div className="flex items-end gap-3 mb-2">
@@ -244,7 +244,7 @@ const DashboardPage = () => {
                 >
                   {solvedProblems?.length || 0}
                 </motion.span>
-                <span className="text-[10px] font-mono text-zinc-600 uppercase tracking-[0.2em] mb-2">
+                <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-[0.2em] mb-2">
                   [ TOTAL_RESOLVED ]
                 </span>
               </div>
@@ -267,7 +267,7 @@ const DashboardPage = () => {
               <div className="absolute inset-0 pointer-events-none opacity-[0.03] overflow-hidden z-0">
                 <div className="w-full h-full bg-gradient-to-b from-transparent via-white to-transparent animate-scanline" style={{ animationDelay: '2s' }}></div>
               </div>
-              <h3 className="text-[10px] font-mono font-bold uppercase tracking-[0.3em] text-zinc-500 flex items-center gap-2 mb-6">
+              <h3 className="text-[10px] font-mono font-bold uppercase tracking-[0.3em] text-zinc-400 flex items-center gap-2 mb-6">
                 <Target className="size-4" />
                 [ SKILL_TELEMETRY ]
               </h3>
@@ -280,13 +280,13 @@ const DashboardPage = () => {
               >
                 <ResponsiveContainer width="100%" height="100%">
                   <RadarChart cx="50%" cy="50%" outerRadius="75%" data={radarData}>
-                    <PolarGrid stroke="#3f3f46" />
+                    <PolarGrid stroke="#52525b" />
                     <PolarAngleAxis dataKey="subject" tick={{ fill: "#a1a1aa", fontSize: 10, fontFamily: "monospace", textAnchor: "middle" }} />
                     <PolarRadiusAxis angle={30} domain={[0, "auto"]} tick={false} axisLine={false} />
                     <Tooltip 
                       contentStyle={{ backgroundColor: "#000", border: "1px solid #27272a", borderRadius: "0", color: "#10b981", fontFamily: "monospace", fontSize: "10px", textTransform: "uppercase", letterSpacing: "0.1em" }}
                       itemStyle={{ color: "#10b981" }}
-                      cursor={{ stroke: '#3f3f46', strokeWidth: 1 }}
+                      cursor={{ stroke: '#52525b', strokeWidth: 1 }}
                     />
                     <Radar
                       name="Skills"
@@ -312,7 +312,7 @@ const DashboardPage = () => {
               </div>
               <div className="relative z-10 overflow-x-auto">
                 <div className="flex items-center justify-between mb-8">
-                  <h3 className="text-[10px] font-mono font-bold uppercase tracking-[0.3em] text-zinc-500 flex items-center gap-2">
+                  <h3 className="text-[10px] font-mono font-bold uppercase tracking-[0.3em] text-zinc-400 flex items-center gap-2">
                     <TrendingUp className="size-4" />
                     [ EXECUTION_HEATMAP ]
                   </h3>
@@ -343,7 +343,7 @@ const DashboardPage = () => {
           >
             <div className="bg-[#0a0a0a] p-6 h-full flex flex-col transition-colors hover:bg-[#0c0c0c]">
               <div className="flex items-center justify-between mb-6">
-                <h3 className="text-[10px] font-mono font-bold uppercase tracking-[0.3em] text-zinc-500">
+                <h3 className="text-[10px] font-mono font-bold uppercase tracking-[0.3em] text-zinc-400">
                   [ PLAYLISTS ]
                 </h3>
                 <Link
@@ -385,11 +385,11 @@ const DashboardPage = () => {
                         <p className="text-sm font-bold text-zinc-200 truncate group-hover:text-white transition-colors">
                           {playlist.name}
                         </p>
-                        <p className="text-[10px] text-zinc-600 font-medium uppercase tracking-wider">
+                        <p className="text-[10px] text-zinc-500 font-medium uppercase tracking-wider">
                           {playlist.problems?.length || 0} Challenges
                         </p>
                       </div>
-                      <div className="text-zinc-700 group-hover:text-emerald-500 transition-colors">
+                      <div className="text-zinc-500 group-hover:text-emerald-500 transition-colors">
                         <ChevronRight className="size-4" />
                       </div>
                     </Link>
@@ -400,7 +400,7 @@ const DashboardPage = () => {
                   <div
                     className="flex flex-col items-center justify-center py-12 text-center border border-zinc-900 bg-[#080808]"
                   >
-                    <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-zinc-600">
+                    <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-zinc-500">
                       [ STATUS: NO_DATA_FOUND ]
                     </p>
                   </div>

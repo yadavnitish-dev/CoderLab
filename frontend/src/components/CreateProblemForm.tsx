@@ -10,9 +10,9 @@ import {
   BookOpen,
   CheckCircle2,
   Download,
-  Loader2,
 } from "lucide-react";
 import BrutalistSelect from "./BrutalistSelect";
+import Skeleton from "./Skeleton";
 import Editor from "@monaco-editor/react";
 import { useState, useEffect } from "react";
 import { axiosInstance } from "../lib/axios";
@@ -240,7 +240,7 @@ const CreateProblemForm = () => {
               <div className="flex flex-wrap gap-3">
                 <div className="flex flex-col gap-4">
                   <div className="flex items-center gap-2">
-                    <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest">Select NeetCode Sample:</span>
+                    <span className="text-[10px] font-mono text-zinc-400 uppercase tracking-widest">Select NeetCode Sample:</span>
                     <div className="join bg-black border border-zinc-800 rounded-sm p-1">
                       {[1, 2, 3, 4, 5].map((num) => (
                         <button
@@ -249,7 +249,7 @@ const CreateProblemForm = () => {
                           className={`btn btn-xs border-0 rounded-sm w-12 ${
                             sampleType === `NC_${num}`
                               ? "bg-white text-black shadow-none"
-                              : "btn-ghost hover:bg-zinc-900 text-zinc-500"
+                              : "btn-ghost hover:bg-zinc-900 text-zinc-400"
                           }`}
                           onClick={() => setSampleType(`NC_${num}`)}
                         >
@@ -651,7 +651,7 @@ const CreateProblemForm = () => {
                   disabled={isLoading}
                 >
                   {isLoading ? (
-                    <Loader2 className="size-5 animate-spin text-white" />
+                    <Skeleton width={20} height={20} className="inline-block" />
                   ) : (
                     <>
                       <CheckCircle2 className="w-5 h-5" />
@@ -670,7 +670,7 @@ const CreateProblemForm = () => {
       {isLoading && (
         <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center">
           <div className="bg-[#0d0d0d] border border-zinc-800 p-8 rounded-none flex flex-col items-center gap-4">
-            <Loader2 className="size-10 animate-spin text-zinc-400" />
+            <Skeleton variant="rectangular" width={40} height={40} />
             <p className="text-lg font-medium text-white">
               Creating Problem...
             </p>

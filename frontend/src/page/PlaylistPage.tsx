@@ -3,6 +3,7 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import { usePlaylistStore } from "../store/usePlaylistStore";
 import { Trash2, ArrowLeft, ListMusic } from "lucide-react";
 import ProblemTable from "../components/ProblemTable";
+import Skeleton, { SkeletonTable } from "../components/Skeleton";
 
 const PlaylistPage = () => {
   const { id } = useParams();
@@ -40,10 +41,12 @@ const PlaylistPage = () => {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center h-[calc(100vh-64px)]">
-        <p className="font-mono text-sm text-zinc-600 uppercase tracking-widest animate-blink">
-          [ LOADING_PLAYLIST ]
-        </p>
+      <div className="min-h-screen pb-20 p-6">
+        <div className="workspace-container space-y-6">
+          <Skeleton width={300} height={48} />
+          <Skeleton width={200} height={20} className="mb-8" />
+          <SkeletonTable rows={5} cols={4} />
+        </div>
       </div>
     );
   }
@@ -51,7 +54,7 @@ const PlaylistPage = () => {
   if (!currentPlaylist) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center">
-        <p className="text-zinc-500 font-medium mb-4">Playlist not found</p>
+        <p className="text-zinc-400 font-medium mb-4">Playlist not found</p>
         <Link
           to="/playlists"
           className="text-white bg-zinc-900 border border-zinc-800 px-6 py-2 rounded-none text-sm font-bold uppercase tracking-widest hover:bg-zinc-800 transition-colors"
@@ -69,7 +72,7 @@ const PlaylistPage = () => {
         <div className="workspace-container">
           <Link
             to="/playlists"
-            className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-zinc-500 hover:text-white transition-colors mb-8"
+            className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-zinc-400 hover:text-white transition-colors mb-8"
           >
             <ArrowLeft className="size-3" />
             Back to Playlists
@@ -81,14 +84,14 @@ const PlaylistPage = () => {
                 <div className="size-8 bg-zinc-900 border border-zinc-800 flex items-center justify-center rounded-none text-zinc-400">
                   <ListMusic className="size-4" />
                 </div>
-                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-500">
+                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-400">
                   Playlist Collection
                 </span>
               </div>
               <h1 className="text-4xl font-bold tracking-tight text-white mb-2">
                 {currentPlaylist.name}
               </h1>
-              <p className="text-zinc-500 text-lg max-w-2xl">
+              <p className="text-zinc-400 text-lg max-w-2xl">
                 {currentPlaylist.description ||
                   "A curated study track for mastering specific algorithmic patterns."}
               </p>
@@ -96,7 +99,7 @@ const PlaylistPage = () => {
 
             <div className="flex gap-3 shrink-0">
               <div className="bg-black border border-zinc-800 px-4 py-2 rounded-none text-center min-w-25">
-                <p className="text-[10px] font-bold uppercase tracking-widest text-zinc-600 mb-0.5">
+                <p className="text-[10px] font-bold uppercase tracking-widest text-zinc-500 mb-0.5">
                   Challenges
                 </p>
                 <p className="text-lg font-bold text-white">
@@ -127,7 +130,7 @@ const PlaylistPage = () => {
           />
         ) : (
           <div className="flex flex-col items-center justify-center py-24 border border-zinc-900 bg-[#080808]">
-            <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-zinc-600">
+            <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-zinc-500">
               [ STATUS: PLAYLIST_EMPTY ]
             </p>
             <Link

@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { useAuthStore } from "../store/useAuthStore";
 import BrutalistButton from "../components/BrutalistButton";
+import Skeleton from "../components/Skeleton";
 
 const ProfileSchema = z.object({
   name: z.string().min(3, "Name must be at least 3 characters"),
@@ -115,7 +116,7 @@ const SettingsPage: FC = () => {
               className={`w-full flex items-center gap-3 px-4 py-3 border transition-all text-sm font-bold uppercase tracking-widest ${
                 activeTab === "profile"
                   ? "bg-zinc-900 border-zinc-700 text-white"
-                  : "bg-black border-transparent text-zinc-500 hover:bg-zinc-900 hover:text-zinc-300"
+                  : "bg-black border-transparent text-zinc-400 hover:bg-zinc-900 hover:text-zinc-300"
               }`}
             >
               <UserIcon className="size-4" />
@@ -126,7 +127,7 @@ const SettingsPage: FC = () => {
               className={`w-full flex items-center gap-3 px-4 py-3 border transition-all text-sm font-bold uppercase tracking-widest ${
                 activeTab === "security"
                   ? "bg-zinc-900 border-zinc-700 text-white"
-                  : "bg-black border-transparent text-zinc-500 hover:bg-zinc-900 hover:text-zinc-300"
+                  : "bg-black border-transparent text-zinc-400 hover:bg-zinc-900 hover:text-zinc-300"
               }`}
             >
               <Shield className="size-4" />
@@ -137,7 +138,7 @@ const SettingsPage: FC = () => {
               className={`w-full flex items-center gap-3 px-4 py-3 border transition-all text-sm font-bold uppercase tracking-widest ${
                 activeTab === "danger"
                   ? "bg-zinc-900 border-zinc-700 text-rose-500"
-                  : "bg-black border-transparent text-zinc-500 hover:bg-zinc-900 hover:text-rose-400"
+                  : "bg-black border-transparent text-zinc-400 hover:bg-zinc-900 hover:text-rose-400"
               }`}
             >
               <Trash2 className="size-4" />
@@ -152,28 +153,28 @@ const SettingsPage: FC = () => {
                 <form onSubmit={handleSubmitProfile(onProfileSubmit)} className="space-y-8">
                   <div className="space-y-6">
                     <div className="space-y-2">
-                      <label className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-zinc-500 ml-1">
+                      <label className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-zinc-400 ml-1">
                         Email Address
                       </label>
                       <div className="relative group opacity-50">
-                        <Mail className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-zinc-600" />
+                        <Mail className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-zinc-500" />
                         <input
                           readOnly
                           value={authUser?.email || ""}
-                          className="w-full bg-[#050505] border border-zinc-900 rounded-none py-3 pl-10 pr-4 text-sm text-zinc-500 font-mono cursor-not-allowed"
+                          className="w-full bg-[#050505] border border-zinc-900 rounded-none py-3 pl-10 pr-4 text-sm text-zinc-400 font-mono cursor-not-allowed"
                         />
                       </div>
-                      <p className="text-[9px] text-zinc-600 font-mono ml-1 italic">
+                      <p className="text-[9px] text-zinc-500 font-mono ml-1 italic">
                         Email cannot be changed. Contact support for account migration.
                       </p>
                     </div>
 
                     <div className="space-y-2">
-                      <label className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-zinc-500 ml-1">
+                      <label className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-zinc-400 ml-1">
                         Display Name
                       </label>
                       <div className="relative group">
-                        <UserIcon className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-zinc-600 group-focus-within:text-emerald-500/50 transition-colors" />
+                        <UserIcon className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-zinc-500 group-focus-within:text-emerald-500/50 transition-colors" />
                         <input
                           {...registerProfile("name")}
                           className={`w-full bg-[#050505] border ${profileErrors.name ? "border-rose-500/50" : "border-zinc-800"} rounded-none py-3 pl-10 pr-4 text-sm text-zinc-200 focus:outline-none focus:border-emerald-500/50 transition-none font-mono`}
@@ -210,7 +211,7 @@ const SettingsPage: FC = () => {
                       </div>
                       <div className="space-y-2">
                         <h3 className="text-white font-bold uppercase tracking-[0.2em] text-sm">OAuth Account</h3>
-                        <p className="text-zinc-500 text-xs font-mono max-w-sm mx-auto leading-relaxed">
+                        <p className="text-zinc-400 text-xs font-mono max-w-sm mx-auto leading-relaxed">
                           Your account security is managed by <span className="text-emerald-500 uppercase">{authUser.socialProvider || "your social provider"}</span>. 
                           Password updates are not available for social logins.
                         </p>
@@ -221,11 +222,11 @@ const SettingsPage: FC = () => {
                   <form onSubmit={handleSubmitPassword(onPasswordSubmit)} className="space-y-8">
                     <div className="space-y-6">
                       <div className="space-y-2">
-                        <label className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-zinc-500 ml-1">
+                        <label className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-zinc-400 ml-1">
                           Current Password
                         </label>
                         <div className="relative group">
-                          <Lock className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-zinc-600 group-focus-within:text-emerald-500/50 transition-colors" />
+                          <Lock className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-zinc-500 group-focus-within:text-emerald-500/50 transition-colors" />
                           <input
                             type="password"
                             {...registerPassword("oldPassword")}
@@ -242,11 +243,11 @@ const SettingsPage: FC = () => {
 
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="space-y-2">
-                          <label className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-zinc-500 ml-1">
+                          <label className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-zinc-400 ml-1">
                             New Password
                           </label>
                           <div className="relative group">
-                            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-zinc-600 group-focus-within:text-emerald-500/50 transition-colors" />
+                            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-zinc-500 group-focus-within:text-emerald-500/50 transition-colors" />
                             <input
                               type="password"
                               {...registerPassword("newPassword")}
@@ -262,11 +263,11 @@ const SettingsPage: FC = () => {
                         </div>
 
                         <div className="space-y-2">
-                          <label className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-zinc-500 ml-1">
+                          <label className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-zinc-400 ml-1">
                             Confirm Password
                           </label>
                           <div className="relative group">
-                            <Shield className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-zinc-600 group-focus-within:text-emerald-500/50 transition-colors" />
+                            <Shield className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-zinc-500 group-focus-within:text-emerald-500/50 transition-colors" />
                             <input
                               type="password"
                               {...registerPassword("confirmPassword")}
@@ -311,9 +312,8 @@ const SettingsPage: FC = () => {
                     </p>
                     <div className="pt-4">
                       <BrutalistButton
-                        variant="primary"
+                        variant="danger"
                         onClick={() => setShowConfirmModal(true)}
-                        className="bg-rose-600 hover:bg-rose-500 border-rose-700 text-white"
                         icon={Trash2}
                       >
                         Delete Account
@@ -358,7 +358,7 @@ const SettingsPage: FC = () => {
               >
                 {isDeleting ? (
                   <>
-                    <Loader2 className="size-4 animate-spin" />
+                    <Skeleton width={16} height={16} className="inline-block" />
                     Deleting...
                   </>
                 ) : (

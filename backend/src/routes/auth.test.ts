@@ -114,7 +114,7 @@ describe("Auth Endpoints", () => {
     it("should login a user", async () => {
       (db.user.findUnique as any).mockResolvedValue({ id: "1", email: "test@example.com", password: "hashed" });
       const bcrypt = await import("bcryptjs");
-      // @ts-expect-error
+      // @ts-expect-error - bcrypt mock type mismatch in test environment
       vi.spyOn(bcrypt.default, "compare").mockResolvedValue(true);
 
       const res = await request(app)

@@ -69,11 +69,11 @@ const ProblemsTable: React.FC<ProblemsTableProps> = ({
       <div className="flex flex-col md:flex-row gap-4 mb-8 items-end justify-between">
         <div className="flex flex-wrap gap-4 flex-1 w-full md:w-auto">
           <div className="relative flex-1 min-w-60">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-zinc-500" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-zinc-400" />
             <input
               type="text"
               placeholder="Search problems..."
-              className="w-full bg-black border border-zinc-800 rounded-none pl-10 pr-4 py-2.5 text-sm text-zinc-200 focus:outline-none focus:border-emerald-500/50 transition-colors placeholder:text-zinc-700"
+              className="w-full bg-black border border-zinc-800 rounded-none pl-10 pr-4 py-2.5 text-sm text-zinc-200 focus:outline-none focus:border-emerald-500/50 transition-colors placeholder:text-zinc-500"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
@@ -108,16 +108,16 @@ const ProblemsTable: React.FC<ProblemsTableProps> = ({
         <table className="w-full text-left border-collapse">
           <thead>
             <tr className="border-b border-zinc-800 bg-[#0d0d0d]">
-              <th className="px-6 py-4 text-xs font-bold uppercase tracking-widest text-zinc-500 w-16">
+              <th className="px-6 py-4 text-xs font-bold uppercase tracking-widest text-zinc-400 w-16">
                 Status
               </th>
-              <th className="px-6 py-4 text-xs font-bold uppercase tracking-widest text-zinc-500">
+              <th className="px-6 py-4 text-xs font-bold uppercase tracking-widest text-zinc-400">
                 Title
               </th>
-              <th className="px-6 py-4 text-xs font-bold uppercase tracking-widest text-zinc-500 w-32">
+              <th className="px-6 py-4 text-xs font-bold uppercase tracking-widest text-zinc-400 w-32">
                 Difficulty
               </th>
-              <th className="px-6 py-4 text-xs font-bold uppercase tracking-widest text-zinc-500 text-right">
+              <th className="px-6 py-4 text-xs font-bold uppercase tracking-widest text-zinc-400 text-right">
                 Actions
               </th>
             </tr>
@@ -144,7 +144,7 @@ const ProblemsTable: React.FC<ProblemsTableProps> = ({
                       {isSolved ? (
                         <CheckCircle2 className="size-5 text-emerald-500/80" />
                       ) : (
-                        <Circle className="size-5 text-zinc-800" />
+                        <Circle className="size-5 text-zinc-600" />
                       )}
                     </td>
                     <td className="px-6 py-5">
@@ -166,13 +166,13 @@ const ProblemsTable: React.FC<ProblemsTableProps> = ({
                           <>
                             <Link
                               to={`/problem/${problem.id}/edit`}
-                              className="p-2 text-zinc-500 hover:text-white hover:bg-zinc-900 rounded-none transition-colors"
+                              className="p-2 text-zinc-400 hover:text-white hover:bg-zinc-900 rounded-none transition-colors"
                             >
                               <PencilIcon className="size-4" />
                             </Link>
                             <button
                               onClick={() => onDeleteProblem(problem.id)}
-                              className="p-2 text-zinc-500 hover:text-rose-400 hover:bg-rose-500/10 rounded-none transition-colors"
+                              className="p-2 text-zinc-400 hover:text-rose-400 hover:bg-rose-500/10 rounded-none transition-colors"
                             >
                               <Trash2 className="size-4" />
                             </button>
@@ -183,7 +183,7 @@ const ProblemsTable: React.FC<ProblemsTableProps> = ({
                             setSelectedProblemId(problem.id);
                             setIsAddToPlaylistModalOpen(true);
                           }}
-                          className="p-2 text-zinc-500 hover:text-zinc-200 hover:bg-zinc-900 rounded-none transition-colors"
+                          className="p-2 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900 rounded-none transition-colors"
                         >
                           <Bookmark className="size-4" />
                         </button>
@@ -198,7 +198,7 @@ const ProblemsTable: React.FC<ProblemsTableProps> = ({
                   colSpan={4}
                   className="px-6 py-20 text-center bg-[#080808]"
                 >
-                  <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-zinc-600">
+                  <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-zinc-400">
                     [ STATUS: NO_MATCHING_CHALLENGES ]
                   </p>
                 </td>
@@ -211,7 +211,7 @@ const ProblemsTable: React.FC<ProblemsTableProps> = ({
       {/* Pagination Bar */}
       {totalPages > 1 && (
         <div className="flex items-center justify-between mt-8 px-2">
-          <p className="text-xs text-zinc-600 font-medium">
+          <p className="text-xs text-zinc-500 font-medium">
             Showing{" "}
             <span className="text-zinc-400">
               {(currentPage - 1) * itemsPerPage + 1}
@@ -227,7 +227,7 @@ const ProblemsTable: React.FC<ProblemsTableProps> = ({
             <button
               disabled={currentPage === 1}
               onClick={() => setCurrentPage((p) => p - 1)}
-              className="p-2 border border-zinc-800 rounded-none text-zinc-500 hover:text-white hover:bg-zinc-900 disabled:opacity-30 disabled:hover:bg-transparent transition-colors"
+              className="p-2 border border-zinc-800 rounded-none text-zinc-400 hover:text-white hover:bg-zinc-900 disabled:opacity-30 disabled:hover:bg-transparent transition-colors"
             >
               <ChevronLeft className="size-4" />
             </button>
@@ -237,7 +237,7 @@ const ProblemsTable: React.FC<ProblemsTableProps> = ({
             <button
               disabled={currentPage === totalPages}
               onClick={() => setCurrentPage((p) => p + 1)}
-              className="p-2 border border-zinc-800 rounded-none text-zinc-500 hover:text-white hover:bg-zinc-900 disabled:opacity-30 disabled:hover:bg-transparent transition-colors"
+              className="p-2 border border-zinc-800 rounded-none text-zinc-400 hover:text-white hover:bg-zinc-900 disabled:opacity-30 disabled:hover:bg-transparent transition-colors"
             >
               <ChevronRight className="size-4" />
             </button>

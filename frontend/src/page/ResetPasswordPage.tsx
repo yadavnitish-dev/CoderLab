@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { useSearchParams, Link, useNavigate } from "react-router-dom";
-import { Lock, Loader2, ShieldCheck } from "lucide-react";
+import { Lock, ShieldCheck } from "lucide-react";
 import { useAuthStore } from "../store/useAuthStore";
 
 /**
@@ -32,7 +32,7 @@ const ResetPasswordPage = () => {
       <div className="min-h-screen flex items-center justify-center bg-[#0a0a0a] p-4">
         <div className="max-w-md w-full text-center space-y-6">
           <h1 className="text-2xl font-bold tracking-tight text-white uppercase">Invalid Link</h1>
-          <p className="text-zinc-500 text-sm">Security token is required to reset password.</p>
+          <p className="text-zinc-400 text-sm">Security token is required to reset password.</p>
           <Link to="/login" className="inline-flex items-center gap-2 text-white bg-zinc-900 border border-zinc-800 px-6 py-2.5 rounded-none text-xs font-bold hover:bg-zinc-800 transition-none">
             Return to Login
           </Link>
@@ -45,19 +45,19 @@ const ResetPasswordPage = () => {
     <div className="min-h-screen flex flex-col items-center justify-center bg-[#0a0a0a] p-4">
       <div className="w-full max-w-sm space-y-8">
         <div className="text-center space-y-2">
-          <div className="text-[10px] font-bold uppercase tracking-[0.3em] text-zinc-600 mb-6">
+          <div className="text-[10px] font-bold uppercase tracking-[0.3em] text-zinc-500 mb-6">
             AlgoPrep // Reset Password
           </div>
           <h1 className="text-3xl font-bold tracking-tight text-white mb-2">Update <span className="text-emerald-500">Password</span></h1>
-          <p className="text-zinc-500 text-sm">Set a new password for your account.</p>
+          <p className="text-zinc-400 text-sm">Set a new password for your account.</p>
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           <div className="space-y-4">
             <div className="form-control">
-              <label className="text-[10px] font-bold uppercase tracking-widest text-zinc-600 mb-2 block">New Password</label>
+              <label className="text-[10px] font-bold uppercase tracking-widest text-zinc-500 mb-2 block">New Password</label>
               <div className="relative group">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-zinc-600 group-focus-within:text-white transition-colors">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-zinc-500 group-focus-within:text-white transition-colors">
                   <Lock className="size-4" />
                 </div>
                 <input
@@ -77,9 +77,9 @@ const ResetPasswordPage = () => {
             </div>
 
             <div className="form-control">
-              <label className="text-[10px] font-bold uppercase tracking-widest text-zinc-600 mb-2 block">Confirm Password</label>
+              <label className="text-[10px] font-bold uppercase tracking-widest text-zinc-500 mb-2 block">Confirm Password</label>
               <div className="relative group">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-zinc-600 group-focus-within:text-white transition-colors">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-zinc-500 group-focus-within:text-white transition-colors">
                   <ShieldCheck className="size-4" />
                 </div>
                 <input
@@ -104,7 +104,7 @@ const ResetPasswordPage = () => {
             className="w-full bg-white text-black py-3 rounded-none text-sm font-bold hover:bg-zinc-200 transition-none flex items-center justify-center gap-2 disabled:opacity-50"
           >
             {isLoggingIn ? (
-              <Loader2 className="size-4 animate-spin" />
+              <span className="animate-blink font-mono font-bold text-emerald-500">_</span>
             ) : (
               <ShieldCheck className="size-4" />
             )}
@@ -115,7 +115,7 @@ const ResetPasswordPage = () => {
         <div className="text-center">
           <Link
             to="/login"
-            className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-zinc-600 hover:text-white transition-colors"
+            className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-zinc-500 hover:text-white transition-colors"
           >
             Return to Login
           </Link>

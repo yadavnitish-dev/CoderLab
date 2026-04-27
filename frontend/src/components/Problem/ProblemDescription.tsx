@@ -30,7 +30,7 @@ const ProblemDescription: React.FC<ProblemDescriptionProps> = ({ problem, initia
 
       {initialSampleCases.length > 0 && (
         <div className="space-y-6">
-          <h3 className="text-sm font-bold uppercase tracking-widest text-zinc-500">
+          <h3 className="text-sm font-bold uppercase tracking-widest text-zinc-400">
             Sample Cases
           </h3>
           {initialSampleCases.map((example, index) => (
@@ -39,13 +39,13 @@ const ProblemDescription: React.FC<ProblemDescriptionProps> = ({ problem, initia
               className="bg-black border border-zinc-800 rounded-sm overflow-hidden"
             >
               <div className="px-4 py-2 border-b border-zinc-800 bg-zinc-900/40 flex justify-between items-center">
-                <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-tighter">
+                <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-tighter">
                   Case {index + 1}
                 </span>
               </div>
               <div className="p-4 space-y-4 font-mono text-sm">
                 <div>
-                  <div className="text-[11px] text-zinc-500 mb-1.5 font-sans font-bold uppercase tracking-wider">
+                  <div className="text-[11px] text-zinc-400 mb-1.5 font-sans font-bold uppercase tracking-wider">
                     Input
                   </div>
                   <pre className="bg-black border border-zinc-900 p-3 rounded-sm text-zinc-300 overflow-x-auto">
@@ -53,7 +53,7 @@ const ProblemDescription: React.FC<ProblemDescriptionProps> = ({ problem, initia
                   </pre>
                 </div>
                 <div>
-                  <div className="text-[11px] text-zinc-500 mb-1.5 font-sans font-bold uppercase tracking-wider">
+                  <div className="text-[11px] text-zinc-400 mb-1.5 font-sans font-bold uppercase tracking-wider">
                     Output
                   </div>
                   <pre className="bg-black border border-zinc-900 p-3 rounded-sm text-emerald-400/80 overflow-x-auto">
@@ -68,7 +68,7 @@ const ProblemDescription: React.FC<ProblemDescriptionProps> = ({ problem, initia
 
       {problem.constraints && (
         <div className="space-y-4">
-          <h3 className="text-sm font-bold uppercase tracking-widest text-zinc-500">
+          <h3 className="text-sm font-bold uppercase tracking-widest text-zinc-400">
             Constraints
           </h3>
           <div className="bg-black border border-zinc-800 rounded-sm p-4">

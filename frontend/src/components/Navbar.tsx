@@ -1,17 +1,19 @@
-import { LogOut, Code2, LayoutDashboard, Settings } from "lucide-react";
+import { LogOut, Code2, LayoutDashboard, Settings, Menu, X } from "lucide-react";
 import { useAuthStore } from "../store/useAuthStore";
 import { Link, useLocation } from "react-router-dom";
+import { useState } from "react";
 import LogoutButton from "./LogoutButton";
 import BrutalistButton from "./BrutalistButton";
 
 const Navbar = () => {
   const { authUser } = useAuthStore();
   const location = useLocation();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <nav className="sticky top-0 z-50 w-full border-b border-zinc-900 bg-[#0a0a0a]/80 backdrop-blur-md">
+    <nav aria-label="Main navigation" className="sticky top-0 z-50 w-full border-b border-zinc-900 bg-[#0a0a0a]/80 backdrop-blur-md">
       <div className="max-w-[1400px] mx-auto px-6 h-16 flex items-center justify-between">
         {/* Brand */}
         <div className="flex items-center gap-12">
@@ -28,17 +30,25 @@ const Navbar = () => {
           <div className="hidden md:flex items-center gap-1">
             <Link
               to="/roadmap"
-              className={`px-4 py-2 text-[10px] font-bold uppercase tracking-[0.2em] transition-none ${isActive("/roadmap") ? "text-white" : "text-zinc-500 hover:text-zinc-300"}`}
+              className={`px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] transition-none ${isActive("/roadmap") ? "text-white border-b-2 border-emerald-500" : "text-zinc-400 hover:text-zinc-300 hover:border-b-2 hover:border-zinc-700"}`}
             >
               Roadmap
             </Link>
             <Link
               to="/playlists"
-              className={`px-4 py-2 text-[10px] font-bold uppercase tracking-[0.2em] transition-none ${isActive("/playlists") ? "text-white" : "text-zinc-500 hover:text-zinc-300"}`}
+              className={`px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] transition-none ${isActive("/playlists") ? "text-white border-b-2 border-emerald-500" : "text-zinc-400 hover:text-zinc-300 hover:border-b-2 hover:border-zinc-700"}`}
             >
               Playlists
             </Link>
           </div>
+
+          {/* Mobile Menu Button */}
+          <button
+            className="md:hidden p-2 text-zinc-400 hover:text-white"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          >
+            {isMobileMenuOpen ? <X className="size-6" /> : <Menu className="size-6" />}
+          </button>
         </div>
 
         {/* User Section */}
@@ -94,7 +104,7 @@ const Navbar = () => {
                   <p className="text-sm font-bold text-white">
                     {authUser.name}
                   </p>
-                  <p className="text-[10px] text-zinc-500 truncate uppercase tracking-widest mt-1">
+                  <p className="text-[10px] text-zinc-400 truncate uppercase tracking-widest mt-1">
                     {authUser.email}
                   </p>
                 </div>
@@ -146,6 +156,44 @@ const Navbar = () => {
           )}
         </div>
       </div>
+
+      {/* Mobile Menu */}
+      {isMobileMenuOpen && (
+        <div className="md:hidden border-t border-zinc-800 bg-[#0a0a0a] p-4 space-y-4">
+          <Link
+            to="/roadmap"
+            className={`block px-4 py-3 text-xs font-bold uppercase tracking-[0.2em] ${isActive("/roadmap") ? "text-emerald-500 bg-zinc-900" : "text-zinc-400"}`}
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
+            Roadmap
+          </Link>
+          <Link
+            to="/playlists"
+            className={`block px-4 py-3 text-xs font-bold uppercase tracking-[0.2em] ${isActive("/playlists") ? "text-emerald-500 bg-zinc-900" : "text-zinc-400"}`}
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
+            Playlists
+          </Link>
+          {authUser && (
+            <>
+              <Link
+                to="/dashboard"
+                className="block px-4 py-3 text-xs font-bold uppercase tracking-[0.2em] text-zinc-400"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Dashboard
+              </Link>
+              <Link
+                to="/settings"
+                className="block px-4 py-3 text-xs font-bold uppercase tracking-[0.2em] text-zinc-400"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Settings
+              </Link>
+            </>
+          )}
+        </div>
+      )}
     </nav>
   );
 };

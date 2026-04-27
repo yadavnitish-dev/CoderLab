@@ -1,7 +1,8 @@
 import { useEffect } from "react";
 import { useSearchParams, Link } from "react-router-dom";
 import { useAuthStore } from "../store/useAuthStore";
-import { Loader2, ShieldCheck, ShieldAlert, ArrowRight } from "lucide-react";
+import { ShieldCheck, ShieldAlert, ArrowRight } from "lucide-react";
+import Skeleton from "../components/Skeleton";
 
 /**
  * Verify Email Page
@@ -26,7 +27,7 @@ const VerifyEmailPage = () => {
             <ShieldAlert className="size-8" />
           </div>
           <h1 className="text-2xl font-bold tracking-tight text-white uppercase">Invalid Link</h1>
-          <p className="text-zinc-500 text-sm">
+          <p className="text-zinc-400 text-sm">
             No verification token detected. Please use the link sent to your email.
           </p>
           <Link to="/" className="inline-flex items-center gap-2 text-white bg-zinc-900 border border-zinc-800 px-6 py-2.5 rounded-none text-xs font-bold hover:bg-zinc-800 transition-none">
@@ -40,14 +41,14 @@ const VerifyEmailPage = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#0a0a0a] p-4">
       <div className="max-w-md w-full text-center space-y-8">
-        <div className="header text-[10px] font-bold uppercase tracking-[0.3em] text-zinc-600 mb-8">
+        <div className="header text-[10px] font-bold uppercase tracking-[0.3em] text-zinc-500 mb-8">
           AlgoPrep // Email Verification
         </div>
 
         {isCheckingAuth ? (
           <div className="space-y-6">
-            <Loader2 className="size-12 animate-spin mx-auto text-zinc-700" />
-            <p className="text-sm font-mono text-zinc-500 animate-pulse">Verifying account...</p>
+            <Skeleton variant="rectangular" width={48} height={48} className="mx-auto" />
+            <p className="text-sm font-mono text-zinc-400 animate-pulse">Verifying account...</p>
           </div>
         ) : authUser?.isVerified ? (
           <div className="space-y-8">

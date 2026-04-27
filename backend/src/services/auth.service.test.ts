@@ -273,28 +273,53 @@ describe("AuthService", () => {
   });
 
   describe("refreshToken", () => {
-    it("should rotate tokens successfully", async () => {
+    it("should rotate tokens successfully when token matches hashed value", async () => {
       const mockUser = {
         id: "user-1",
-        refreshToken: "valid-refresh-token",
+        refreshToken: "hashed_refresh_token",
         refreshTokenExpiry: new Date(Date.now() + 10000),
       };
       (db.user.findUnique as any).mockResolvedValue(mockUser);
-      
+      (bcrypt.compare as any).mockResolvedValue(true);
+
       const result = await authService.refreshToken("valid-refresh-token");
 
       expect(result.token).toBe("mock_token");
       expect(result.refreshToken).toBe("mock_refresh_token");
       expect(db.user.update).toHaveBeenCalledWith(expect.objectContaining({
         where: { id: "user-1" },
-        data: expect.objectContaining({ refreshToken: "mock_refresh_token" })
+        data: expect.objectContaining({ refreshToken: expect.any(String) })
       }));
     });
 
     it("should throw UnauthorizedError if token does not match DB", async () => {
       (db.user.findUnique as any).mockResolvedValue({
         id: "user-1",
-        refreshToken: "different-token",
+        refreshToken: "hashed_different_token",
+        refreshTokenExpiry: new Date(Date.now() + 10000),
+      });
+      (bcrypt.compare as any).mockResolvedValue(false);
+
+      await expect(authService.refreshToken("valid-refresh-token"))
+        .rejects.toThrow(UnauthorizedError);
+    });
+
+    it("should throw UnauthorizedError if refreshToken is null", async () => {
+      (db.user.findUnique as any).mockResolvedValue({
+        id: "user-1",
+        refreshToken: null,
+        refreshTokenExpiry: new Date(Date.now() + 10000),
+      });
+
+      await expect(authService.refreshToken("valid-refresh-token"))
+        .rejects.toThrow(UnauthorizedError);
+    });
+
+    it("should throw UnauthorizedError if refreshTokenExpiry is in the past", async () => {
+      (db.user.findUnique as any).mockResolvedValue({
+        id: "user-1",
+        refreshToken: "hashed_token",
+        refreshTokenExpiry: new Date(Date.now() - 10000),
       });
 
       await expect(authService.refreshToken("valid-refresh-token"))

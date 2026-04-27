@@ -18,6 +18,7 @@ import SubmissionResults from "../components/Submission";
 import WorkspaceHeader from "../components/Problem/WorkspaceHeader";
 import ProblemDescription from "../components/Problem/ProblemDescription";
 import CodeEditor from "../components/Problem/CodeEditor";
+import Skeleton, { SkeletonWorkspace } from "../components/Skeleton";
 import SubmissionConsole from "../components/Problem/SubmissionConsole";
 
 const displayLanguageMap: Record<string, string> = {
@@ -50,6 +51,7 @@ const ProblemPage = () => {
     "testcases",
   );
   const [selectedSubmission, setSelectedSubmission] = useState<any>(null);
+  const [pendingLanguage, setPendingLanguage] = useState<string | null>(null);
 
   // Layout & Micro-interactions
   const [isLeftPaneVisible, setIsLeftPaneVisible] = useState(true);
@@ -212,10 +214,8 @@ const ProblemPage = () => {
 
   if (isProblemLoading || !problem) {
     return (
-      <div className="flex items-center justify-center h-screen bg-[#0a0a0a]">
-        <p className="font-mono text-sm text-zinc-600 uppercase tracking-widest animate-blink">
-          [ LOADING_WORKSPACE ]
-        </p>
+      <div className="h-screen bg-[#0a0a0a] p-6">
+        <SkeletonWorkspace />
       </div>
     );
   }
@@ -242,7 +242,7 @@ const ProblemPage = () => {
       case "hints":
         return (
           <div className="space-y-4 animate-in fade-in duration-500">
-            <h3 className="text-sm font-bold uppercase tracking-widest text-zinc-500">
+            <h3 className="text-sm font-bold uppercase tracking-widest text-zinc-400">
               Problem Hints
             </h3>
             {problem?.hints ? (
@@ -252,7 +252,7 @@ const ProblemPage = () => {
                 </p>
               </div>
             ) : (
-              <p className="text-zinc-600 italic text-sm">
+              <p className="text-zinc-500 italic text-sm">
                 No hints available for this challenge.
               </p>
             )}
@@ -275,9 +275,13 @@ const ProblemPage = () => {
         setFontSize={setFontSize}
         selectedLanguage={selectedLanguage}
         setSelectedLanguage={(lang) => {
-          setSelectedLanguage(lang);
-          if (problem?.codeSnippets) {
-            setCode(problem.codeSnippets[lang] || "");
+          if (code !== "" && code !== (problem?.codeSnippets?.[selectedLanguage] || "")) {
+            setPendingLanguage(lang);
+          } else {
+            setSelectedLanguage(lang);
+            if (problem?.codeSnippets) {
+              setCode(problem.codeSnippets[lang] || "");
+            }
           }
         }}
         codeSnippets={problem.codeSnippets || {}}
@@ -306,7 +310,7 @@ const ProblemPage = () => {
                   className={`flex items-center gap-2 px-4 py-2 border transition-all duration-300 relative ${
                     activeTab === tab.id
                       ? "text-white bg-zinc-900 border-zinc-700 z-10"
-                      : "text-zinc-500 border-transparent hover:text-zinc-300 hover:bg-zinc-800"
+                      : "text-zinc-400 border-transparent hover:text-zinc-300 hover:bg-zinc-800"
                   }`}
                 >
                   <tab.icon className="size-3.5" />
@@ -328,7 +332,7 @@ const ProblemPage = () => {
           >
             <div className="w-1px h-full bg-zinc-800 group-hover:bg-zinc-700 transition-colors" />
             <div className="absolute bg-zinc-950 border border-zinc-800 p-1 rounded-none">
-              <GripVertical className="size-3 text-zinc-500" />
+              <GripVertical className="size-3 text-zinc-400" />
             </div>
           </div>
         )}
@@ -366,12 +370,47 @@ const ProblemPage = () => {
         </div>
       </main>
 
+      {/* Language Switch Confirmation */}
+      {pendingLanguage && (
+        <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
+          <div className="bg-[#0a0a0a] border border-zinc-800 p-6 max-w-md w-full">
+            <h3 className="text-lg font-bold text-white mb-4 uppercase tracking-wider">
+              Unsaved Changes
+            </h3>
+            <p className="text-zinc-400 text-sm mb-6">
+              Switching languages will reset your code. Are you sure you want to continue?
+            </p>
+            <div className="flex gap-4">
+              <button
+                onClick={() => setPendingLanguage(null)}
+                className="flex-1 px-4 py-2 border border-zinc-800 text-zinc-400 text-xs font-bold uppercase tracking-widest hover:bg-zinc-900 hover:text-white transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  const lang = pendingLanguage;
+                  setPendingLanguage(null);
+                  setSelectedLanguage(lang);
+                  if (problem?.codeSnippets) {
+                    setCode(problem.codeSnippets[lang] || "");
+                  }
+                }}
+                className="flex-1 px-4 py-2 bg-white text-black text-xs font-bold uppercase tracking-widest hover:bg-zinc-200 transition-colors"
+              >
+                Switch Language
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Submission Details */}
       {selectedSubmission && (
-        <div className="fixed inset-0 z-100 bg-black/80 flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-[100] bg-black/80 flex items-center justify-center p-4">
           <div className="bg-[#0a0a0a] border border-zinc-800 rounded-none w-full max-w-4xl max-h-[90vh] overflow-y-auto relative">
             <button
-              className="absolute top-4 right-4 p-2 text-zinc-600 hover:text-white hover:bg-zinc-900 rounded-none transition-colors"
+              className="absolute top-4 right-4 p-2 text-zinc-500 hover:text-white hover:bg-zinc-900 rounded-none transition-colors"
               onClick={() => setSelectedSubmission(null)}
             >
               <XCircle className="size-6" />

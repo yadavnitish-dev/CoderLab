@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { X, Plus, Loader2, ListMusic, Check } from "lucide-react";
+import { X, Plus, ListMusic, Check } from "lucide-react";
 import { usePlaylistStore } from "../store/usePlaylistStore";
+import Skeleton from "./Skeleton";
 
 interface AddToPlaylistModalProps {
   isOpen: boolean;
@@ -90,7 +91,7 @@ const AddToPlaylistModal: React.FC<AddToPlaylistModalProps> = ({
                   </div>
                 ))
               ) : (
-                <div className="text-center py-8 text-zinc-600 bg-black rounded-none border border-dashed border-zinc-800">
+                <div className="text-center py-8 text-zinc-500 bg-black rounded-none border border-dashed border-zinc-800">
                   <p className="text-sm">No playlists found</p>
                 </div>
               )}
@@ -111,7 +112,7 @@ const AddToPlaylistModal: React.FC<AddToPlaylistModalProps> = ({
               disabled={!selectedPlaylist || isLoading}
             >
               {isLoading ? (
-                <Loader2 className="w-4 h-4 animate-spin" />
+                <Skeleton width={16} height={16} className="inline-block" />
               ) : (
                 <Plus className="w-4 h-4" />
               )}

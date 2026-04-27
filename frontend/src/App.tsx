@@ -6,9 +6,9 @@ import HomePage from "./page/HomePage";
 import LoginPage from "./page/LoginPage";
 import SignUpPage from "./page/SignupPage";
 import { useAuthStore } from "./store/useAuthStore";
-import { Loader2 } from "lucide-react";
 import Layout from "./layout/Layout";
 import AdminRoute from "./components/AdminRoute";
+import Skeleton from "./components/Skeleton";
 import AddProblem from "./page/AddProblem";
 import ProblemPage from "./page/ProblemPage";
 import RoadmapPage from "./page/RoadmapPage";
@@ -31,7 +31,7 @@ const App = () => {
   if (isCheckingAuth && !authUser) {
     return (
       <div className="flex items-center justify-center h-screen bg-[#0a0a0a]">
-        <Loader2 className="size-8 animate-spin text-zinc-600" />
+        <Skeleton variant="rectangular" width={32} height={32} />
       </div>
     );
   }

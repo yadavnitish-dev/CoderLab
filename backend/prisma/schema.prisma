@@ -142,6 +142,7 @@ model ProblemSolved {
 
   @@unique([userId, problemId])
   @@index([userId])
+  @@index([problemId])
 }
 
 model Playlist {
