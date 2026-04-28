@@ -11,6 +11,7 @@ import {
   PanelLeftOpen,
 } from "lucide-react";
 import BrutalistSelect from "../BrutalistSelect";
+import Timer from "./Timer";
 
 interface WorkspaceHeaderProps {
   title: string;
@@ -23,6 +24,7 @@ interface WorkspaceHeaderProps {
   isLeftPaneVisible: boolean;
   setIsLeftPaneVisible: (visible: boolean) => void;
   getDisplayLanguage: (lang: string) => string;
+  problemId?: string;
 }
 
 const WorkspaceHeader: React.FC<WorkspaceHeaderProps> = ({
@@ -36,6 +38,7 @@ const WorkspaceHeader: React.FC<WorkspaceHeaderProps> = ({
   isLeftPaneVisible,
   setIsLeftPaneVisible,
   getDisplayLanguage,
+  problemId,
 }) => {
   return (
     <header className="h-14 border-b border-zinc-800 bg-[#0d0d0d] px-4 flex items-center justify-between shrink-0">
@@ -97,6 +100,8 @@ const WorkspaceHeader: React.FC<WorkspaceHeaderProps> = ({
             label: getDisplayLanguage(lang),
           }))}
         />
+
+        {problemId && <Timer problemId={problemId} />}
 
         <button
           onClick={() => setIsLeftPaneVisible(!isLeftPaneVisible)}

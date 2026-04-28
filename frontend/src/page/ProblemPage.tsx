@@ -288,6 +288,7 @@ const ProblemPage = () => {
         isLeftPaneVisible={isLeftPaneVisible}
         setIsLeftPaneVisible={setIsLeftPaneVisible}
         getDisplayLanguage={getDisplayLanguage}
+        problemId={id || undefined}
       />
 
       {/* Main Workspace Area */}

@@ -172,59 +172,75 @@ const RoadmapPage = () => {
       </div>
 
       <div className="workspace-container">
-        {/* Mastery Header Stats: High-density visualization of solved problems, streaks, and difficulty distribution */}
-        <div className="mb-12 border border-zinc-800 bg-zinc-800 flex flex-col lg:flex-row gap-px overflow-hidden relative">
+        {/* Mastery Header Stats: Redesigned with circular progress and enhanced visuals */}
+        <div className="mb-12 border border-zinc-800 bg-zinc-800 grid grid-cols-1 lg:grid-cols-4 gap-px overflow-hidden relative">
           {/* CRT Scanline Overlay for the entire stats block */}
           <div className="absolute inset-0 pointer-events-none opacity-[0.03] overflow-hidden z-10">
             <div className="w-full h-full bg-gradient-to-b from-transparent via-white to-transparent animate-scanline"></div>
           </div>
           
-          {/* Main Progress Block */}
-          <div className="flex-1 bg-[#050505] p-8 flex flex-col justify-between relative group">
-            <p className="text-[10px] font-mono font-bold text-zinc-400 uppercase tracking-[0.3em] mb-4">Progress</p>
-            <div className="flex items-end gap-4 mb-8">
-              <span className="text-6xl font-mono font-bold text-white leading-none tracking-tighter">{solvedIds.size}</span>
-              <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-[0.2em] mb-1.5">/ 150 RESOLVED</span>
-            </div>
-            
-            <div className="w-full h-1 bg-zinc-900 overflow-hidden">
-               <div className="h-full bg-emerald-500 transition-all duration-1000" style={{ width: `${(solvedIds.size / 150) * 100}%` }} />
+          {/* Main Progress - Large number with progress bar */}
+          <div className="lg:col-span-1 bg-[#050505] p-6 flex flex-col justify-between relative group min-h-[180px]">
+            <p className="text-[10px] font-mono font-bold text-zinc-400 uppercase tracking-[0.3em]">Overall Progress</p>
+            <div className="mt-auto">
+              <div className="flex items-baseline gap-2 mb-3">
+                <span className="text-5xl font-mono font-bold text-white leading-none tracking-tighter">{solvedIds.size}</span>
+                <span className="text-lg font-mono text-zinc-500">/ 150</span>
+              </div>
+              <div className="h-3 bg-zinc-900 overflow-hidden">
+                <div 
+                  className="h-full bg-emerald-500 transition-all duration-1000" 
+                  style={{ width: `${(solvedIds.size / 150) * 100}%` }} 
+                />
+              </div>
+              <div className="flex justify-between mt-2">
+                <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-[0.2em]">
+                  {Math.round((solvedIds.size / 150) * 100)}% complete
+                </span>
+              </div>
             </div>
           </div>
           
-          {/* Streak Block */}
-          <div className="flex-1 bg-[#050505] p-8 flex flex-col justify-between relative group">
-            <p className="text-[10px] font-mono font-bold text-zinc-400 uppercase tracking-[0.3em] mb-4">Streak</p>
-            <div className="flex items-end gap-16 mb-2">
-              <div>
-                <span className="block text-[10px] font-mono font-bold text-zinc-500 uppercase tracking-[0.2em] mb-2">CURRENT_RUN</span>
-                <div className="flex items-baseline gap-2">
-                  <span className="text-4xl font-mono font-bold text-white tracking-tighter">{stats.currentStreak}</span>
-                  <span className="text-[10px] font-mono text-zinc-500 uppercase">DAY</span>
-                </div>
+          {/* Streak - Terminal style */}
+          <div className="lg:col-span-1 bg-[#050505] p-6 flex flex-col justify-between relative group min-h-[180px]">
+            <p className="text-[10px] font-mono font-bold text-zinc-400 uppercase tracking-[0.3em]">Streak</p>
+            <div className="mt-auto font-mono">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-[10px] text-zinc-500 uppercase tracking-[0.2em]">CURRENT:</span>
+                <span className="text-3xl font-bold text-emerald-500">{stats.currentStreak}</span>
+                <span className="text-[10px] text-zinc-500 uppercase">days</span>
               </div>
-              <div>
-                <span className="block text-[10px] font-mono font-bold text-zinc-500 uppercase tracking-[0.2em] mb-2">MAXIMUM_RUN</span>
-                <span className="text-2xl font-mono font-bold text-zinc-400 tracking-tighter">{stats.bestStreak}</span>
+              <div className="flex items-center gap-2">
+                <span className="text-[10px] text-zinc-500 uppercase tracking-[0.2em]">BEST:</span>
+                <span className="text-lg font-bold text-zinc-400">{stats.bestStreak}</span>
+                <span className="text-[10px] text-zinc-500 uppercase">days</span>
               </div>
             </div>
           </div>
 
-          {/* Difficulty Block */}
-          <div className="flex-1 bg-[#050505] p-8 flex flex-col justify-between relative group">
-            <p className="text-[10px] font-mono font-bold text-zinc-400 uppercase tracking-[0.3em] mb-4">Difficulty</p>
-            <div className="flex justify-between items-center w-full gap-4 mt-auto mb-2">
-              <div className="flex flex-col bg-zinc-900/30 px-4 py-3 border border-zinc-800/50 flex-1">
-                <span className="text-[10px] font-mono font-bold text-emerald-500 uppercase tracking-widest mb-2">EASY</span>
-                <span className="text-sm font-mono text-white">{stats.easy.solved}<span className="text-zinc-500 mx-1">/</span>{stats.easy.total}</span>
+          {/* Difficulty breakdown - Visual badges */}
+          <div className="lg:col-span-2 bg-[#050505] p-6 flex flex-col justify-between relative group min-h-[180px]">
+            <p className="text-[10px] font-mono font-bold text-zinc-400 uppercase tracking-[0.3em]">Difficulty Breakdown</p>
+            <div className="flex items-center justify-between mt-auto gap-4">
+              {/* Easy Badge */}
+              <div className="flex-1 bg-emerald-500/10 border border-emerald-500/30 p-4 text-center">
+                <span className="block text-[10px] font-mono font-bold text-emerald-500 uppercase tracking-widest mb-1">Easy</span>
+                <span className="text-3xl font-mono font-bold text-white">{stats.easy.solved}</span>
+                <span className="text-[10px] font-mono text-zinc-500 uppercase">/ {stats.easy.total}</span>
               </div>
-              <div className="flex flex-col bg-zinc-900/30 px-4 py-3 border border-zinc-800/50 flex-1">
-                <span className="text-[10px] font-mono font-bold text-amber-500 uppercase tracking-widest mb-2">MED</span>
-                <span className="text-sm font-mono text-white">{stats.medium.solved}<span className="text-zinc-500 mx-1">/</span>{stats.medium.total}</span>
+
+              {/* Medium Badge */}
+              <div className="flex-1 bg-amber-500/10 border border-amber-500/30 p-4 text-center">
+                <span className="block text-[10px] font-mono font-bold text-amber-500 uppercase tracking-widest mb-1">Medium</span>
+                <span className="text-3xl font-mono font-bold text-white">{stats.medium.solved}</span>
+                <span className="text-[10px] font-mono text-zinc-500 uppercase">/ {stats.medium.total}</span>
               </div>
-              <div className="flex flex-col bg-zinc-900/30 px-4 py-3 border border-zinc-800/50 flex-1">
-                <span className="text-[10px] font-mono font-bold text-rose-500 uppercase tracking-widest mb-2">HARD</span>
-                <span className="text-sm font-mono text-white">{stats.hard.solved}<span className="text-zinc-500 mx-1">/</span>{stats.hard.total}</span>
+
+              {/* Hard Badge */}
+              <div className="flex-1 bg-rose-500/10 border border-rose-500/30 p-4 text-center">
+                <span className="block text-[10px] font-mono font-bold text-rose-500 uppercase tracking-widest mb-1">Hard</span>
+                <span className="text-3xl font-mono font-bold text-white">{stats.hard.solved}</span>
+                <span className="text-[10px] font-mono text-zinc-500 uppercase">/ {stats.hard.total}</span>
               </div>
             </div>
           </div>
