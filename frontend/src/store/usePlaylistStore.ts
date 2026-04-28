@@ -41,7 +41,7 @@ export const usePlaylistStore = create<PlaylistState>((set, get) => ({
       }));
 
       toast.success("Playlist created");
-      return response.data.playList;
+      return response.data.playlist;
     } catch (error: any) {
       console.error("Error creating playlist:", error);
       toast.error(error.response?.data?.error || "Failed to create playlist");
@@ -125,6 +125,7 @@ export const usePlaylistStore = create<PlaylistState>((set, get) => ({
 
       set((state) => ({
         playlists: state.playlists.filter((p) => p.id !== playlistId),
+        currentPlaylist: state.currentPlaylist?.id === playlistId ? null : state.currentPlaylist,
       }));
 
       toast.success("Playlist deleted");

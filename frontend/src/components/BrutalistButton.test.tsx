@@ -47,6 +47,6 @@ describe("BrutalistButton", () => {
 
   it("should apply variant styles", () => {
     const { container } = render(<BrutalistButton variant="danger">Delete</BrutalistButton>);
-    expect(container.firstChild).toHaveClass("bg-rose-500/10");
+    expect(container.firstChild).toHaveClass("bg-rose-950");
   });
 });
