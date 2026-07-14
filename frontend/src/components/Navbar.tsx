@@ -13,7 +13,7 @@ const Navbar = () => {
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <nav aria-label="Main navigation" className="sticky top-0 z-50 w-full border-b border-zinc-900 theme-bg-primary/80 backdrop-blur-md">
+    <nav aria-label="Main navigation" className="sticky top-0 z-50 w-full border-b border-zinc-900 bg-[#0a0a0a]/80 backdrop-blur-md">
       <div className="max-w-[1400px] mx-auto px-6 h-16 flex items-center justify-between">
         {/* Brand */}
         <div className="flex items-center gap-12">

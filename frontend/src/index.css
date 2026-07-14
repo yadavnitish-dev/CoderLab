@@ -22,156 +22,13 @@
     --color-zinc-950: #050505;
 }
 
-/* Theme System - Brutalist Terminal Themes */
-:root,
-[data-theme="industrial"] {
-    --theme-bg-primary: #070707;
-    --theme-bg-secondary: #080808;
-    --theme-bg-tertiary: #0a0a0a;
-    --theme-bg-card: #0b0b0b;
-    --theme-border: #18181b;
-    --theme-border-hover: #27272a;
-    --theme-accent: #10b981;
-    --theme-accent-muted: #10b98120;
-    --theme-text-primary: #e4e4e7;
-    --theme-text-secondary: #a1a1aa;
-    --theme-text-muted: #71717a;
-}
-
-[data-theme="amber"] {
-    --theme-bg-primary: #0a0805;
-    --theme-bg-secondary: #0c0a07;
-    --theme-bg-tertiary: #0f0c09;
-    --theme-bg-card: #110d09;
-    --theme-border: #292016;
-    --theme-border-hover: #3d2f1f;
-    --theme-accent: #f59e0b;
-    --theme-accent-muted: #f59e0b20;
-    --theme-text-primary: #e4e4e7;
-    --theme-text-secondary: #a1a1aa;
-    --theme-text-muted: #71717a;
-}
-
-[data-theme="mono"] {
-    --theme-bg-primary: #000000;
-    --theme-bg-secondary: #0a0a0a;
-    --theme-bg-tertiary: #111111;
-    --theme-bg-card: #1a1a1a;
-    --theme-border: #222222;
-    --theme-border-hover: #333333;
-    --theme-accent: #ffffff;
-    --theme-accent-muted: #ffffff20;
-    --theme-text-primary: #ffffff;
-    --theme-text-secondary: #cccccc;
-    --theme-text-muted: #888888;
-}
-
-[data-theme="cool"] {
-    --theme-bg-primary: #07080c;
-    --theme-bg-secondary: #080a10;
-    --theme-bg-tertiary: #0a0c14;
-    --theme-bg-card: #0b0d18;
-    --theme-border: #181b28;
-    --theme-border-hover: #252a3d;
-    --theme-accent: #6366f1;
-    --theme-accent-muted: #6366f120;
-    --theme-text-primary: #e4e4e7;
-    --theme-text-secondary: #a1a1aa;
-    --theme-text-muted: #71717a;
-}
-
-[data-theme="muted"] {
-    --theme-bg-primary: #0c0c0c;
-    --theme-bg-secondary: #101010;
-    --theme-bg-tertiary: #141414;
-    --theme-bg-card: #181818;
-    --theme-border: #1e1e1e;
-    --theme-border-hover: #2a2a2a;
-    --theme-accent: #6b7280;
-    --theme-accent-muted: #6b728020;
-    --theme-text-primary: #d1d5db;
-    --theme-text-secondary: #9ca3af;
-    --theme-text-muted: #6b7280;
-}
-
-[data-theme="crimson"] {
-    --theme-bg-primary: #080505;
-    --theme-bg-secondary: #0a0606;
-    --theme-bg-tertiary: #0d0808;
-    --theme-bg-card: #100909;
-    --theme-border: #1f1111;
-    --theme-border-hover: #2d1818;
-    --theme-accent: #dc2626;
-    --theme-accent-muted: #dc262620;
-    --theme-text-primary: #e4e4e7;
-    --theme-text-secondary: #a1a1aa;
-    --theme-text-muted: #71717a;
-}
-
-[data-theme="teal"] {
-    --theme-bg-primary: #050a0a;
-    --theme-bg-secondary: #060d0d;
-    --theme-bg-tertiary: #081010;
-    --theme-bg-card: #091212;
-    --theme-border: #121f1f;
-    --theme-border-hover: #1a2d2d;
-    --theme-accent: #14b8a6;
-    --theme-accent-muted: #14b8a620;
-    --theme-text-primary: #e4e4e7;
-    --theme-text-secondary: #a1a1aa;
-    --theme-text-muted: #71717a;
-}
-
-[data-theme="orange"] {
-    --theme-bg-primary: #080603;
-    --theme-bg-secondary: #0a0805;
-    --theme-bg-tertiary: #0d0a06;
-    --theme-bg-card: #100c07;
-    --theme-border: #1f180d;
-    --theme-border-hover: #2d210f;
-    --theme-accent: #ea580c;
-    --theme-accent-muted: #ea580c20;
-    --theme-text-primary: #e4e4e7;
-    --theme-text-secondary: #a1a1aa;
-    --theme-text-muted: #71717a;
-}
-
-[data-theme="forest"] {
-    --theme-bg-primary: #050805;
-    --theme-bg-secondary: #060a06;
-    --theme-bg-tertiary: #080c08;
-    --theme-bg-card: #090e09;
-    --theme-border: #121a12;
-    --theme-border-hover: #1a261a;
-    --theme-accent: #22c55e;
-    --theme-accent-muted: #22c55e20;
-    --theme-text-primary: #e4e4e7;
-    --theme-text-secondary: #a1a1aa;
-    --theme-text-muted: #71717a;
-}
-
-[data-theme="slate"] {
-    --theme-bg-primary: #0a0c10;
-    --theme-bg-secondary: #0d1018;
-    --theme-bg-tertiary: #10141c;
-    --theme-bg-card: #131820;
-    --theme-border: #1e2530;
-    --theme-border-hover: #2a3544;
-    --theme-accent: #94a3b8;
-    --theme-accent-muted: #94a3b820;
-    --theme-text-primary: #e2e8f0;
-    --theme-text-secondary: #94a3b8;
-    --theme-text-muted: #64748b;
-}
-
 :root {
     color-scheme: dark;
 }
 
 body {
     font-family: var(--font-body);
-    @apply text-zinc-300 antialiased;
-    background-color: var(--theme-bg-primary);
+    @apply bg-[#0a0a0a] text-zinc-300 antialiased selection:bg-emerald-500/30;
     background-image: radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px);
     background-size: 40px 40px;
 }
@@ -205,19 +62,11 @@ h6 {
 }
 
 .glass-panel {
-    background-color: var(--theme-bg-secondary);
-    border: 1px solid var(--theme-border);
+    @apply bg-[#0d0d0d] border border-zinc-800 shadow-sm;
 }
 
 .premium-card {
-    background-color: var(--theme-bg-secondary);
-    border: 1px solid var(--theme-border);
-    transition: border-color 0.3s, background-color 0.3s;
-}
-
-.premium-card:hover {
-    border-color: var(--theme-border-hover);
-    background-color: var(--theme-bg-tertiary);
+    @apply bg-[#0d0d0d] border border-zinc-800 rounded-sm transition-colors duration-300 hover:border-zinc-700 hover:bg-zinc-900;
 }
 
 .nav-link {
@@ -240,34 +89,13 @@ h6 {
 
 /* Difficulty Badges */
 .badge-easy {
-    background-color: #10b98120;
-    color: var(--theme-accent);
-    border: none;
-    padding: 0.25rem 0.75rem;
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+    @apply bg-emerald-500/10 text-emerald-400 border-none px-3 py-1 text-xs font-semibold uppercase tracking-wider;
 }
 .badge-medium {
-    background-color: #f59e0b20;
-    color: #f59e0b;
-    border: none;
-    padding: 0.25rem 0.75rem;
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+    @apply bg-amber-500/10 text-amber-400 border-none px-3 py-1 text-xs font-semibold uppercase tracking-wider;
 }
 .badge-hard {
-    background-color: #f43f5e20;
-    color: #f43f5e;
-    border: none;
-    padding: 0.25rem 0.75rem;
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+    @apply bg-rose-500/10 text-rose-400 border-none px-3 py-1 text-xs font-semibold uppercase tracking-wider;
 }
 
 /* Engineer's Lab Animations */
@@ -330,16 +158,3 @@ h6 {
     background-size: 200% 100%;
     animation: skeleton-shimmer 1.5s ease-in-out infinite;
 }
-
-/* Theme-aware utility classes */
-.theme-bg-primary { background-color: var(--theme-bg-primary); }
-.theme-bg-secondary { background-color: var(--theme-bg-secondary); }
-.theme-bg-tertiary { background-color: var(--theme-bg-tertiary); }
-.theme-bg-card { background-color: var(--theme-bg-card); }
-.theme-border { border-color: var(--theme-border); }
-.theme-border-hover { border-color: var(--theme-border-hover); }
-.theme-accent { color: var(--theme-accent); }
-.theme-accent-bg { background-color: var(--theme-accent-muted); }
-.theme-text-primary { color: var(--theme-text-primary); }
-.theme-text-secondary { color: var(--theme-text-secondary); }
-.theme-text-muted { color: var(--theme-text-muted); }

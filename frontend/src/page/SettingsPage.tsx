@@ -11,13 +11,11 @@ import {
   Loader2,
   Trash2,
   AlertTriangle,
-  Mail,
-  Palette
+  Mail
 } from "lucide-react";
 import { useAuthStore } from "../store/useAuthStore";
 import BrutalistButton from "../components/BrutalistButton";
 import Skeleton from "../components/Skeleton";
-import { useTheme, THEMES, Theme } from "../hooks/useTheme";
 
 const ProfileSchema = z.object({
   name: z.string().min(3, "Name must be at least 3 characters"),
@@ -42,8 +40,7 @@ type PasswordFormData = z.infer<typeof PasswordSchema>;
 
 const SettingsPage: FC = () => {
   const { authUser, updateProfile, updatePassword, isUpdatingProfile, deleteAccount } = useAuthStore();
-  const { theme, setTheme } = useTheme();
-  const [activeTab, setActiveTab] = useState<"profile" | "appearance" | "security" | "danger">("profile");
+  const [activeTab, setActiveTab] = useState<"profile" | "security" | "danger">("profile");
   const [isDeleting, setIsDeleting] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
 
@@ -126,17 +123,6 @@ const SettingsPage: FC = () => {
               Profile
             </button>
             <button
-              onClick={() => setActiveTab("appearance")}
-              className={`w-full flex items-center gap-3 px-4 py-3 border transition-all text-sm font-bold uppercase tracking-widest ${
-                activeTab === "appearance"
-                  ? "bg-zinc-900 border-zinc-700 text-white"
-                  : "bg-black border-transparent text-zinc-400 hover:bg-zinc-900 hover:text-zinc-300"
-              }`}
-            >
-              <Palette className="size-4" />
-              Appearance
-            </button>
-            <button
               onClick={() => setActiveTab("security")}
               className={`w-full flex items-center gap-3 px-4 py-3 border transition-all text-sm font-bold uppercase tracking-widest ${
                 activeTab === "security"
@@ -216,48 +202,6 @@ const SettingsPage: FC = () => {
                     </BrutalistButton>
                   </div>
                 </form>
-              ) : activeTab === "appearance" ? (
-                <div className="space-y-8">
-                  <div>
-                    <h3 className="text-sm font-bold text-white uppercase tracking-widest mb-6">Theme</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                      {THEMES.map((t) => (
-                        <button
-                          key={t.value}
-                          onClick={() => setTheme(t.value as Theme)}
-                          className={`p-4 border text-left transition-all group ${
-                            theme === t.value
-                              ? "border-emerald-500 bg-emerald-500/5"
-                              : "border-zinc-800 hover:border-zinc-700 bg-[#050505]"
-                          }`}
-                        >
-                          <div className="flex items-center gap-3 mb-2">
-                            <div 
-                              className="w-4 h-4 border"
-                              style={{ 
-                                backgroundColor: 
-                                  t.value === 'industrial' ? '#10b981' : 
-                                  t.value === 'amber' ? '#f59e0b' : 
-                                  t.value === 'mono' ? '#ffffff' : 
-                                  t.value === 'cool' ? '#6366f1' : 
-                                  t.value === 'muted' ? '#6b7280' :
-                                  t.value === 'crimson' ? '#dc2626' :
-                                  t.value === 'teal' ? '#14b8a6' :
-                                  t.value === 'orange' ? '#ea580c' :
-                                  t.value === 'forest' ? '#22c55e' :
-                                  '#94a3b8'
-                              }} 
-                            />
-                            <span className="text-sm font-bold text-white uppercase tracking-widest">
-                              {t.label}
-                            </span>
-                          </div>
-                          <p className="text-[10px] text-zinc-500 font-mono">{t.description}</p>
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                </div>
               ) : activeTab === "security" ? (
                 authUser?.isSocial ? (
                   <div className="space-y-8">
