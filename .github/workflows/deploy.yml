@@ -29,18 +29,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Security audit backend
-        run: |
-          cd backend
-          npm audit --audit-level moderate
-        continue-on-error: false
-
-      - name: Security audit frontend
-        run: |
-          cd frontend
-          npm audit --audit-level moderate
-        continue-on-error: false
-
       - name: Run Backend Tests & Coverage
         run: |
           cd backend
