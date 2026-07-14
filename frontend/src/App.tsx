@@ -30,14 +30,14 @@ const App = () => {
 
   if (isCheckingAuth && !authUser) {
     return (
-      <div className="flex items-center justify-center h-screen bg-[#0a0a0a]">
+      <div className="flex items-center justify-center h-screen theme-bg-primary">
         <Skeleton variant="rectangular" width={32} height={32} />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen w-full bg-[#0a0a0a]">
+    <div className="min-h-screen w-full theme-bg-primary">
       <Toaster />
       <Routes>
         <Route path="/" element={<Layout />}>
