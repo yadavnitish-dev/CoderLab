@@ -122,24 +122,19 @@ jobs:
             APP_DIR="/home/${{ secrets.EC2_USERNAME }}/algoprep"
             BACKEND_IMAGE="${{ needs.build-and-push.outputs.backend_image }}"
             FRONTEND_IMAGE="${{ needs.build-and-push.outputs.frontend_image }}"
-            REPO_URL="https://${{ secrets.GHCR_USERNAME }}:${{ secrets.GHCR_TOKEN }}@github.com/${{ github.repository }}.git"
-
-            # Create directory if it doesn't exist
-            if [ ! -d "$APP_DIR" ]; then
-              echo "Directory $APP_DIR not found. Creating and cloning..."
-              mkdir -p "$APP_DIR"
-              git clone "$REPO_URL" "$APP_DIR"
+            
+            # Clone or update repository (use plain HTTPS - no embedded credentials)
+            if [ ! -d "$APP_DIR/.git" ]; then
+              echo "Cloning repository..."
+              git clone https://github.com/${{ github.repository }}.git "$APP_DIR"
+            else
+              echo "Repository exists, updating..."
+              cd "$APP_DIR"
+              git fetch origin main
+              git reset --hard origin/main
             fi
 
             cd "$APP_DIR"
-
-            # Update the remote URL in case the token changed
-            git remote set-url origin "$REPO_URL"
-
-            # Ensure we are on the main branch
-            git fetch origin main
-            git checkout -f main
-            git pull origin main
 
             echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u "${{ secrets.GHCR_USERNAME }}" --password-stdin
 
