@@ -34,4 +34,5 @@ yarn-error.log*
 # Documentation
 *.md
 !README.md
+!SECURITY_STATUS.md
 
