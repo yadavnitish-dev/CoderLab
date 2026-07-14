@@ -108,13 +108,14 @@ jobs:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           UPSTASH_REDIS_REST_URL: ${{ secrets.UPSTASH_REDIS_REST_URL }}
           UPSTASH_REDIS_REST_TOKEN: ${{ secrets.UPSTASH_REDIS_REST_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script_stop: true
           command_timeout: 30m
-          envs: FRONTEND_URL,DATABASE_URL,JWT_SECRET,JDOODLE_CLIENT_ID,JDOODLE_CLIENT_SECRET,GOOGLE_CLIENT_ID,GOOGLE_CLIENT_SECRET,GOOGLE_CALLBACK_URL,GH_CLIENT_ID,GH_CLIENT_SECRET,GH_CALLBACK_URL,RESEND_API_KEY,UPSTASH_REDIS_REST_URL,UPSTASH_REDIS_REST_TOKEN
+          envs: FRONTEND_URL,DATABASE_URL,JWT_SECRET,JDOODLE_CLIENT_ID,JDOODLE_CLIENT_SECRET,GOOGLE_CLIENT_ID,GOOGLE_CLIENT_SECRET,GOOGLE_CALLBACK_URL,GH_CLIENT_ID,GH_CLIENT_SECRET,GH_CALLBACK_URL,RESEND_API_KEY,UPSTASH_REDIS_REST_URL,UPSTASH_REDIS_REST_TOKEN,GITHUB_TOKEN
           script: |
             set -euo pipefail
 
@@ -122,14 +123,16 @@ jobs:
             APP_DIR="/home/${{ secrets.EC2_USERNAME }}/algoprep"
             BACKEND_IMAGE="${{ needs.build-and-push.outputs.backend_image }}"
             FRONTEND_IMAGE="${{ needs.build-and-push.outputs.frontend_image }}"
+            REPO_URL="https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git"
             
-            # Clone or update repository (use plain HTTPS - no embedded credentials)
+            # Clone or update repository using GitHub token auth
             if [ ! -d "$APP_DIR/.git" ]; then
               echo "Cloning repository..."
-              git clone https://github.com/${{ github.repository }}.git "$APP_DIR"
+              git clone "$REPO_URL" "$APP_DIR"
             else
               echo "Repository exists, updating..."
               cd "$APP_DIR"
+              git remote set-url origin "$REPO_URL"
               git fetch origin main
               git reset --hard origin/main
             fi
